@@ -1,0 +1,212 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: 'Circe Rounded Alt', sans-serif;
+  background-image: url('/images/loginImg/RegisterPage.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 50px;
+  background-attachment: fixed;
+  min-height: 100vh; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  text-align: center;
+  background-color: #ffffff;
+  width: 490px;
+  height: 450px;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.199);
+}
+
+.login-container input[type="text"] {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 35px;
+  width: 300px;
+  border-radius: 30px;
+  margin-bottom: 15px;
+}
+
+.login-container .forgot {
+  font-size: 13px;
+}
+
+.login-container .forgot-pass {
+  text-decoration: none;
+  padding-left: 170px;
+  font-weight: none;
+}
+
+.login-container a {
+  color: black;
+}
+
+.login-container .title {
+  font-size: 27px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.login-container button {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 300px;
+  border-radius: 30px;
+  font-weight: bold;
+  margin-top: 15px;
+  font-size: 15px;
+  background-color: #68BB69;
+}
+
+.login-container .already-acc {
+  margin-top: 15px;
+  font-size: 13px;
+  display: flex;
+  flex-direction: row;
+  padding-left: 150px;
+}
+
+.login-container a {
+  margin-left: 20px;
+}
+
+.email {
+  background-image: url('/images/loginImg/email.svg');
+  background-position: 10px 9px;
+  background-repeat: no-repeat;
+  background-size: 18px 18px cover;
+}
+
+.username {
+  background-image: url('/images/loginImg/user.svg');
+  background-position: 10px 9px;
+  background-repeat: no-repeat;
+  background-size: 18px 18px cover;
+}
+
+.password {
+  background-image: url('/images/loginImg/password.svg');
+  background-position: 10px 6px;
+  background-repeat: no-repeat;
+  background-size: 18px 18px cover;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 35px;
+  width: 300px;
+  border-radius: 30px;
+  margin-bottom: 15px;
+}
+
+.pass-input {
+  position: relative;
+  display: inline-block;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.img-eye {
+  height: 20px;
+  width: 20px;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 512px) {
+  .login-container {
+    width: 390px;
+    height: 450px;
+    margin-bottom: 10px;
+  }
+
+  .login-container .already-acc {
+      margin-top: 15px;
+      font-size: 13px;
+      display: flex;
+      flex-direction: row;
+      padding-left: 100px;
+   }
+}
+
+@media (max-width: 395px) {
+    .login-container {
+      width: 330px;
+      height: 450px;
+      margin-bottom: 0px;
+    }
+    .login-container input[type="text"] {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-left: 35px;
+      width: 240px;
+      border-radius: 30px;
+      margin-bottom: 15px;
+    }
+
+    .login-container .password {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      padding-left: 35px;
+      width: 240px;
+      border-radius: 30px;
+      margin-bottom: 15px;
+    }
+
+    .login-container label {
+      font-size: 14px;
+    }
+    
+    .login-container .title {
+      font-size: 27px;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .login-container button {
+      padding-top: 10px;
+      padding-bottom: 10px;
+      width: 240px;
+      border-radius: 30px;
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 15px;
+      background-color: #68BB69;
+    }
+    
+    .login-container .already-acc {
+      margin-top: 15px;
+      font-size: 13px;
+      display: flex;
+      flex-direction: row;
+      padding-left: 67px;
+    }
+    
+    .login-container a {
+      margin-left: 20px;
+    }
+}

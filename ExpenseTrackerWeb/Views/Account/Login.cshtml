@@ -1,0 +1,146 @@
+﻿@model ExpenseTracker.Data.Models.User
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp</title>
+    <link href="https://fonts.cdnfonts.com/css/circe-rounded" rel="stylesheet">
+    <link href="~/css/landingsidebar.css" rel="stylesheet" />
+    <link href="~/css/landingpheader.css" rel="stylesheet" />
+    <link href="~/css/login.css" rel="stylesheet" />
+    <link href="~/css/main.css" rel="stylesheet" />
+    <link href="~/css/errorModal.css" rel="stylesheet" />
+
+</head>
+<body>
+    <header class="header-container">
+        <div class="hamburger" id="hamburger">
+            <img src="/images/sidebarImg/charm_menu-hamburger.svg" alt="" class="burger">
+        </div>
+        <div class="logo">
+            <img src="images/logo/Logo.svg" alt="">
+        </div>
+        <div class="expense-tracker">
+            <a href="#">ExpenseTracker</a>
+        </div>
+        <div class="landing-tags">
+            <a href="@Url.Action("ExpenseTracker", "Home")">Home</a>
+        </div>
+        <div class="landing-tags">
+            <a href="#">Why ExpenseTracker?</a>
+        </div>
+        <div class="landing-tags">
+            <a href="#">Our Team</a>
+        </div>
+        <form method="get" asp-controller="Account" asp-action="SignUp">
+        <div>
+            <button class="register-btn">
+                Register
+            </button>
+        </div>
+        </form>
+    </header>
+    <div class="overlay" id="overlay"></div>
+
+    <nav class="sidebar" id="sidebar">
+        <div class="logo-sidebar">
+            <img src="images/logo/Logo.svg" alt="">
+            <p>ExpenseTracker</p>
+        </div>
+        <div class="home">
+            <a href="@Url.Action("ExpenseTracker", "Home")">Home</a>
+        </div>
+        <div class="why-expense">
+            <a href="#">Why ExpenseTracker?</a>
+        </div>
+        <div class="our-team">
+            <a href="#">Our Team</a>
+        </div>
+        <div class="close-btn">
+            <a href="javascript:void(0)" class="closebtn" id="close-btn">&times;</a>
+        </div>
+    </nav>
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <img src="/images/loginImg/warning.svg" alt="Alternate Text" />
+            <div id="modalBody" class="text-danger"></div>
+        </div>
+    </div>
+    <div class="login-container">
+        <form asp-action="Login" method="post">
+            @Html.AntiForgeryToken()      
+            <div class="title">
+                <p>Login</p>
+            </div>
+            <div>
+                <input asp-for="Username" type="text" class="username" placeholder="Username" required>
+            </div>
+            <div class="pass-input">
+                <input asp-for="Password" type="password" class="password" id="password" placeholder="Password" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility()">
+                    <img class="img-eye" src="/images/loginImg/openEye.svg" alt="Show/Hide" id="eye-icon">
+                </span>
+            </div>
+            <div class="forgot">
+                <div>
+                    <a class="forgot-pass" href="#">Forgot Password?</a>
+                </div>
+            </div>
+            <div class="login-register">
+                <button type="submit" value="Login" class="reg-btn">
+                    Login
+                </button>
+            </div>
+            <input type="hidden" asp-for="Code" class="form-control" />
+            <input type="hidden" asp-for="Status" class="form-control" />
+            <input type="hidden" asp-for="CreatedDate" class="form-control" />
+            <input type="hidden" asp-for="DateModified" class="form-control" />
+            <div class="already-acc">
+                <p>No account?</p>
+                <a href="@Url.Action("SignUp", "Account")">Register</a>
+            </div>
+            <input type="hidden" asp-for="Email" class="form-control" />
+        </form>
+    </div>
+
+    <script>
+        function showErrorModal(message) {
+            document.getElementById('modalBody').innerText = message;
+            document.getElementById('errorModal').style.display = 'block';
+        }
+
+        function hideErrorModal() {
+            document.getElementById('errorModal').style.display = 'none';
+        }
+
+        document.querySelector('.close-btn').onclick = function () {
+            hideErrorModal();
+        }
+
+        window.onclick = function (event) {
+            if (event.target === document.getElementById('errorModal')) {
+                hideErrorModal();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var errorMessage = '@Html.Raw(ViewData["ErrorMessage"])';
+            if (errorMessage) {
+                showErrorModal(errorMessage);
+            }
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/sidebar.js"></script>
+    <script src="~/js/login.js"></script>
+</body>
+</html>

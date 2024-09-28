@@ -1,0 +1,43 @@
+@import url('https://fonts.cdnfonts.com/css/circe-rounded');
+
+*{
+  font-family: 'Circe Rounded Alt', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* ===== Colors ===== */
+  --body-color: #E4E9f7;
+  --side-bar-color: #FFF;
+  --primary-color: #695cfe;
+  --primary-color-light: #DDD;
+  --toggle-color: #707070;
+  --text-color: #;
+
+  /* ===== Transistion ======*/
+  --tran-03: all 0.2s ease;
+  --tran-03: all 0.3s ease;
+  --tran-04: all 0.4s ease;
+  --tran-05: all 0.5s ease;
+}
+
+body {
+  height: 100vh;
+  background: var(--body-color);
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  background: var(--side-bar-color);
+}
+
+.sidebar .image-text img{
+  width: 40px;
+  border-radius: 6px;
+}

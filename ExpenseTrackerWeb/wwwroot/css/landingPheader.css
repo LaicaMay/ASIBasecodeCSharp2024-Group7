@@ -1,0 +1,153 @@
+.header-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 100px;
+  border-width: 1px;
+  border-bottom: 2px solid rgba(255, 132, 75, 0.438);
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  justify-content: start;
+  margin: 0;
+  background-color: #fff;
+  z-index: 1;
+}
+
+.register-btn {
+  background-color: #68BB69;
+  padding: 15px 25px 15px 25px;
+  border-radius: 24px;
+  font-weight: bold;
+  font-size: 20px;
+  color: rgb(46, 46, 46);
+  margin-bottom: 7px;
+  margin-right: 10px;
+  height: 60px;
+  width: 190px;
+}
+
+.register-btn:hover {
+  background-color: #83e485;
+  box-shadow: 1px 3px 1px black;
+  cursor: pointer;
+}
+
+.header-container div {
+  margin-left: 35px;
+  font-size: 20px;
+}
+
+.header-container a {
+  text-decoration: none;
+  color: black;
+}
+
+.landing-tags {
+  margin-bottom: 23px;
+}
+
+.header-container .expense-tracker {
+  margin-bottom: 23px;
+  margin-left: 5px;
+  font-weight: bold;
+  flex: 1;
+}
+
+@media (max-width: 981px) {
+  .header-container .landing-tags {
+    font-size: 17px;
+  }
+
+  .header-container .expense-tracker {
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .logo {
+    flex: none;
+  }
+}
+
+@media (max-width: 936px ) {
+  .landing-tags {
+    display: none;
+  }
+  
+  .logo {
+    flex: none;
+  }
+
+  .header-container {
+    justify-content: end;
+  }
+
+  .header-container .hamburger {
+    display: block;
+    flex: 1;
+  }
+
+  .header-container .expense-tracker {
+    flex: none;
+  }
+}
+
+@media (max-width: 777px ) {
+  .header-container .landing-tags {
+    display: none;
+  }
+  
+  .logo {
+    flex: none;
+  }
+
+  .header-container {
+    justify-content: end;
+  }
+
+  .header-container .hamburger {
+    display: block;
+    flex: 1;
+  }
+
+  .header-container .expense-tracker {
+    flex: none;
+  }
+}
+
+@media (max-width: 552px ) {
+  .landing-tags {
+    display: none;
+  }
+
+  .expense-tracker {
+    display: none;
+  }
+  
+  .logo {
+    display: none;
+  }
+  
+  .header-container {
+    justify-content: end;
+  }
+
+  .header-container .hamburger {
+    display: block;
+    flex: 1;
+  }
+
+  .header-container .expense-tracker {
+    flex: none;
+  }
+}
+
+
+
+
+
+
+
+
+

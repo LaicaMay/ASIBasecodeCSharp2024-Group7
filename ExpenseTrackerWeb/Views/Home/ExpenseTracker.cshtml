@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "ExpenseTracker";
+    Layout = "_LandingPageLayout";
+}
+<link href="~/css/main.css" rel="stylesheet" />
+<link href="~/css/landingpheader.css" rel="stylesheet" />
+<link href="~/css/landingsidebar.css" rel="stylesheet" />
+
+<div class="main">
+    <div class="main-title">
+        <p>Track, Manage, Thrive</p>
+    </div>
+    <div class="sub-title">
+        <p>
+            Track, manage, and understand your expenses with ease. Our intuitive expense tracker helps you stay on top of your spending and make informed financial decisions.
+        </p>
+    </div>
+    <form method="get" asp-controller="Account" asp-action="SignUp">
+    <div class="get-started">
+        <button class="get-started-btn">
+            Get Started
+        </button>
+    </div>
+    </form>
+</div>
