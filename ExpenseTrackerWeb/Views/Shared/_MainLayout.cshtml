@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="~/mainStyle/general.css">
+    <link rel="stylesheet" href="~/mainStyle/header.css">
+    <link rel="stylesheet" href="~/mainStyle/sidebar.css">
+    <link rel="stylesheet" href="~/mainStyle/main.css">
+    <link rel="stylesheet" href="~/mainStyle/web-sidebar.css">
+    <link rel="stylesheet" href="~/mainStyle/expense-details.css">
+</head>
+<body>
+    <header class="header" id="hide">
+        <div id="burger">
+            <img src="/images/sidebarImg/charm_menu-hamburger.svg" alt="" class="burger">
+        </div>
+        <div id="logo">
+            <img src="/images/logo/Logo.svg" alt="">
+        </div>
+        <div id="logo-name">
+            <p>ExpenseTracker</p>
+        </div>
+    </header>
+
+    <nav class="web-sidebar" id="hide">
+        <div style="display: flex;
+                flex-direction: column;
+                align-items: start;
+                justify-content: start;
+                padding-top: 75px;
+                padding-left: 30px;">
+            <div style="display: flex; align-items: center; justify-content: start; margin: 10px;
+    flex-direction: column;
+    margin-bottom: 30px;">
+                <img src="/images/logo/Logo.svg" alt="">
+                <p>ExpenseTracker</p>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: start; margin: 10px;">
+                <img src="/images/backgroundImage/Overview.svg" alt="" style="margin-right: 10px;">
+                <a href="#" id="overview">Overview</a>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: start; margin: 10px;">
+                <img src="/images/backgroundImage/Categories.svg" alt="" style="margin-right: 10px;">
+                <a href="#" id="categories">Categories</a>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: start; margin: 10px">
+                <img src="/images/backgroundImage/Analytics.svg" alt="" style="margin-right: 10px;">
+                <a href="#" id="analytics">Analytics</a>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: start; margin: 10px;">
+                <img src="/images/backgroundImage/Settings.svg" alt="" style="margin-right: 10px;">
+                <a href="#" id="settings">Settings</a>
+            </div>
+        </div>
+    </nav>
+    <nav id="sidebar" class="hidden">
+        <div class="flex-column">
+            <div style="display: flex; align-items: center; justify-content: start; margin: 10px;">
+                <img src="/images/backgroundImage/Overview.svg" alt="" style="margin-right: 10px;">
+                <p>Overview</p>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: start; margin: 10px;">
+                <img src="/images/backgroundImage/Categories.svg" alt="" style="margin-right: 10px;">
+                <p>Categories</p>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: start; margin: 10px;">
+                <img src="/images/backgroundImage/Analytics.svg" alt="" style="margin-right: 10px;">
+                <p>Analytics</p>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: start; margin: 10px;">
+                <img src="/images/backgroundImage/Settings.svg" alt="" style="margin-right: 10px;">
+                <p>Settings</p>
+            </div>
+        </div>
+    </nav>
+
+   <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/js/sidebar.js"></script>
+</body>
+</html>

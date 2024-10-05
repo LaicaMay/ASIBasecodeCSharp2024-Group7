@@ -1,0 +1,30 @@
+@import url('https://fonts.cdnfonts.com/css/circe-rounded');
+
+*{
+  font-family: 'Circe Rounded Alt', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Circe Rounded Alt', sans-serif;
+  background-image: url('/images/backgroundImage/DashboardPage.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center 0px;
+  background-attachment: fixed;
+  min-height: 100vh; 
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body, .main-container { 
+  min-width: 360px;
+  min-height: 600px;
+
+}
