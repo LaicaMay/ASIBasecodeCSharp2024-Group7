@@ -9,37 +9,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
     <link rel="stylesheet" href="/css/expensesummary.css">
-
+    <link rel="stylesheet" href="/css/chart.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 
-<div class="main-content">
-    <div class="summary-container">
-        <div class="expenses">
-            <div class="topbarinfo">
-                <h2>Expenses Summary</h2>
-                <h4>January 1 - September 5</h4>
+<body>
+        <div class="main-content">
+        <div class="summary-container">
+            <div class="expenses">
+                <div class="topbarinfo">
+                    <h2>Expenses Summary</h2>
+                    <h4>January 1 - September 5</h4>
+                </div>
+                <div class="expensecontents">
+                    <div class="totalexpenses">
+                        <h3>Php 1000.00</h3>
+                        <h4>Total Expenses</h4>
+                    </div>
+                    <div class="groceryexpenses">
+                        <h3>Php 1000.00</h3>
+                        <h4>Total Expenses</h4>
+                    </div>
+                    <div class="schoolexpenses">
+                        <h3>Php 1000.00</h3>
+                        <h4>Total Expenses</h4>
+                    </div>
+                </div>
             </div>
-            <div class="expensecontents">
-                <div class="totalexpenses">
-                    <h3>Total Expenses</h3>
+            <div class="charts">
+                <div class="pie-chart">
+                    <h3>Expense Trend</h3>
+                    <div>
+                        <svg id="donutChart" width="200" height="200"></svg>
+                    </div>
                 </div>
-                <div class="groceryexpenses">
-                    <h3>Grocery Expenses</h3>
+                <div class="line-graph">
+                    <h3>Yearly Report</h3>
+                    <div>
+                        <svg id="barChart" width="400" height="300"></svg>
+                    </div>
                 </div>
-                <div class="schoolexpenses">
-                    <h3>School Expenses</h3>
+            </div>
+            <div class="button-container">
+                <button id="generateReportButton">Generate Report</button>
+            </div>
+        </div>
+
+        <div class="overlay" id="reportOverlay">
+            <div class="overlay-content">
+                <h2>Sample Report</h2>
+                <p><strong>Total Expenses:</strong> $5000</p>
+                <p><strong>Grocery Expenses:</strong> $1500</p>
+                <p><strong>School Expenses:</strong> $1000</p>
+                <div class="overlay-buttons">
+                    <button id="saveReportButton">Save</button>
+                    <button id="exitReportButton">Exit Report</button>
                 </div>
             </div>
         </div>
-        <div class="charts">
-            <div class="pie-chart">
-                <h3>Expense Trend</h3>
-            </div>
-            <div class="line-graph">
-                <h3>Yearly Report</h3>
-            </div>
-        </div>
-        <div class="button-container">
-            <button id="generateReportButton">Generate Report</button>
-        </div>
+
     </div>
+    <script src="~/js/expensesummary.js"></script>
+    <script src="~/js/chart.js"></script>
+</body>
+
+
+</html>

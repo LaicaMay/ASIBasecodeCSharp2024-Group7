@@ -16,7 +16,7 @@ namespace ExpenseTrackerWeb.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Dashboard", "Home");
+                return RedirectToAction("Overview", "Account");
             }
             return View();
         }
