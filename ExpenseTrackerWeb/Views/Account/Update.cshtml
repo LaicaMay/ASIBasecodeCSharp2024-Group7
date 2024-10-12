@@ -1,0 +1,48 @@
+﻿@{
+    Layout = "_MainLayout";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="/mainStyle/general.css">
+    <link rel="stylesheet" href="/mainStyle/header.css">
+    <link rel="stylesheet" href="~/css/update.css" />
+</head>
+
+<div class="main-container">
+        <div class="profile-section">
+            <h2>Profile</h2>
+            <p>Username: user123</p>
+            <p>Email: user1@gmail.com</p>
+            <p>Password: ****</p>
+            <div class="edit-section">
+                <label for="new-password">New Password:</label>
+                <input type="password" id="new-password" placeholder="Enter new password">
+                <label for="confirm-password">Confirm New Password:</label>
+                <input type="password" id="confirm-password" placeholder="Confirm new password">
+            </div>
+        </div>
+        <div class="preference-section">
+            <h2>Preference</h2>
+            <label>
+                <input type="radio" name="theme" value="light" checked onclick="setTheme('light')" disabled> Light Mode
+            </label>
+            <label>
+                <input type="radio" name="theme" value="dark" onclick="setTheme('dark')" disabled> Dark Mode
+            </label>
+        </div>
+        <div class="edit-button">
+            <button onclick="toggleEdit()">Edit Profile</button>
+        </div>
+        <div class="action-buttons" style="display: none;">
+            <button onclick="saveChanges()">Save Changes</button>
+            <button class="cancel" onclick="cancelEdit()">Cancel</button>
+        </div>
+    </div>
+
+ 
+    <script src="~/js/update.js"></script>
+</html>

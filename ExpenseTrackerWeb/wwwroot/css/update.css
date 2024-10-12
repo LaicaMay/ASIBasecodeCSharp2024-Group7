@@ -1,0 +1,65 @@
+﻿.main-container {
+    width: 80%;
+    margin: auto;
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.profile-section, .preference-section {
+    margin-bottom: 20px;
+}
+
+.preference-section label {
+    display: block;
+    margin-top: 10px;
+}
+
+.edit-button, .action-buttons {
+    text-align: center;
+}
+
+.edit-button button, .action-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.action-buttons button.cancel {
+    background-color: #6c757d;
+}
+
+.dark-mode {
+    background-color: #333;
+    color: #fff;
+}
+
+.dark-mode .container {
+    border-color: #555;
+}
+
+.edit-section {
+    display: none;
+    margin-top: 20px;
+}
+
+.edit-section label {
+    display: block;
+    margin-top: 10px;
+}
+
+.edit-section input {
+    border-radius: 5px;
+    padding: 8px;
+    width: calc(100% - 20px); /* Adjust width to account for margins */
+    margin: 10px 0; /* Add vertical margin of 10px */
+}
+
+.preference-section input[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
