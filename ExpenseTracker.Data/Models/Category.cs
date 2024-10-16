@@ -23,6 +23,12 @@ public partial class Category
     [Column(TypeName = "datetime")]
     public DateTime? DateModified { get; set; }
 
+    [Column(TypeName = "decimal(10, 2)")]
+    public decimal? SetAmount { get; set; }
+
+    [StringLength(252)]
+    public string? Description { get; set; }
+
     [InverseProperty("Category")]
     public virtual ICollection<Expense> Expenses { get; set; } = new List<Expense>();
 

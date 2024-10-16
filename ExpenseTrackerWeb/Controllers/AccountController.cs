@@ -4,60 +4,59 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using ExpenseTracker.Resources.Utils;
 using Microsoft.AspNetCore.Authorization;
-using ExpenseTracker.Data.Repository;
+using ExpenseTracker.Resources.Constants;
 
 namespace ExpenseTrackerWeb.Controllers
 {
     public class AccountController : BaseController
     {
-        public IActionResult Login()
+        public IActionResult Login(String ReturnUrl)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Overview", "Account");
-            }
+            if (User.Identity.IsAuthenticated)      
+                return RedirectToAction("Overview", "Expense");
+
+            ViewBag.Error = String.Empty;
+            ViewBag.ReturnUrl = ReturnUrl;
+
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(User user)
+        public async Task<IActionResult> Login(string username, string password, string ReturnUrl)
         {
-            var userObj = _db.Users.Where(model => (model.Username == user.Username || model.Username == user.Username)).FirstOrDefault();
-
-            if (userObj == null)
+            if (_userManager.SignIn(username, password, ref ErrorMessage) == ErrorCode.Success)
             {
-                ViewData["ErrorMessage"] = "Incorrect Password or User does not exist.";
-                return View(user);
+                var user = _userManager.GetUserByUsername(username);
+
+                List<Claim> claims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Username),
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, Convert.ToString(user.UserId))
+                };
+
+                ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                AuthenticationProperties properties = new AuthenticationProperties()
+                {
+                    AllowRefresh = true,
+                    IsPersistent = true,
+                };
+
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), properties);
+
+                if (!string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl))
+                {
+                    return Redirect(ReturnUrl);
+                }
+
+                return RedirectToAction("Overview", "Expense");
             }
 
-            if (user.Password != userObj.Password)
-            {
-                ViewData["ErrorMessage"] = "Incorrect Password or User does not exist.";
-                return View(user);
-            }
-
-            ViewData["ErrorMessage"] = null;
-
-            List<Claim> claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.Username),
-                new Claim(ClaimsIdentity.DefaultNameClaimType, Convert.ToString(userObj.UserId))
-            };
-
-            ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            AuthenticationProperties properties = new AuthenticationProperties()
-            {
-                AllowRefresh = true,
-                IsPersistent = true,
-            };
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity), properties);
-
-            return RedirectToAction("Dashboard", "Home");
+            ViewBag.Error = ErrorMessage;
+            ViewBag.ReturnUrl = ReturnUrl;
+            return View();
         }
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
@@ -68,14 +67,14 @@ namespace ExpenseTrackerWeb.Controllers
         public IActionResult SignUp()
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Dashboard", "Home");
+                return RedirectToAction("Overview", "Expense");
 
             return View();
                 
         }
         [AllowAnonymous]
         [HttpPost]
-        public IActionResult SignUp(User u, String ConfirmPass)
+        public IActionResult SignUp(User u)
         {
             if (_userManager.SignUp(u, ref ErrorMessage) != ErrorCode.Success)
             {
@@ -86,6 +85,7 @@ namespace ExpenseTrackerWeb.Controllers
             return RedirectToAction("Login");
         }
 
+        [Authorize]
         public IActionResult Update()
         {
             return View();

@@ -16,14 +16,16 @@ public partial class Expense
 
     public int? CategoryId { get; set; }
 
+    [StringLength(250)]
+    public string? ExpenseName { get; set; }
+
     [Column(TypeName = "decimal(10, 2)")]
     public decimal? Amount { get; set; }
 
     [StringLength(252)]
     public string? Description { get; set; }
 
-    [Column(TypeName = "datetime")]
-    public DateTime? Date { get; set; }
+    public DateOnly? Date { get; set; }
 
     [Column(TypeName = "datetime")]
     public DateTime? CreatedDate { get; set; }
@@ -38,4 +40,7 @@ public partial class Expense
     [ForeignKey("UserId")]
     [InverseProperty("Expenses")]
     public virtual User? User { get; set; }
+
+    [InverseProperty("Expense")]
+    public virtual ICollection<UserExpense> UserExpenses { get; set; } = new List<UserExpense>();
 }

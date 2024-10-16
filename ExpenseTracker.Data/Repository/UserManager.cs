@@ -1,12 +1,13 @@
 ﻿using ExpenseTracker.Data.Models;
-using ExpenseTracker.Resources.Utils;
+using ExpenseTracker.Resources.Constants;
+using ExpenseTracker.Data.Utils;
 
 namespace ExpenseTracker.Data.Repository
 {
     public class UserManager
     {
-        private BaseRepository<User> _userRepo;
-        private BaseRepository<UserInformation> _userInfo;
+        private readonly BaseRepository<User> _userRepo;
+        private readonly BaseRepository<UserInformation> _userInfo;
 
         public UserManager()
         {
@@ -31,6 +32,19 @@ namespace ExpenseTracker.Data.Repository
         }
         #endregion
 
+        public ErrorCode SignIn(String username, String password, ref String errMsg)
+        {
+            var userSignIn = GetUserByUsername(username);
+            if (userSignIn == null || !userSignIn.Password.Equals(password))
+            {
+                errMsg = "Invalid username or password.";
+                return ErrorCode.Error;
+            }
+
+            errMsg = "Login Successful";
+            return ErrorCode.Success;
+        }
+
         public ErrorCode SignUp(User u, ref String errMsg)
         {
             u.Code = Utilities.code.ToString();
@@ -52,7 +66,7 @@ namespace ExpenseTracker.Data.Repository
 
             if(_userRepo.Create(u, out errMsg) != ErrorCode.Success)
             {
-                return ErrorCode.Success;
+                return ErrorCode.Error;
             }
 
             return ErrorCode.Success;

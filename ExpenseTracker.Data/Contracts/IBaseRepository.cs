@@ -1,4 +1,5 @@
-﻿using ExpenseTracker.Resources.Utils;
+﻿using ExpenseTracker.Data.Utils;
+using ExpenseTracker.Resources.Constants;
 
 namespace ExpenseTracker.Data.Contracts
 {

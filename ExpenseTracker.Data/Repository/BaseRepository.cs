@@ -1,7 +1,7 @@
 ﻿using ExpenseTracker.Data.Contracts;
 using ExpenseTracker.Data.Data;
-using ExpenseTracker.Resources.Utils;
 using Microsoft.EntityFrameworkCore;
+using ExpenseTracker.Resources.Constants;
 
 namespace ExpenseTracker.Data.Repository
 {

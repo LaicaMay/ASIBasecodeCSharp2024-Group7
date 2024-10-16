@@ -1,36 +1,31 @@
-﻿@{
+﻿@using System.Security.Claims
+@model ExpenseTracker.Data.Models.CustomModels.OverviewViewModel;
+@{
     Layout = "_MainLayout";
 }
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="~/mainStyle/general.css">
-    <link rel="stylesheet" href="~/mainStyle/header.css">
-    <link rel="stylesheet" href="~/mainStyle/expense-details.css">
-</head>
-<body>
-    <main class="main">
+<link href="~/mainstyle/expense-details.css" rel="stylesheet" />
+<link href="~/mainstyle/add-expense.css" rel="stylesheet" />
         <div class="main-container">
-            <div class="main-title">
-                <h2>Hey there Mori!</h2>
-                <p>Remaining balance</p>
-            </div>
-            <div class="balance-container">
-                <div class="expense">
-                    <p id="expense-category">Grocery</p>
-                    <p id="expense-tag">PHP1,500.00</p>
-                    <p id="expense-user">Mori Estella</p>
-                    <div id="deduction">-750.00</div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="main-title">
+                    <h2>Hey there, @User.FindFirst(ClaimTypes.NameIdentifier)?.Value!</h2>
+                    <p>Your budgets</p>
                 </div>
-                <div class="expense">
-                    <p id="expense-category">School</p>
-                    <p id="expense-tag">PHP2,500.00</p>
-                    <p id="expense-user">Mori Estella</p>
-                    <div id="deduction">-100.00</div>
-                </div>
+            }      
+            <div class="balance-container">             
+                    <div class="expense">
+                        <p id="expense-category">Grocery</p>
+                        <p id="expense-tag">PHP1,500.00</p>
+                        <p id="expense-user">Mori Estella</p>
+                        <div id="deduction">-750.00</div>
+                    </div>
+                    <div class="expense">
+                        <p id="expense-category">School</p>
+                        <p id="expense-tag">PHP2,500.00</p>
+                        <p id="expense-user">Mori Estella</p>
+                        <div id="deduction">-100.00</div>
+                    </div> 
             </div>
             <div class="bottom-title">
                 Recent Expenses
@@ -38,8 +33,12 @@
             <div id="table-content" class="hide">
                 <table class="table-expense">
                     <thead>
-                        <tr>
-                            <th><img src="~/images/iconVec/down-arrw.svg" alt=""></th>
+                        <tr>                        
+                            <th>
+                               <div >
+                                    <img src="~/images/iconVec/down-arrw.svg" alt="">
+                               </div>
+                            </th>
                             <th>Expense Name</th>
                             <th>Amount</th>
                             <th>Date <img src="~/images/iconVec/down-arrw.svg" alt=""></th>
@@ -47,54 +46,40 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <div style="display: flex;
-                            align-items: center;
-                            justify-content: center;">
-                                    <div class="img-bg">
-                                        <img src="~/images/iconVec/tags.svg" alt="">
-                                    </div>
-                                    <p style="margin-left: 10px;">Grocery</p>
-                                </div>
-                            </td>
-                            <td>Cookie Ingredients</td>
-                            <td>PHP750.00</td>
-                            <td>09/29/2024</td>
-                            <td><a href="#">Details</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div style="display: flex;
-                            align-items: center;
-                            justify-content: center;">
-                                    <div class="img-bg">
-                                        <img src="~/images/iconVec/tags.svg" alt="">
-                                    </div>
-                                    <p style="margin-left: 10px;">Grocery</p>
-                                </div>
-                            </td>
-                            <td>Cookie Ingredients</td>
-                            <td>PHP750.00</td>
-                            <td>09/29/2024</td>
-                            <td><a href="#">Details</a></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div style="display: flex;
-                            align-items: center;
-                            justify-content: center;">
-                                    <div class="img-bg">
-                                        <img src="~/images/iconVec/tags.svg" alt="">
-                                    </div>
-                                    <p style="margin-left: 10px;">Grocery</p>
-                                </div>
-                            </td>
-                            <td>Cookie Ingredients</td>
-                            <td>PHP750.00</td>
-                            <td>09/29/2024</td>
-                            <td><a href="#">Details</a></td>
-                        </tr>
+                    @if (Model.ExpensesView != null && Model.ExpensesView.Any())
+                        {
+                            foreach (var item in Model.ExpensesView)
+                            {
+                                <tr>
+                                    <td data-user-id="@item.UserId"                                      
+                                        data-expense-name="@item.ExpenseName"
+                                        data-amount="@item.Amount"
+                                        data-category-name="@item.CategoryName"
+                                        data-date="@item.Date"
+                                        data-description="@item.Description"
+                                    >
+                                        <div style="display: flex;
+                                    align-items: center;
+                                    justify-content: start; padding-left: 0px;
+                                            ">
+                                            <div class="img-bg">
+                                                <img src="~/images/iconVec/tags.svg" alt="">
+                                            </div>
+                                            <p style="margin-left: 10px;">@item.CategoryName</p>
+                                        </div>
+                                    </td>
+                                    <td>@item.ExpenseName</td>
+                                    <td>₱@item.Amount</td>
+                                    <td>@item.Date</td>
+                                    <td><a id="item-details">Details</a></td>
+                                </tr>
+                            }
+                        } else
+                        {
+                            <tr>
+                                <td colspan="5">No recent expenses.</td>                                        
+                            </tr>
+                        }
                     </tbody>
                 </table>
                 <div class="button-search">
@@ -105,7 +90,7 @@
                             <button id="searchBtn">Search</button>
                         </div>
                     </div>
-                    <a href="#">Add Expenses</a>
+                    <a id="add-id">Add Expenses</a>
                 </div>
             </div>
             <div style="display: flex; justify-content: space-between;">
@@ -113,67 +98,124 @@
                     <a href="#">View Recent</a>
                 </div>
                 <div id="add-expense" class="recent-hide">
-                    <a href="#">Add Expenses</a>
+                    <a id="m-add-id" href="#">Add Expenses</a>
                 </div>
             </div>
         </div>
 
-        <div id="expense-details">
-            <div style="display: flex; align-items: center; justify-content: center;
-      margin-top: 10px;
-      margin-bottom: 10px;">
-                <div>
-                    <p class="details-expense">Expense Details</p>
-                </div>
-            </div>
-            <div style="display: flex; flex-direction: row; align-items: center;
-      justify-content: start;
-      margin-top: 25px;">
-                <div style="display: flex; flex-direction: column;
-        margin-left: 20px;
-        gap: 15px;">
+        <div id="expense-container" class="hide">
+            <div id="expense-details">
+                <div style="display: flex; align-items: center; justify-content: center;
+                            margin-top: 10px;
+                            margin-bottom: 10px;">
                     <div>
-                        <img src="~/images/iconVec/ingredient-icon.svg" alt="">
-                    </div>
-                    <div>
-                        <img src="~/images/iconVec/money-icon.svg" alt="">
-                    </div>
-                    <div>
-                        <img src="~/images/iconVec/CategoryThumbail.svg" alt="">
-                    </div>
-                    <div>
-                        <img src="~/images/iconVec/bag-icon.svg" alt="">
-                    </div>
-                    <div>
-                        <img src="/images/iconVec/paper-icon.svg" alt="">
+                        <p class="details-expense">Expense Details</p>
                     </div>
                 </div>
-                <div style="display: flex; flex-direction: column; margin-left: 20px;
-        gap: 15px;">
-                    <p>Cookie Ingredients</p>
-                    <p>PHP 750.00</p>
-                    <p>Grocery</p>
-                    <p>09/29/2024</p>
-                    <p>Buying Ingredients for Baby Ellie</p>
+                <div style="display: flex; flex-direction: row; align-items: center;
+                            justify-content: start;
+                            margin-top: 25px;">
+                    <div style="display: flex; flex-direction: column;
+                                margin-left: 20px;
+                                gap: 15px;
+                                margin-top: 5px;">
+                        <div>
+                            <img src="~/images/iconVec/ingredient-icon.svg" alt="">
+                        </div>
+                        <div>
+                            <img src="~/images/iconVec/money-icon.svg" alt="">
+                        </div>
+                        <div>
+                            <img src="~/images/iconVec/CategoryThumbail.svg" alt="">
+                        </div>
+                        <div>
+                            <img src="~/images/iconVec/bag-icon.svg" alt="">
+                        </div>
+                        <div>
+                            <img src="/images/iconVec/paper-icon.svg" alt="">
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; margin-left: 20px;
+                                gap: 15px;">
+                        <p id="modal-expense-name"></p>
+                        <p id="modal-amount"></p>
+                        <p id="modal-category-name"></p>
+                        <p id="modal-date"></p>
+                        <p id="modal-description"></p>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center;
+                            margin-top: 10px;
+                            margin-bottom: 10px;">
+                    <button id="edit">Edit</button>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center;
+                            margin-top: 10px;
+                            margin-bottom: 10px;">
+                    <button id="del">Delete</button>
                 </div>
             </div>
-
-            <div style="display: flex; align-items: center; justify-content: center;
-      margin-top: 10px;
-      margin-bottom: 10px;">
-                <button id="edit">Edit</button>
+            <div class="blur-bg">
             </div>
-            <div style="display: flex; align-items: center; justify-content: center;
-      margin-top: 10px;
-      margin-bottom: 10px;">
-                <button id="del">Delete</button>
-            </div>
+        </div>    
+        
+        @await Html.PartialAsync("_AddExpensePartialView", new Expense())
 
-        </div>
-        <div class="blur-bg">
-        </div>
-    </main>
+<script>
+    document.getElementById('add-id').addEventListener('click', function (event) {
+        event.stopPropagation();
 
-    <script src="~/js/main-sidebar.js"></script>
-</body>
-</html>
+        let expenseCont = document.getElementById('add-expense-container');
+
+        if (expenseCont.classList.contains('hide')) {
+            expenseCont.classList.remove('hide');
+            expenseCont.classList.add('show');
+        }
+    });
+
+    document.getElementById('add-blur').addEventListener('click', function (event) {
+        event.stopPropagation();
+        document.getElementById('add-expense-container').classList.remove('show');
+        document.getElementById('add-expense-container').classList.add('hide');
+    });
+
+    document.getElementById('m-add-id').addEventListener('click', function (event) {
+        event.stopPropagation();
+
+        let expenseCont = document.getElementById('add-expense-container');
+
+        if (expenseCont.classList.contains('hide')) {
+            expenseCont.classList.remove('hide');
+            expenseCont.classList.add('show');
+        }
+    });  
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('#item-details').forEach(function (detailsLink) {
+            detailsLink.addEventListener('click', function () {
+                const parentRow = this.closest('tr').querySelector('td');
+
+                const expenseName = parentRow.getAttribute('data-expense-name');
+                const amount = parentRow.getAttribute('data-amount');
+                const categoryName = parentRow.getAttribute('data-category-name');
+                const date = parentRow.getAttribute('data-date');
+                const description = parentRow.getAttribute('data-description');
+
+                document.getElementById('modal-expense-name').textContent = expenseName;
+                document.getElementById('modal-amount').textContent = `₱${amount}`;
+                document.getElementById('modal-category-name').textContent = categoryName;
+                document.getElementById('modal-date').textContent = date;
+                document.getElementById('modal-description').textContent = description;
+
+                document.getElementById('expense-container').classList.remove('hide');
+                document.getElementById('expense-container').classList.add('show');
+            });
+        });
+
+        document.querySelector('.blur-bg').addEventListener('click', function () {
+            document.getElementById('expense-container').classList.remove('show');
+            document.getElementById('expense-container').classList.add('hide');
+        });
+    });
+</script>

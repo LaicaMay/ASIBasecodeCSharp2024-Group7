@@ -24,11 +24,15 @@ public partial class ExpenseTrackerDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
+    public virtual DbSet<UserExpense> UserExpenses { get; set; }
+
     public virtual DbSet<UserInformation> UserInformations { get; set; }
+
+    public virtual DbSet<VwUsersExpensesView> VwUsersExpensesViews { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=(localDB)\\MSSQLLocalDB; Initial Catalog=ExpenseTrackerDB; Trusted_Connection=Yes; Encrypt=false");
+        => optionsBuilder.UseSqlServer("Data Source=DESKTOP-FO9D3C2\\SQLEXPRESS;Initial Catalog=ExpenseTrackerDB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -49,14 +53,21 @@ public partial class ExpenseTrackerDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Reports).HasConstraintName("FK_Report_User");
         });
 
-        modelBuilder.Entity<User>(entity =>
+        modelBuilder.Entity<UserExpense>(entity =>
         {
-            entity.Property(e => e.Email).IsFixedLength();
+            entity.HasOne(d => d.Expense).WithMany(p => p.UserExpenses).HasConstraintName("FK_UserExpense_Expense");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserExpenses).HasConstraintName("FK_UserExpense_User");
         });
 
         modelBuilder.Entity<UserInformation>(entity =>
         {
             entity.HasOne(d => d.User).WithMany(p => p.UserInformations).HasConstraintName("FK_UserInformation_User");
+        });
+
+        modelBuilder.Entity<VwUsersExpensesView>(entity =>
+        {
+            entity.ToView("vw_usersExpensesView");
         });
 
         OnModelCreatingPartial(modelBuilder);

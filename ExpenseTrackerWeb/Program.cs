@@ -1,5 +1,6 @@
 using ExpenseTracker;
 using ExpenseTracker.Data.Data;
+using ExpenseTracker.Resources;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -52,7 +53,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Dashboard}/{id?}");
+    pattern: "{controller=Home}/{action=ExpenseTracker}/{id?}");
 
 app.Run();
 

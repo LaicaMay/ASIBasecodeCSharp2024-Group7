@@ -90,21 +90,28 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 #table-content table {
   font-size: 0.75rem;
   margin-top: 10px;
+  border-collapse: collapse;
+}
 
+#table-content thead {
+    position: fixed;
+    top: 0; /* Fix the thead at the top */
+    z-index: 1; /* Ensure the thead is above the scrolling tbody */
 }
 
 .table-expense th{
   text-align: center;
   font-family: sans-serif;
   font-weight: 300;
-  border-bottom: solid;
-  border-width: 1px;
   padding: 5px;
+
 }
 
 .table-expense td {
@@ -323,32 +330,64 @@ th img {
   #table-content {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
     flex-direction: column;
+    height: 200px;
+    overflow-y: auto;
+
+  }
+
+  #table-content thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-image: url('/images/backgroundImage/thHeaderBack.JPG');
+    background-repeat: no-repeat;
+    background-position: center 0px;
+    background-size: cover;      
+  }
+
+  #table-content thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin-bottom: 20px
   }
   
   #table-content table {
     font-size: 1rem;
     margin-top: 0px;
     width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+    overflow: visible;
   }
-  
+  .table-expense tbody {
+      margin-bottom: 20px;
+  }
+
+.table-expense tbody tr {
+    display: table-row;
+    vertical-align:initial;
+    height: auto;
+}
+
   .table-expense th{
-    text-align: center;
+    text-align: start;
     font-family: sans-serif;
     font-weight: 300;
-    border-bottom: solid;
-    border-width: 1px;
     padding: 5px;
+    width: 300px;
+    padding-left: 70px
   }
 
   .table-expense td {
-    text-align: center; 
+    text-align: start; 
     font-family: sans-serif;
     font-weight: 300;
-    padding: 10px 3px 6px;
+    padding: 10px 3px 6px 70px;
     align-self: center;
-
+    width: 300px;
   }
   
   .img-bg {
@@ -376,6 +415,7 @@ th img {
     border-style: solid;
     border-width: 1px;
     border-radius: 20px;
+    cursor:pointer;
   }
 
   #table-content a:hover {
@@ -422,6 +462,8 @@ th img {
     justify-content: center;
     gap: 15px;
     margin-top: 10px;
+    position: absolute;
+    bottom: 20px;
   }
 
   .button-search a {

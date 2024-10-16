@@ -21,7 +21,7 @@ public partial class User
     [StringLength(252)]
     public string? ConfirmPassword { get; set; }
 
-    [StringLength(252)]
+    [StringLength(255)]
     public string? Email { get; set; }
 
     [StringLength(255)]
@@ -45,6 +45,9 @@ public partial class User
 
     [InverseProperty("User")]
     public virtual ICollection<Report> Reports { get; set; } = new List<Report>();
+
+    [InverseProperty("User")]
+    public virtual ICollection<UserExpense> UserExpenses { get; set; } = new List<UserExpense>();
 
     [InverseProperty("User")]
     public virtual ICollection<UserInformation> UserInformations { get; set; } = new List<UserInformation>();

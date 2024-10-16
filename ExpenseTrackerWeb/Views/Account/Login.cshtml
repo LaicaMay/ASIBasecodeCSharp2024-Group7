@@ -1,12 +1,10 @@
 ﻿@model ExpenseTracker.Data.Models.User
-
 @{
     Layout = null;
 }
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SignUp</title>
@@ -16,7 +14,6 @@
     <link href="~/css/login.css" rel="stylesheet" />
     <link href="~/css/main.css" rel="stylesheet" />
     <link href="~/css/errorModal.css" rel="stylesheet" />
-
 </head>
 <body>
     <header class="header-container">
@@ -75,6 +72,7 @@
     </div>
     <div class="login-container">
         <form asp-action="Login" method="post">
+            <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
             @Html.AntiForgeryToken()      
             <div class="title">
                 <p>Login</p>
@@ -109,7 +107,6 @@
             <input type="hidden" asp-for="Email" class="form-control" />
         </form>
     </div>
-
     <script>
         function showErrorModal(message) {
             document.getElementById('modalBody').innerText = message;
@@ -131,8 +128,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            var errorMessage = '@Html.Raw(ViewData["ErrorMessage"])';
-            if (errorMessage) {
+            var errorMessage = '@Html.Raw(ViewBag.Error)';
+            if (errorMessage && errorMessage.trim() !== '') {
                 showErrorModal(errorMessage);
             }
         });

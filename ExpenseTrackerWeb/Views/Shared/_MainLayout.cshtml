@@ -1,16 +1,16 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ExpenseTrackerWeb</title>
     <link rel="stylesheet" href="~/mainStyle/general.css">
     <link rel="stylesheet" href="~/mainStyle/header.css">
     <link rel="stylesheet" href="~/mainStyle/sidebar.css">
     <link rel="stylesheet" href="~/mainStyle/main.css">
     <link rel="stylesheet" href="~/mainStyle/web-sidebar.css">
-    <link rel="stylesheet" href="~/mainStyle/expense-details.css">
 </head>
+
 <body>
     <header class="header" id="hide">
         <div id="burger">
@@ -76,12 +76,14 @@
         </div>
     </nav>
 
-   <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main class="main">
+        @RenderBody()
+    </main>
 
-    <script src="~/js/sidebar.js"></script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/main-sidebar.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
