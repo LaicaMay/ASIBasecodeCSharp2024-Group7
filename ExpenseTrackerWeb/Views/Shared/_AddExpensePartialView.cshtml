@@ -1,33 +1,175 @@
-﻿@model ExpenseTracker.Data.Models.Expense
-
-<div id="add-expense-container" class="hide">
-    <form method="post" asp-controller="Expense" asp-action="AddExpense">
-        <div id="expense-add">
+﻿    <div id="add-expense-container" class="hide">
+        <div id="expense-add" class="hide">
             <p style="margin-top: 20px;">Add Expense</p>
             <div style="position: relative;">
-                <input asp-for="ExpenseName" type="text" placeholder="Expense Name" style="width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black;" />
+                <input id="expense-name" type="text" placeholder="Expense Name" style="width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black;" required />
                 <div style="position: absolute; left: 8px; top: 10px;"><img src="~/images/iconVec/ingredient-icon.svg" alt=""></div>
             </div>
             <div style="position: relative;">
-                <input asp-for="Amount" type="text" placeholder="Amount" style="width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black;" />
+                <input id="amount" type="text" placeholder="Amount" style="width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black;" />
                 <div style="position: absolute; left: 8px; top: 8px;"><img style="width:16px; " src="~/images/iconVec/money-icon.svg" alt=""></div>
             </div>
-            <select asp-for="CategoryId" style="background-color: #272B2C; padding: 10px; border-radius: 20px; border: 1px solid black; color: white;" required>
+            <select id="category-id" style="background-color: #272B2C; padding: 10px; border-radius: 20px; border: 1px solid black; color: white;" required>
                 <option value="" disabled selected hidden>Category</option>
                 @foreach (var category in ViewBag.Category)
                 {
                     <option value="@category.Value">@category.Text</option>
                 }
             </select>
-            <input asp-for="Date" type="date" style="width: 150px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black;" />
+            <input id="date" type="date" style="width: 150px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black;" required />
             <div style="position: relative;">
-                <textarea asp-for="Description" type="text" style="height: 120px; padding:10px; border-radius: 20px; width: 275px; resize: none;"></textarea>
-                <div style="position: absolute; left: 8px; top: 10px;"><img src="/images/iconVec/paper-icon.svg" alt=""></div>
+                <textarea id="description" type="text" style="height: 120px; padding:10px; border-radius: 20px; width: 275px; resize: none;" required></textarea>
+                <div style="position: absolute; right: 8px; bottom: 10px;"><img src="/images/iconVec/paper-icon.svg" alt=""></div>
             </div>
-            <button style="cursor: pointer; width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black; background-color: #272B2C; color: white;" type="submit">
+            <button id="save-btn" style="cursor: pointer; width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black; background-color: #272B2C; color: white;" type="button">
                 Save Expense
             </button>
+        </div>         
+        <div id="add-blur" class="add-blur-bg"></div>
+    </div>
+
+    <div id="confirmation-modal" class="hide">
+        <div id="confirm" class="hide">
+            <img src="/images/iconVec/warning-save.svg" />
+            <p>Save Expense?</p>
+            <button id="ok-btn" type="submit" class="ok-btn">OK</button>
+            <button id="cancel-btn" type="button" class="cancel-btn">Cancel</button>
         </div>
-    </form>
-    <div id="add-blur" class="add-blur-bg"></div>
-</div>
+        <div id="confirm-add-blur" class="add-blur-bg"></div>
+    </div>
+
+    <div id="success-added-modal" class="hide">
+        <div id="success">
+            <img src="/images/iconVec/succes-save.svg"/>
+            <p style="text-align: center; padding: 20px;">Expense successfully added!</p>
+            <button id="done-b">Done</button>
+        </div>
+        <div id="success-add-blur" class="add-blur-bg"></div>
+    </div>
+
+<script>
+    document.getElementById('add-id').addEventListener('click', function (event) {
+        event.stopPropagation();
+      
+        let expenseCont = document.getElementById('add-expense-container');
+        let addExpnModal = document.getElementById('expense-add');
+
+        if (expenseCont.classList.contains('hide')) {
+            expenseCont.classList.remove('hide');
+            expenseCont.classList.add('show');
+            addExpnModal.classList.remove('hide');
+            addExpnModal.classList.add('show');
+
+        }
+    });
+
+    document.getElementById('add-blur').addEventListener('click', function (event) {
+        event.stopPropagation();
+        document.getElementById('add-expense-container').classList.remove('show');
+        document.getElementById('add-expense-container').classList.add('hide');
+        document.getElementById('expense-add').classList.remove('show');
+        document.getElementById('expense-add').classList.add('hide');
+    });
+
+    document.getElementById('m-add-id').addEventListener('click', function (event) {
+        event.stopPropagation();
+
+        let expenseCont = document.getElementById('add-expense-container');
+        let addExpnModal = document.getElementById('expense-add');
+
+        if (expenseCont.classList.contains('hide')) {
+            expenseCont.classList.remove('hide');
+            expenseCont.classList.add('show');
+            addExpnModal.classList.remove('hide');
+            addExpnModal.classList.add('show');
+            
+        }
+    });
+
+    document.getElementById('save-btn').addEventListener('click', function (event) {
+        event.stopPropagation();
+
+        let confirmModal = document.getElementById('confirmation-modal');
+        let addExpnModal = document.getElementById('expense-add');
+
+        if(confirmModal.classList.contains('hide')) {
+            confirmModal.classList.remove('hide');
+            confirmModal.classList.add('show');
+            addExpnModal.classList.remove('show');
+            addExpnModal.classList.add('hide');
+
+        }
+    });
+
+    document.getElementById('cancel-btn').addEventListener('click', function (event) {
+        event.stopPropagation();
+
+        let confirmModal = document.getElementById('confirmation-modal');
+        let addExpnModal = document.getElementById('expense-add');
+
+        if (confirmModal.classList.contains('show')) {
+            confirmModal.classList.remove('show');
+            confirmModal.classList.add('hide');
+            addExpnModal.classList.remove('hide');
+            addExpnModal.classList.add('show');
+        }
+    });
+
+    document.getElementById('ok-btn').addEventListener('click', function (event) {
+        event.stopPropagation();
+
+        let successModal = document.getElementById('success-added-modal');
+        let confirmModal = document.getElementById('confirmation-modal');
+
+        if (successModal.classList.contains('hide')) {
+            successModal.classList.remove('hide');
+            successModal.classList.add('show');
+            confirmModal.classList.remove('show');
+            confirmModal.classList.add('hide')
+        }
+
+        const expenseData = {
+            ExpenseName: document.getElementById('expense-name').value,
+            Amount: document.getElementById('amount').value,
+            CategoryId: document.getElementById('category-id').value,
+            Date: document.getElementById('date').value,
+            Description: document.getElementById('description').value
+        };
+
+        fetch('/Expense/AddExpense', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(expenseData)
+        })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('success-added-modal').classList.remove('hide');
+                    document.getElementById('success-added-modal').classList.add('show');
+
+                    document.getElementById('expense-name').value = '';
+                    document.getElementById('amount').value = '';
+                    document.getElementById('category-id').selectedIndex = 0;
+                    document.getElementById('date').value = '';
+                    document.getElementById('description').value = '';
+                } else {
+                    alert('Failed to save expense. Please try again.');
+
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+
+    document.getElementById('done-b').addEventListener('click', function (event) {
+        event.stopPropagation();
+
+        document.getElementById('success-added-modal').classList.remove('show');
+        document.getElementById('success-added-modal').classList.add('hide');
+        document.getElementById('add-expense-container').classList.remove('show');
+        document.getElementById('add-expense-container').classList.add('hide');
+
+        location.reload();
+    });
+
+</script>

@@ -33,59 +33,23 @@ namespace ExpenseTrackerWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddExpense(Expense expense)
+        public IActionResult AddExpense([FromBody] Expense expense)
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return BadRequest();
+                return BadRequest(new { message = "User is not authenticated." });
             }
 
             expense.UserId = UserId;
 
-            if (_userExpenseMgr.AddExpense(expense, ref ErrorMessage) != ErrorCode.Success)
+            if (_userExpenseMgr.Create(expense, ref ErrorMessage) != ErrorCode.Success)
             {
                 ModelState.AddModelError(String.Empty, ErrorMessage);
-                return View(expense);
+                return BadRequest(new { message = "Failed to add expense.", errors = ModelState });
             }
-            return RedirectToAction("Overview");
+
+            return Ok(new { message = "Expense added successfully." });
         }
-
-        //[HttpPost]
-        //public IActionResult AddExpense(Expense expense)
-        //{
-        //    if (!User.Identity.IsAuthenticated)
-        //    {
-        //        return BadRequest();
-        //    }      
-
-        //    expense.UserId = UserId;
-        //    expense.CreatedDate = DateTime.Now;
-
-        //    ViewBag.Category = Utilities.SelectListItemCategoryByUser(UserId);
-
-        //    if (_userExpenseMgr.CreateExpense(expense, ref ErrorMessage) == ErrorCode.Error)
-        //    {
-
-        //        ModelState.AddModelError(String.Empty, ErrorMessage);
-        //        return View(expense);
-        //    }
-
-        //    var userExpn = new UserExpense()
-        //    {
-        //        UserId = expense.UserId,
-        //        CategoryId = expense.CategoryId,
-        //        ExpenseId = expense.ExpenseId
-
-        //    };
-
-        //    if (_userExpenseMgr.CreateUserExpense(userExpn, ref ErrorMessage) == ErrorCode.Error)
-        //    {
-        //        ModelState.AddModelError(String.Empty, ErrorMessage);
-        //        return View(expense);
-        //    }
-
-        //    return RedirectToAction("Overview");      
-        //}
 
         public IActionResult UpdateExpense()
         {
@@ -107,13 +71,6 @@ namespace ExpenseTrackerWeb.Controllers
             }
             return View(_userCategoryMgr.ListCategory(UserId));
         }
-
-        //[HttpGet]
-        //public JsonResult CategoryGetById(int? id)
-        //{
-        //    var category = _userCategoryMgr.GetCategoryById(id);
-        //    return Json(category);
-        //}
 
         public IActionResult AddCategory()
         {

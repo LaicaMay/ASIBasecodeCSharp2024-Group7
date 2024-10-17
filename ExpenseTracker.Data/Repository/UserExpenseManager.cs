@@ -17,7 +17,6 @@ namespace ExpenseTracker.Data.Repository
         private readonly BaseRepository<VwUsersExpensesView> _vwExpense;
         private readonly BaseRepository<UserExpense> _userExpense;
 
-
         public UserExpenseManager()
         {
             _userMgr = new UserManager();
@@ -48,7 +47,7 @@ namespace ExpenseTracker.Data.Repository
             return _expense.Get(id);
         }
 
-        public ErrorCode AddExpense(Expense expn, ref String err)
+        public ErrorCode Create(Expense expn, ref String err)
         {
             
             expn.CreatedDate = DateTime.Now;
@@ -73,17 +72,6 @@ namespace ExpenseTracker.Data.Repository
 
             return ErrorCode.Success;
         }
-
-        public ErrorCode CreateUserExpense(UserExpense expn, ref String err)
-        {
-            return _userExpense.Create(expn, out err);
-        }
-
-        public ErrorCode CreateExpense(Expense expn, ref String err)
-        {
-            return _expense.Create(expn, out err);
-        }
-
         public ErrorCode UpdateExpense(Expense expn, ref String err)
         {
             return _expense.Update(expn.ExpenseId, expn, out err);

@@ -46,7 +46,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @if (Model.ExpensesView != null && Model.ExpensesView.Any())
+                        @if (Model.ExpensesView != null && Model.ExpensesView.Any())
                         {
                             foreach (var item in Model.ExpensesView)
                             {
@@ -161,35 +161,8 @@
         
         @await Html.PartialAsync("_AddExpensePartialView", new Expense())
 
-<script>
-    document.getElementById('add-id').addEventListener('click', function (event) {
-        event.stopPropagation();
-
-        let expenseCont = document.getElementById('add-expense-container');
-
-        if (expenseCont.classList.contains('hide')) {
-            expenseCont.classList.remove('hide');
-            expenseCont.classList.add('show');
-        }
-    });
-
-    document.getElementById('add-blur').addEventListener('click', function (event) {
-        event.stopPropagation();
-        document.getElementById('add-expense-container').classList.remove('show');
-        document.getElementById('add-expense-container').classList.add('hide');
-    });
-
-    document.getElementById('m-add-id').addEventListener('click', function (event) {
-        event.stopPropagation();
-
-        let expenseCont = document.getElementById('add-expense-container');
-
-        if (expenseCont.classList.contains('hide')) {
-            expenseCont.classList.remove('hide');
-            expenseCont.classList.add('show');
-        }
-    });  
-</script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll('#item-details').forEach(function (detailsLink) {
@@ -210,6 +183,9 @@
 
                 document.getElementById('expense-container').classList.remove('hide');
                 document.getElementById('expense-container').classList.add('show');
+
+                document.getElementById('add-expense-container').classList.remove('show');
+                document.getElementById('add-expense-container').classList.add('hide');
             });
         });
 
