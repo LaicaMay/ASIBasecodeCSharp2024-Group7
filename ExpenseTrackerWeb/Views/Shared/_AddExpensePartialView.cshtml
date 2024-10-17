@@ -116,49 +116,59 @@
     });
 
     document.getElementById('ok-btn').addEventListener('click', function (event) {
-        event.stopPropagation();
+    event.stopPropagation();
 
-        let successModal = document.getElementById('success-added-modal');
-        let confirmModal = document.getElementById('confirmation-modal');
+    const expenseName = document.getElementById('expense-name').value.trim();
+    const amount = document.getElementById('amount').value.trim();
+    const categoryId = document.getElementById('category-id').value;
+    const date = document.getElementById('date').value.trim();
+    const description = document.getElementById('description').value.trim();
 
-        if (successModal.classList.contains('hide')) {
-            successModal.classList.remove('hide');
-            successModal.classList.add('show');
-            confirmModal.classList.remove('show');
-            confirmModal.classList.add('hide')
+    if (!expenseName || !amount || !categoryId || !date || !description) {
+        alert('Please fill in all required fields.');
+        return;
+    }
+
+    let successModal = document.getElementById('success-added-modal');
+    let confirmModal = document.getElementById('confirmation-modal');
+
+    if (successModal.classList.contains('hide')) {
+        successModal.classList.remove('hide');
+        successModal.classList.add('show');
+        confirmModal.classList.remove('show');
+        confirmModal.classList.add('hide');
+    }
+
+    const expenseData = {
+        ExpenseName: expenseName,
+        Amount: amount,
+        CategoryId: categoryId,
+        Date: date,
+        Description: description
+    };
+
+    fetch('/Expense/AddExpense', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(expenseData)
+    })
+    .then(response => {
+        if (response.ok) {
+            document.getElementById('success-added-modal').classList.remove('hide');
+            document.getElementById('success-added-modal').classList.add('show');
+
+            document.getElementById('expense-name').value = '';
+            document.getElementById('amount').value = '';
+            document.getElementById('category-id').selectedIndex = 0;
+            document.getElementById('date').value = '';
+            document.getElementById('description').value = '';
+        } else {
+            alert('Failed to save expense. Please try again.');
         }
-
-        const expenseData = {
-            ExpenseName: document.getElementById('expense-name').value,
-            Amount: document.getElementById('amount').value,
-            CategoryId: document.getElementById('category-id').value,
-            Date: document.getElementById('date').value,
-            Description: document.getElementById('description').value
-        };
-
-        fetch('/Expense/AddExpense', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(expenseData)
-        })
-            .then(response => {
-                if (response.ok) {
-                    document.getElementById('success-added-modal').classList.remove('hide');
-                    document.getElementById('success-added-modal').classList.add('show');
-
-                    document.getElementById('expense-name').value = '';
-                    document.getElementById('amount').value = '';
-                    document.getElementById('category-id').selectedIndex = 0;
-                    document.getElementById('date').value = '';
-                    document.getElementById('description').value = '';
-                } else {
-                    alert('Failed to save expense. Please try again.');
-
-                }
-            })
-            .catch(error => console.error('Error:', error));
+    })
+    .catch(error => console.error('Error:', error));
     });
 
     document.getElementById('done-b').addEventListener('click', function (event) {

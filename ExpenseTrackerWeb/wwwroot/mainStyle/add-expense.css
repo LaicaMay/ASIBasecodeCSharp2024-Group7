@@ -2,21 +2,23 @@
     position: absolute;
     top: 40%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0.8); /* Initial scale down */
     z-index: 200;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Transition for opacity and transform */
 }
 
 #add-expense-container.hide {
     opacity: 0;
     pointer-events: none;
+     transform: translate(-50%, -50%) scale(0.8); /* Scale down when hidden */
 }
 
 #add-expense-container.show {
     opacity: 1;
     pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1); /* Scale up to normal size */
 }
 
 
@@ -77,21 +79,23 @@
     position: absolute;
     top: 40%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0.8); /* Initial scale down */
     z-index: 200;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Transition for opacity and transform */
 }
 
 #confirmation-modal.hide {
     opacity: 0;
     pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.8); /* Scale down when hidden */
 }
 
 #confirmation-modal.show {
     opacity: 1;
     pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1); /* Scale up to normal size */
 }
 
 #confirmation-modal #confirm {
@@ -158,21 +162,23 @@
     position: absolute;
     top: 40%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0.8); /* Initial scale down */
     z-index: 200;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease; /* Transition for opacity */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Transition for opacity and transform */
 }
 
 #success-added-modal.hide {
     opacity: 0;
     pointer-events: none; /* Disable pointer events when hidden */
+    transform: translate(-50%, -50%) scale(0.8); /* Scale down when hidden */
 }
 
 #success-added-modal.show {
     opacity: 1;
     pointer-events: auto; /* Enable pointer events when shown */
+    transform: translate(-50%, -50%) scale(1); /* Scale up to normal size */
 }
 
 
