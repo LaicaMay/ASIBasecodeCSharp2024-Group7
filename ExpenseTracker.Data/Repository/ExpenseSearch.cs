@@ -20,17 +20,17 @@ namespace ExpenseTracker.Data.Repository
             _db = new ExpenseTrackerDbContext();
         }
 
-        public List<Expense> SearchExpenses(string searchTerm)
+        public List<Expense> SearchExpenses(string Search)
         {
             DateTime searchDate;
-            bool isDate = DateTime.TryParse(searchTerm, out searchDate);
+            bool isDate = DateTime.TryParse(Search, out searchDate);
 
             var expenses = _db.Expenses
                 .Include(e => e.Category)
-                .Where(e => e.ExpenseName.Contains(searchTerm) ||
-                             e.Description.Contains(searchTerm) ||
-                             e.Amount.ToString().Contains(searchTerm) ||
-                             (e.Category != null && e.Category.CategoryName.Contains(searchTerm)) ||
+                .Where(e => e.ExpenseName.Contains(Search) ||
+                             e.Description.Contains(Search) ||
+                             e.Amount.ToString().Contains(Search) ||
+                             (e.Category != null && e.Category.CategoryName.Contains(Search)) ||
                              (isDate && e.Date.HasValue && e.Date.Value == DateOnly.FromDateTime(searchDate)))
                 .ToList();
 

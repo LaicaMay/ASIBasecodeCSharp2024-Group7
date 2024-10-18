@@ -35,15 +35,30 @@
             <div id="table-content" class="hide">
                 <table class="table-expense">
                     <thead>
-                        <tr>                        
+                        <tr>
                             <th>
-                               <div >
-                                    <img src="~/images/iconVec/down-arrw.svg" alt="">
-                               </div>
+                                <form action="@Url.Action("Overview", "Expense")" method="get" style="display: inline;">
+                                    <input type="hidden" name="sortOrderCategory" value="@((ViewBag.CurrentSortOrderCategory == "asc") ? "reset" : "asc")" />
+                                    <input type="hidden" name="sortOrderDate" value="reset" />
+                                    <button type="submit" style="background: none; border: none; padding: 0;">
+                                        <img src="~/images/iconVec/@(ViewBag.CurrentSortOrderCategory == "asc" ? "up-arrow.svg" : "down-arrw.svg")" alt="Sort by Category">
+                                        <span style="font-size: 1rem; font-family: Arial, Helvetica, sans-serif;">Category</span>
+                                    </button>
+                                </form>
                             </th>
+
                             <th>Expense Name</th>
                             <th>Amount</th>
-                            <th>Date <img src="~/images/iconVec/down-arrw.svg" alt=""></th>
+                            <th>
+                                <form action="@Url.Action("Overview", "Expense")" method="get" style="display: inline;">
+                                    <input type="hidden" name="sortOrderDate" value="@((ViewBag.CurrentSortOrderDate == "asc") ? "reset" : "asc")" />
+                                    <input type="hidden" name="sortOrderCategory" value="reset" />
+                                    <button type="submit" style="background: none; border: none; padding: 0;">
+                                        <img src="~/images/iconVec/@(ViewBag.CurrentSortOrderDate == "asc" ? "up-arrow.svg" : "down-arrw.svg")" alt="Sort by Date">
+                                        <span style="font-size: 1rem; font-family: Arial, Helvetica, sans-serif;">Date</span>
+                                    </button>
+                                </form>
+                            </th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -88,7 +103,7 @@
                 <div class="button-search">
                     <form method="get" action="@Url.Action("Overview", "Expense")">
                         <div style="position: relative;">
-                            <input type="text" name="searchTerm" placeholder="Search">
+                            <input type="text" name="Search" placeholder="Search">
                             <div style="position: absolute;
                             top: 10px; right: 0;">
                                 <button id="searchBtn" type="submit">Search</button>
@@ -224,6 +239,7 @@
                     document.getElementById('edit-form-cont').classList.remove('hide');
                     document.getElementById('edit-form-cont').classList.add('show');
                 });
+
                 document.getElementById('del').onclick = function () {
                     const expenseId = document.getElementById('modal-expense-id').value;
 
@@ -291,7 +307,6 @@
             document.getElementById('edit-form-cont').classList.remove('show');
             document.getElementById('edit-form-cont').classList.add('hide');
         });
-
 
     });
 </script>

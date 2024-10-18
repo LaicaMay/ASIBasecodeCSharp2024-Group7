@@ -11,7 +11,7 @@ namespace ExpenseTrackerWeb.Controllers
     public class ExpenseController : BaseController
     {
         #region ExpenseManagement
-        public IActionResult Overview(string searchTerm = "")
+        public IActionResult Overview(string Search = "", string sortOrderCategory = "reset", string sortOrderDate = "reset")
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -20,19 +20,33 @@ namespace ExpenseTrackerWeb.Controllers
 
             var expenses = _userExpenseMgr.ListUserExpense(UserId);
 
-            if (!string.IsNullOrEmpty(searchTerm))
+            if (!string.IsNullOrEmpty(Search))
             {
-                var searchResults = _expenseSearch.SearchExpenses(searchTerm)
-                                    .Where(e => e.UserId == UserId) 
+                var searchResults = _expenseSearch.SearchExpenses(Search)
+                                    .Where(e => e.UserId == UserId)
                                     .ToList();
 
                 expenses = searchResults.Any() ? searchResults : expenses;
             }
 
+            if (sortOrderCategory != "reset" && sortOrderDate == "reset")
+            {
+
+                expenses = expenses.OrderBy(e => e.Category?.CategoryName).ToList();
+            }
+            else if (sortOrderDate != "reset" && sortOrderCategory == "reset")
+            {
+
+                expenses = expenses.OrderBy(e => e.Date).ToList();
+            }
+
             ViewBag.Category = Utilities.SelectListItemCategoryByUser(UserId);
+            ViewBag.CurrentSortOrderCategory = sortOrderCategory;
+            ViewBag.CurrentSortOrderDate = sortOrderDate;
 
             return View(expenses);
         }
+
 
         [HttpPost]
         public IActionResult AddExpense([FromBody] Expense expense)

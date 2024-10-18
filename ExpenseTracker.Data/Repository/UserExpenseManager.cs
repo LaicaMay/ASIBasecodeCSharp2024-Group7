@@ -36,7 +36,6 @@ namespace ExpenseTracker.Data.Repository
                 .ToList();
         }
 
-
         public List<VwUsersExpensesView> ListExpense(int userId)
         {
             var user = _userMgr.GetUserById(userId);
