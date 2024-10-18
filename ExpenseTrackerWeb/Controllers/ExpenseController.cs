@@ -20,16 +20,7 @@ namespace ExpenseTrackerWeb.Controllers
 
             ViewBag.Category = Utilities.SelectListItemCategoryByUser(UserId);
 
-            var expense = _userExpenseMgr.ListUserExpense(UserId);
-            var expenseVw = _userExpenseMgr.ListExpense(UserId);
-
-            var model = new OverviewViewModel
-            {
-                UserExpenses = expense,
-                ExpensesView = expenseVw
-            };
-     
-            return View(model);
+            return View(_userExpenseMgr.ListUserExpense(UserId));
         }
 
         [HttpPost]
@@ -51,14 +42,37 @@ namespace ExpenseTrackerWeb.Controllers
             return Ok(new { message = "Expense added successfully." });
         }
 
-        public IActionResult UpdateExpense()
+        [HttpPut]
+        public IActionResult UpdateExpense([FromBody] Expense expense)
         {
-            return View();
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                return BadRequest(new { message = "User is not authenticated." });
+            }
+
+            expense.UserId = UserId;
+
+            if (_userExpenseMgr.Update(expense, ref ErrorMessage) != ErrorCode.Success)
+            {
+                ModelState.AddModelError(String.Empty, ErrorMessage);
+                return BadRequest(new { message = "Failed to update expense.", errors = ModelState });
+            }
+          
+            return Ok(new { message = "Expense updated successfully." });
         }
 
-        public IActionResult DeleteExpense()
+        [HttpDelete]
+        public IActionResult DeleteExpense(int id)
         {
-            return View();
+
+            if(_userExpenseMgr.Delete(id, ref ErrorMessage) != ErrorCode.Success)
+            {
+                ModelState.AddModelError(String.Empty, ErrorMessage);
+                return BadRequest(new { message = "Failed to delete expense.", errors = ModelState });
+            }
+
+            return Ok(new { message = "Expense deleted successfully." });
         }
         #endregion
 

@@ -1,0 +1,50 @@
+﻿#edit-form-cont {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#edit-form-cont.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#edit-form-cont.show {
+    opacity: 1;
+    pointer-events: auto;
+} 
+
+#edit-form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: start;
+    text-align: center;
+    gap: 13px;
+    background-color: white;
+    width: 350px;
+    height: 470px;
+    border-radius: 10px;
+    border: 1px solid black;
+    z-index: 200;
+    flex-wrap: wrap;
+    opacity: 1;
+}
+
+#edit-form-cont #edit-add-blur {
+    position: absolute;
+    z-index: 1;
+    top: 66%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(10px);
+    display: block;
+}

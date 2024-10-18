@@ -1,0 +1,81 @@
+﻿<div id="expense-container" class="hide">
+    <div id="expense-details">
+        <div style="display: flex; align-items: center; justify-content: center;
+                            margin-top: 10px;
+                            margin-bottom: 10px;">
+            <div>
+                <p class="details-expense">Expense Details</p>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: row; align-items: center;
+                            justify-content: start;
+                            margin-top: 25px;">
+            <div style="display: flex; flex-direction: column;
+                                margin-left: 20px;
+                                gap: 15px;
+                                margin-top: 5px;">
+                <div>
+                    <img src="~/images/iconVec/ingredient-icon.svg" alt="">
+                </div>
+                <div>
+                    <img src="~/images/iconVec/money-icon.svg" alt="">
+                </div>
+                <div>
+                    <img src="~/images/iconVec/CategoryThumbail.svg" alt="">
+                </div>
+                <div>
+                    <img src="~/images/iconVec/bag-icon.svg" alt="">
+                </div>
+                <div>
+                    <img src="/images/iconVec/paper-icon.svg" alt="">
+                </div>
+            </div>
+            <div style="display: flex; flex-direction: column; margin-left: 20px;
+                                gap: 15px;">
+                <p id="modal-expense-name"></p>
+                <p id="modal-amount"></p>
+                <p id="modal-category-name"></p>
+                <p id="modal-date"></p>
+                <p id="modal-description"></p>
+            </div>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center;
+                            margin-top: 10px;
+                            margin-bottom: 10px;">
+            <button  id="edit">Edit</button>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: center;
+                            margin-top: 10px;
+                            margin-bottom: 10px;">
+            <button id="del">Delete</button>
+        </div>
+    </div>
+    <div class="blur-bg">
+    </div>
+</div>   
+
+<script>
+    document.getElementById('edit').addEventListener('click', function (event) {
+        event.stopPropagation();
+
+        let expenseEdit = document.getElementById('edit-form-cont');
+        let expenseDetails = document.getElementById('expense-container');
+
+        if (expenseEdit.classList.contains('hide')) {
+            expenseEdit.classList.remove('hide');
+            expenseEdit.classList.add('show');
+            expenseDetails.classList.remove('show');
+            expenseDetails.classList.add('hide');
+        }
+    });
+
+    document.getElementById('edit-add-blur').addEventListener('click', function (event) {
+        event.stopPropagation();
+
+        let expenseEdit = document.getElementById('edit-form-cont');
+        if (expenseEdit.classList.contains('show')) {
+            expenseEdit.classList.remove('show');
+            expenseEdit.classList.add('hide');
+        }
+    });
+</script>

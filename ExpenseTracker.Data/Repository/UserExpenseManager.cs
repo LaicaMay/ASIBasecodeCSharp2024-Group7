@@ -1,6 +1,7 @@
 ﻿using ExpenseTracker.Data.Models;
 using ExpenseTracker.Data.Utils;
 using ExpenseTracker.Resources.Constants;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
@@ -28,8 +29,13 @@ namespace ExpenseTracker.Data.Repository
         public List<Expense> ListUserExpense(int userId)
         {
             var user = _userMgr.GetUserById(userId);
-            return _expense._table.Where(m => m.UserId == user.UserId).ToList();
+
+            return _expense._table
+                .Include(e => e.Category) 
+                .Where(m => m.UserId == user.UserId)
+                .ToList();
         }
+
 
         public List<VwUsersExpensesView> ListExpense(int userId)
         {
@@ -72,12 +78,35 @@ namespace ExpenseTracker.Data.Repository
 
             return ErrorCode.Success;
         }
-        public ErrorCode UpdateExpense(Expense expn, ref String err)
+
+
+        public ErrorCode Update(Expense expn, ref String err)
         {
-            return _expense.Update(expn.ExpenseId, expn, out err);
+            var existingExpense = GetExpenseById(expn.ExpenseId);
+
+            if (existingExpense == null)
+            {
+                return ErrorCode.Error;
+            }
+
+            existingExpense.ExpenseName = expn.ExpenseName;
+            existingExpense.Amount = expn.Amount;
+            existingExpense.Date = expn.Date;
+            existingExpense.CategoryId = expn.CategoryId;
+            existingExpense.Description = expn.Description;
+            existingExpense.UserId = expn.UserId;
+            existingExpense.CreatedDate = expn.CreatedDate;
+            existingExpense.DateModified = DateTime.Now;
+
+            if (_expense.Update(expn.ExpenseId, expn, out err) != ErrorCode.Success)
+            {
+                return ErrorCode.Error;
+            }     
+
+            return ErrorCode.Success;
         }
 
-        public ErrorCode DeleteExpense(int id, ref String err)
+        public ErrorCode Delete(int id, ref String err)
         {
             return _expense.Delete(id, out err);
         }
