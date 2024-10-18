@@ -86,13 +86,15 @@
                     </tbody>
                 </table>
                 <div class="button-search">
-                    <div style="position: relative;">
-                        <input type="text" placeholder="Search">
-                        <div style="position: absolute;
-                        top: 10px; right: 0;">
-                            <button id="searchBtn">Search</button>
+                    <form method="get" action="@Url.Action("Overview", "Expense")">
+                        <div style="position: relative;">
+                            <input type="text" name="searchTerm" placeholder="Search">
+                            <div style="position: absolute;
+                            top: 10px; right: 0;">
+                                <button id="searchBtn" type="submit">Search</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                     <a id="add-id">Add Expenses</a>
                 </div>
             </div>

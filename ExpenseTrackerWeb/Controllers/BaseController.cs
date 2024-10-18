@@ -10,6 +10,7 @@ namespace ExpenseTrackerWeb.Controllers
     {
         public String ErrorMessage;
         public ExpenseTrackerDbContext _db;
+        public ExpenseSearch _expenseSearch;
         public BaseRepository<User> _userRepo;
         public UserManager _userManager;
         public UserExpenseManager _userExpenseMgr;
@@ -34,6 +35,7 @@ namespace ExpenseTrackerWeb.Controllers
             _reportRepo = new BaseRepository<Report>();
             _userExpensesview = new BaseRepository<VwUsersExpensesView>();
             _userExp = new BaseRepository<UserExpense>();
+            _expenseSearch = new ExpenseSearch();
         }
     }
 }

@@ -11,16 +11,27 @@ namespace ExpenseTrackerWeb.Controllers
     public class ExpenseController : BaseController
     {
         #region ExpenseManagement
-        public IActionResult Overview()
+        public IActionResult Overview(string searchTerm = "")
         {
             if (!User.Identity.IsAuthenticated)
             {
                 return BadRequest();
             }
 
+            var expenses = _userExpenseMgr.ListUserExpense(UserId);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                var searchResults = _expenseSearch.SearchExpenses(searchTerm)
+                                    .Where(e => e.UserId == UserId) 
+                                    .ToList();
+
+                expenses = searchResults.Any() ? searchResults : expenses;
+            }
+
             ViewBag.Category = Utilities.SelectListItemCategoryByUser(UserId);
 
-            return View(_userExpenseMgr.ListUserExpense(UserId));
+            return View(expenses);
         }
 
         [HttpPost]
