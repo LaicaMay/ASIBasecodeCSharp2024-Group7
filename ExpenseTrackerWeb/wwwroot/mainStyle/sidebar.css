@@ -49,12 +49,14 @@
 }
 
 .flex-column {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: start;
-  margin-top: 5px;
-  margin-left: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    margin-top: 5px;
+    margin-left: 5px;
+    text-decoration: none;
+    color: black;
 }
 
 .flex-column p:hover {
@@ -62,3 +64,20 @@
   cursor: pointer;
 }
 
+.a #overview,
+#categories,
+#analytics,
+#settings,
+#log-out{
+  text-decoration: none; 
+  color: black;
+}
+
+
+.a #overview:hover,
+#categories:hover,
+#analytics:hover,
+#settings:hover,
+#log-out:hover{
+  color: rgb(77, 192, 77);
+}

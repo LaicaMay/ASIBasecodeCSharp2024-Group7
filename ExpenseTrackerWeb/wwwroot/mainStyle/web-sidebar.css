@@ -17,7 +17,8 @@
 
 
 .web-sidebar  
-#categories:hover,#overview:hover,
+#overview:hover,
+#categories:hover,
 #analytics:hover,
 #settings:hover,
 #log-out:hover{

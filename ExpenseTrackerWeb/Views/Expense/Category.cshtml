@@ -1,0 +1,94 @@
+﻿@model IEnumerable<ExpenseTracker.Data.Models.Category>
+
+@{
+    ViewData["Title"] = "Category";
+    Layout = "_MainLayout";
+}
+<div class="main-container">
+    <div class="main-title">
+        <h1>Category</h1>
+    </div>
+    <br />
+    <div id="table-content" class="hide">
+        <table class="table-category">
+            <thead>
+                <tr>
+                    <th>
+                        <form action="@Url.Action("Category", "Expense")" method="get" style="display: inline;">
+                            <input type="hidden" name="sortOrderCategory" value="@((ViewBag.CurrentSortOrderCategory == "asc") ? "reset" : "asc")" />
+                            <input type="hidden" name="sortOrderDate" value="reset" />
+                            <button type="submit" style="background: none; border: none; padding: 0;">
+                                <span style="font-size: 1rem; font-family: Arial, Helvetica, sans-serif;">Category</span>
+                                <img src="~/images/iconVec/@(ViewBag.CurrentSortOrderCategory == "asc" ? "up-arrow.svg" : "down-arrw.svg")" alt="Sort by Category">
+                            </button>
+                        </form>
+                    </th>
+                    <th>Total Expenses</th>
+                    @* <th>
+                        <img src="/images/iconVec/down-arrw.svg" alt="">
+                        Remaining Balance
+                    </th> *@
+                    <th>
+                        Description
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <div style="display: flex; align-items: center; justify-content: start; padding-left: 0px;">
+                                <div class="img-bg">
+                                    <img src="~/images/iconVec/tags.svg" alt="">
+                                </div>
+                                <p style="margin-left: 10px;">@item.CategoryName</p>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex;align-items: center;justify-content: center;">
+                                <p style="margin-left: 10px;">
+                                    ₱@item.SetAmount)
+                                </p>
+                            </div>
+                        </td>
+                        @* <td>
+                            <div style="display: flex;align-items: center;justify-content: center;">
+                                <p style="margin-left: 10px;">
+                                    ₱@item.SetAmount)
+                                </p>
+                            </div>
+                        </td> *@
+                        <td>
+                            <div style="display: flex;align-items: center;justify-content: center;">
+                                <p style="margin-left: 10px;">
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </p>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex;align-items: center;justify-content: center; margin-bottom:10px; margin-top:10px">
+                                <p>
+                                    <a asp-action="Details" asp-route-id="@item.CategoryId">Details</a>
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="button-search">
+            <form method="get" action="@Url.Action("Category", "Expense")">
+                <div style="position: relative;">
+                    <input type="text" name="Search" placeholder="Search">
+                    <div style="position: absolute;
+                                top: 10px; right: 0;">
+                        <button id="searchBtn" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+            <a id="add-id">Add Category</a>
+        </div>
+    </div>
+</div>
