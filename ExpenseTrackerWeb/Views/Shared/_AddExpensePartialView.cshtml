@@ -1,4 +1,5 @@
-﻿    <div id="add-expense-container" class="hide">
+﻿@model ExpenseTracker.Data.Models.Expense
+<div id="add-expense-container" class="hide">
         <div id="expense-add" class="hide">
             <p style="margin-top: 20px;">Add Expense</p>
             <div style="position: relative;">
@@ -10,13 +11,62 @@
                 <div style="position: absolute; left: 8px; top: 8px;"><img style="width:16px; " src="~/images/iconVec/money-icon.svg" alt=""></div>
             </div>
             <select id="category-id" style="background-color: #272B2C; padding: 10px; border-radius: 20px; border: 1px solid black; color: white;" required>
-                <option value="" disabled selected hidden>Category</option>
+                <option value="" disabled selected hidden>Select Category</option>
                 @foreach (var category in ViewBag.Category)
                 {
                     <option value="@category.Value">@category.Text</option>
                 }
             </select>
-            <input id="date" type="date" style="width: 150px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black;" required />
+            <div style="display: flex; flex-direction:row;align-content:start;justify-content:start; flex-wrap:wrap; gap: 8px;">
+                <div class="toggle-container">
+                    <label class="switch">
+                        <input type="checkbox" id="toggleCheckbox"> 
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="dayTitle" style="position: absolute; left: 100px;"> 
+                    <p style="color: black;">Set Day</p>
+                </div>
+                <div class="checkbox-container" style="opacity: 0; pointer-events: none;">
+                    <input type="checkbox" class="day-checkbox" id="sunday" name="SelectedDays" value="Sunday" />
+                    <label for="sunday" class="day-label">Su</label>
+
+                    <input type="checkbox" class="day-checkbox" id="monday" name="SelectedDays" value="Monday" />
+                    <label for="monday" class="day-label">M</label>
+
+                    <input type="checkbox" class="day-checkbox" id="tuesday" name="SelectedDays" value="Tuesday" />
+                    <label for="tuesday" class="day-label">T</label>
+
+                    <input type="checkbox" class="day-checkbox" id="wednesday" name="SelectedDays" value="Wednesday" />
+                    <label for="wednesday" class="day-label">W</label>
+
+                    <input type="checkbox" class="day-checkbox" id="thursday" name="SelectedDays" value="Thursday" />
+                    <label for="thursday" class="day-label">Th</label>
+
+                    <input type="checkbox" class="day-checkbox" id="friday" name="SelectedDays" value="Friday" />
+                    <label for="friday" class="day-label">F</label>
+
+                    <input type="checkbox" class="day-checkbox" id="saturday" name="SelectedDays" value="Saturday" />
+                    <label for="saturday" class="day-label">Sa</label>
+                </div>
+            </div>
+
+            <div class="date-now">
+                <input id="date-only" type="date" class="date-input" required />
+                <span class="date-placeholder">Date</span>
+            </div>
+
+            <div class="date-start-end" style="display: flex; opacity: 0; pointer-events: none; position: absolute; right: 91px; top: 246px; gap: 10px; flex-direction:row;align-content:center;justify-content:start;gap: 15px;">
+                <div class="date-wrapper">
+                    <input id="start-date" type="date" class="date-input" required />
+                    <span class="date-placeholder">Start Date</span>
+                </div>
+                <div class="date-wrapper">
+                    <input id="end-date" type="date" class="date-input" required />
+                    <span class="date-placeholder">End Date</span>
+                </div>
+            </div>
+                  
             <div style="position: relative;">
                 <textarea id="description" type="text" style="height: 120px; padding:10px; border-radius: 20px; width: 275px; resize: none;" required></textarea>
                 <div style="position: absolute; right: 8px; bottom: 10px;"><img src="/images/iconVec/paper-icon.svg" alt=""></div>
@@ -47,139 +97,4 @@
         <div id="success-add-blur" class="add-blur-bg"></div>
     </div>
 
-<script>
-    document.getElementById('add-id').addEventListener('click', function (event) {
-        event.stopPropagation();
-      
-        let expenseCont = document.getElementById('add-expense-container');
-        let addExpnModal = document.getElementById('expense-add');
-
-        if (expenseCont.classList.contains('hide')) {
-            expenseCont.classList.remove('hide');
-            expenseCont.classList.add('show');
-            addExpnModal.classList.remove('hide');
-            addExpnModal.classList.add('show');
-
-        }
-    });
-
-    document.getElementById('add-blur').addEventListener('click', function (event) {
-        event.stopPropagation();
-        document.getElementById('add-expense-container').classList.remove('show');
-        document.getElementById('add-expense-container').classList.add('hide');
-        document.getElementById('expense-add').classList.remove('show');
-        document.getElementById('expense-add').classList.add('hide');
-    });
-
-    document.getElementById('m-add-id').addEventListener('click', function (event) {
-        event.stopPropagation();
-
-        let expenseCont = document.getElementById('add-expense-container');
-        let addExpnModal = document.getElementById('expense-add');
-
-        if (expenseCont.classList.contains('hide')) {
-            expenseCont.classList.remove('hide');
-            expenseCont.classList.add('show');
-            addExpnModal.classList.remove('hide');
-            addExpnModal.classList.add('show');
-            
-        }
-    });
-
-    document.getElementById('save-btn').addEventListener('click', function (event) {
-        event.stopPropagation();
-
-        let confirmModal = document.getElementById('confirmation-modal');
-        let addExpnModal = document.getElementById('expense-add');
-
-        if(confirmModal.classList.contains('hide')) {
-            confirmModal.classList.remove('hide');
-            confirmModal.classList.add('show');
-            addExpnModal.classList.remove('show');
-            addExpnModal.classList.add('hide');
-
-        }
-    });
-
-    document.getElementById('cancel-btn').addEventListener('click', function (event) {
-        event.stopPropagation();
-
-        let confirmModal = document.getElementById('confirmation-modal');
-        let addExpnModal = document.getElementById('expense-add');
-
-        if (confirmModal.classList.contains('show')) {
-            confirmModal.classList.remove('show');
-            confirmModal.classList.add('hide');
-            addExpnModal.classList.remove('hide');
-            addExpnModal.classList.add('show');
-        }
-    });
-
-    document.getElementById('ok-btn').addEventListener('click', function (event) {
-    event.stopPropagation();
-
-    const expenseName = document.getElementById('expense-name').value.trim();
-    const amount = document.getElementById('amount').value.trim();
-    const categoryId = document.getElementById('category-id').value;
-    const date = document.getElementById('date').value.trim();
-    const description = document.getElementById('description').value.trim();
-
-    if (!expenseName || !amount || !categoryId || !date || !description) {
-        alert('Please fill in all required fields.');
-        return;
-    }
-
-    let successModal = document.getElementById('success-added-modal');
-    let confirmModal = document.getElementById('confirmation-modal');
-
-    if (successModal.classList.contains('hide')) {
-        successModal.classList.remove('hide');
-        successModal.classList.add('show');
-        confirmModal.classList.remove('show');
-        confirmModal.classList.add('hide');
-    }
-
-    const expenseData = {
-        ExpenseName: expenseName,
-        Amount: amount,
-        CategoryId: categoryId,
-        Date: date,
-        Description: description
-    };
-
-    fetch('/Expense/AddExpense', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(expenseData)
-    })
-    .then(response => {
-        if (response.ok) {
-            document.getElementById('success-added-modal').classList.remove('hide');
-            document.getElementById('success-added-modal').classList.add('show');
-
-            document.getElementById('expense-name').value = '';
-            document.getElementById('amount').value = '';
-            document.getElementById('category-id').selectedIndex = 0;
-            document.getElementById('date').value = '';
-            document.getElementById('description').value = '';
-        } else {
-            alert('Failed to save expense. Please try again.');
-        }
-    })
-    .catch(error => console.error('Error:', error));
-    });
-
-    document.getElementById('done-b').addEventListener('click', function (event) {
-        event.stopPropagation();
-
-        document.getElementById('success-added-modal').classList.remove('show');
-        document.getElementById('success-added-modal').classList.add('hide');
-        document.getElementById('add-expense-container').classList.remove('show');
-        document.getElementById('add-expense-container').classList.add('hide');
-
-        location.reload();
-    });
-
-</script>
+<script src="~/js/addexpense.js"></script>

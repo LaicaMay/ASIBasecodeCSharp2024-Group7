@@ -33,6 +33,18 @@ public partial class Expense
     [Column(TypeName = "datetime")]
     public DateTime? DateModified { get; set; }
 
+    public bool? SetDay { get; set; }
+
+    [StringLength(50)]
+    public string? DaysOfWeek { get; set; }
+
+    public DateOnly? StartDate { get; set; }
+
+    public DateOnly? EndDate { get; set; }
+
+    [InverseProperty("Expense")]
+    public virtual ICollection<Balance> Balances { get; set; } = new List<Balance>();
+
     [ForeignKey("CategoryId")]
     [InverseProperty("Expenses")]
     public virtual Category? Category { get; set; }
@@ -40,7 +52,4 @@ public partial class Expense
     [ForeignKey("UserId")]
     [InverseProperty("Expenses")]
     public virtual User? User { get; set; }
-
-    [InverseProperty("Expense")]
-    public virtual ICollection<UserExpense> UserExpenses { get; set; } = new List<UserExpense>();
 }

@@ -75,6 +75,8 @@
                                         data-amount="@item.Amount"                    
                                         data-date="@(item.Date?.ToString("yyyy-MM-dd") ?? string.Empty)"
                                         data-description="@item.Description"
+                                        data-start-date="@item.StartDate"
+                                        data-end-date="@item.EndDate"
                                     >
                                         <div style="display: flex;
                                     align-items: center;
@@ -88,8 +90,8 @@
                                     </td>
                                     <td>@item.ExpenseName</td>
                                     <td>₱@item.Amount</td>
-                                    <td>@item.Date</td>
-                            <td><a id="item-details" class="item-details">Details</a></td>
+                                    <td>@(item.Date == null ? item.StartDate : item.Date)</td>
+                                    <td><a id="item-details" class="item-details">Details</a></td>
                                 </tr>
                             }
                         } else
@@ -199,6 +201,7 @@
                 const categoryName = parentRow.getAttribute('data-category-name');
                 const date = parentRow.getAttribute('data-date');
                 const description = parentRow.getAttribute('data-description');
+                const startDate = parentRow.getAttribute('data-start-date');
 
                 console.log('ExpneseId', expenseId);
 
@@ -206,7 +209,7 @@
                 document.getElementById('modal-expense-name').textContent = expenseName;
                 document.getElementById('modal-amount').textContent = `₱${amount}`;
                 document.getElementById('modal-category-name').textContent = categoryName;
-                document.getElementById('modal-date').textContent = date;
+                document.getElementById('modal-date').textContent = (date === null || date === '') ? startDate : date;
                 document.getElementById('modal-description').textContent = description;
 
                 var modalId = document.getElementById('modal-expense-id')

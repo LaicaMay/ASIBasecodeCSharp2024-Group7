@@ -2,25 +2,24 @@
     position: absolute;
     top: 40%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.8); /* Initial scale down */
+    transform: translate(-50%, -50%) scale(0.8);
     z-index: 200;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease; /* Transition for opacity and transform */
+    transition: opacity 0.3s ease, transform 0.3s ease; 
 }
 
 #add-expense-container.hide {
     opacity: 0;
     pointer-events: none;
-     transform: translate(-50%, -50%) scale(0.8); /* Scale down when hidden */
+     transform: translate(-50%, -50%) scale(0.8);
 }
 
 #add-expense-container.show {
     opacity: 1;
     pointer-events: auto;
-    transform: translate(-50%, -50%) scale(1); /* Scale up to normal size */
+    transform: translate(-50%, -50%) scale(1);
 }
-
 
 #expense-add {
     position: relative;
@@ -32,7 +31,7 @@
     gap: 13px;   
     background-color: #68BB69;
     width: 350px;
-    height: 470px;
+    height: 500px;
     border-radius: 10px;
     border: 1px solid black;
     z-index: 200;
@@ -58,7 +57,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100vw;
-    height: 100vh;
+    height: 95vh;
     backdrop-filter: blur(10px);
     display: block;
 }
@@ -79,23 +78,23 @@
     position: absolute;
     top: 40%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.8); /* Initial scale down */
+    transform: translate(-50%, -50%) scale(0.8); 
     z-index: 200;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease; /* Transition for opacity and transform */
+    transition: opacity 0.3s ease, transform 0.3s ease; 
 }
 
 #confirmation-modal.hide {
     opacity: 0;
     pointer-events: none;
-    transform: translate(-50%, -50%) scale(0.8); /* Scale down when hidden */
+    transform: translate(-50%, -50%) scale(0.8); 
 }
 
 #confirmation-modal.show {
     opacity: 1;
     pointer-events: auto;
-    transform: translate(-50%, -50%) scale(1); /* Scale up to normal size */
+    transform: translate(-50%, -50%) scale(1); 
 }
 
 #confirmation-modal #confirm {
@@ -162,23 +161,23 @@
     position: absolute;
     top: 40%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.8); /* Initial scale down */
+    transform: translate(-50%, -50%) scale(0.8); 
     z-index: 200;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease; /* Transition for opacity and transform */
+    transition: opacity 0.3s ease, transform 0.3s ease; 
 }
 
 #success-added-modal.hide {
     opacity: 0;
-    pointer-events: none; /* Disable pointer events when hidden */
-    transform: translate(-50%, -50%) scale(0.8); /* Scale down when hidden */
+    pointer-events: none; 
+    transform: translate(-50%, -50%) scale(0.8);
 }
 
 #success-added-modal.show {
     opacity: 1;
-    pointer-events: auto; /* Enable pointer events when shown */
-    transform: translate(-50%, -50%) scale(1); /* Scale up to normal size */
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1); 
 }
 
 
@@ -222,6 +221,137 @@
     height: 100vh;
     backdrop-filter: blur(1px);
     display: block;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 22px;
+
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #272B2C;
+    transition: .4s;
+    border-radius: 34px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #2c2c2c;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+
+input:checked + .slider {
+    background-color: #72E25A;
+}
+
+input:checked + .slider:before {
+    background-color: #333;
+    transform: translateX(26px);
+}
+
+.date-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 130px;
+}
+
+.date-now {
+    position: relative;
+    display: inline-block;
+    width: 130px;
+}
+
+.date-input {
+    width: 100%;
+    padding: 10px 10px 10px 25px;
+    border-radius: 20px;
+    border: 1px solid black;
+    background-color: white;
+}
+
+.date-placeholder {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    width: 90px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    background-color: white;
+    padding: 0 10px;
+    font-size: 15px;
+    color: black;
+    text-align: start;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.date-input:focus + .date-placeholder,
+.date-input:valid + .date-placeholder {
+    background-color: transparent;
+    top: 95%; 
+    font-size: 12px;
+    transform: translateY(0); 
+    color: black; 
+}
+
+.checkbox-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.day-checkbox {
+    display: none;
+}
+
+.day-label {
+    height: 22px;
+    width: 22px;
+    text-align: center;
+    padding-top: 3px;
+    font-size: 10px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    border-radius: 100px;
+    cursor: pointer;
+    border-color: black;
+    background-color: white;
+    transition: background-color 0.3s, color 0.3s, border 0.3s;
+}
+
+.day-checkbox:checked + .day-label {
+    background-color: #72E25A; 
+  
 }
 
 

@@ -1,4 +1,5 @@
 ﻿using ExpenseTracker.Data.Models;
+using ExpenseTracker.Data.Models.CustomModels;
 using ExpenseTracker.Data.Utils;
 using ExpenseTracker.Resources.Constants;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ namespace ExpenseTracker.Data.Repository
         private readonly BaseRepository<Expense> _expense;
         private readonly BaseRepository<VwUsersExpensesView> _vwExpense;
         private readonly BaseRepository<UserExpense> _userExpense;
+
 
         public UserExpenseManager()
         {
@@ -54,13 +56,13 @@ namespace ExpenseTracker.Data.Repository
 
         public ErrorCode Create(Expense expn, ref String err)
         {
-            
+
             expn.CreatedDate = DateTime.Now;
 
             if (_expense.Create(expn, out err) != ErrorCode.Success)
             {
                 return ErrorCode.Error;
-            }
+            }   
 
             var userExpn = new UserExpense()
             {

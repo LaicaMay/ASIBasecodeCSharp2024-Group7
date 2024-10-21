@@ -24,7 +24,8 @@ public partial class VwUsersExpensesView
     [Column(TypeName = "decimal(10, 2)")]
     public decimal? Amount { get; set; }
 
-    public DateOnly? Date { get; set; }
+    [Column(TypeName = "datetime")]
+    public DateTime? Date { get; set; }
 
     [StringLength(252)]
     public string? Description { get; set; }

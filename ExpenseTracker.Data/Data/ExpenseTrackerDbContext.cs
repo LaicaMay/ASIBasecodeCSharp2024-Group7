@@ -16,6 +16,8 @@ public partial class ExpenseTrackerDbContext : DbContext
     {
     }
 
+    public virtual DbSet<Balance> Balances { get; set; }
+
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Expense> Expenses { get; set; }
@@ -36,6 +38,13 @@ public partial class ExpenseTrackerDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Balance>(entity =>
+        {
+            entity.HasOne(d => d.Expense).WithMany(p => p.Balances).HasConstraintName("FK_Balance_Expense");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Balances).HasConstraintName("FK_Balance_User");
+        });
+
         modelBuilder.Entity<Category>(entity =>
         {
             entity.HasOne(d => d.User).WithMany(p => p.Categories).HasConstraintName("FK_Category_User");
@@ -55,8 +64,6 @@ public partial class ExpenseTrackerDbContext : DbContext
 
         modelBuilder.Entity<UserExpense>(entity =>
         {
-            entity.HasOne(d => d.Expense).WithMany(p => p.UserExpenses).HasConstraintName("FK_UserExpense_Expense");
-
             entity.HasOne(d => d.User).WithMany(p => p.UserExpenses).HasConstraintName("FK_UserExpense_User");
         });
 

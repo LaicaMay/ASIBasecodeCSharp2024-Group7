@@ -18,10 +18,6 @@ public partial class UserExpense
 
     public int? CategoryId { get; set; }
 
-    [ForeignKey("ExpenseId")]
-    [InverseProperty("UserExpenses")]
-    public virtual Expense? Expense { get; set; }
-
     [ForeignKey("UserId")]
     [InverseProperty("UserExpenses")]
     public virtual User? User { get; set; }
