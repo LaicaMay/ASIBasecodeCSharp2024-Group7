@@ -16,6 +16,8 @@ namespace ExpenseTrackerWeb.Controllers
         public UserManager _userManager;
         public UserExpenseManager _userExpenseMgr;
         public UserCategoryManager _userCategoryMgr;
+        public MonthYearManager _monthYearMgr;
+        public BalanceManager _balanceMgr;
         public BaseRepository<Category> _categoryRepo;
         public BaseRepository<Expense> _expenseRepo;
         public BaseRepository<Report> _reportRepo;
@@ -32,9 +34,10 @@ namespace ExpenseTrackerWeb.Controllers
             _userManager = new UserManager();
             _userExpenseMgr = new UserExpenseManager();
             _userCategoryMgr = new UserCategoryManager();
+            _balanceMgr = new BalanceManager();
             _categoryRepo = new BaseRepository<Category>();
             _expenseRepo = new BaseRepository<Expense>();
-
+            _monthYearMgr = new MonthYearManager();
             _reportRepo = new BaseRepository<Report>();
             _userExpensesview = new BaseRepository<VwUsersExpensesView>();
             _userExp = new BaseRepository<UserExpense>();

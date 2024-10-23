@@ -22,6 +22,8 @@ public partial class ExpenseTrackerDbContext : DbContext
 
     public virtual DbSet<Expense> Expenses { get; set; }
 
+    public virtual DbSet<Month> Months { get; set; }
+
     public virtual DbSet<Report> Reports { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -32,6 +34,8 @@ public partial class ExpenseTrackerDbContext : DbContext
 
     public virtual DbSet<VwUsersExpensesView> VwUsersExpensesViews { get; set; }
 
+    public virtual DbSet<Year> Years { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Data Source=DESKTOP-FO9D3C2\\SQLEXPRESS;Initial Catalog=ExpenseTrackerDB;Integrated Security=True;Encrypt=True;Trust Server Certificate=True");
@@ -40,9 +44,11 @@ public partial class ExpenseTrackerDbContext : DbContext
     {
         modelBuilder.Entity<Balance>(entity =>
         {
-            entity.HasOne(d => d.Expense).WithMany(p => p.Balances).HasConstraintName("FK_Balance_Expense");
+            entity.HasOne(d => d.Month).WithMany(p => p.Balances).HasConstraintName("FK_Balance_Month");
 
             entity.HasOne(d => d.User).WithMany(p => p.Balances).HasConstraintName("FK_Balance_User");
+
+            entity.HasOne(d => d.Year).WithMany(p => p.Balances).HasConstraintName("FK_Balance_Year");
         });
 
         modelBuilder.Entity<Category>(entity =>

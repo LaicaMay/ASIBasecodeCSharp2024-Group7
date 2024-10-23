@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ExpenseTracker.Resources.Constants;
 using ExpenseTracker.Data.Utils;
 using ExpenseTracker.Data.Models.CustomModels;
+using ExpenseTrackerWeb.Models;
 
 namespace ExpenseTrackerWeb.Controllers
 {
@@ -40,13 +41,42 @@ namespace ExpenseTrackerWeb.Controllers
                 expenses = expenses.OrderBy(e => e.Date).ToList();
             }
 
-            ViewBag.Category = Utilities.SelectListItemCategoryByUser(UserId);
+            ViewBag.Category = SelectDropDownItem.SelectListItemCategoryByUser(UserId);
+            ViewBag.Month = SelectDropDownItem.SelectListsMonth();
+            ViewBag.Year = SelectDropDownItem.SelectListsYear();
             ViewBag.CurrentSortOrderCategory = sortOrderCategory;
             ViewBag.CurrentSortOrderDate = sortOrderDate;
 
             return View(expenses);
         }
 
+        [HttpPost]
+        public IActionResult AddBalance([FromBody] Balance balance)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return BadRequest(new { message = "User is not authenticated." });
+            }
+
+            var currentActiveBalance = _balanceMgr.GetActiveBalanceByUserId(UserId);
+
+            if (currentActiveBalance != null)
+            {
+                currentActiveBalance.isActive = false;
+                _balanceMgr.Update(currentActiveBalance, ref ErrorMessage);
+            }
+
+            balance.UserId = UserId;          
+            balance.isActive = true;
+
+            if (_balanceMgr.Create(balance, ref ErrorMessage) != ErrorCode.Success)
+            {
+                ModelState.AddModelError(String.Empty, ErrorMessage);
+                return BadRequest(new { message = "Failed to add balance.", errors = ModelState });
+            }
+
+            return Ok(new { message = "Balance added successfully." });
+        }
 
         [HttpPost]
         public IActionResult AddExpense([FromBody] Expense expense)

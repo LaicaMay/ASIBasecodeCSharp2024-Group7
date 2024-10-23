@@ -1,0 +1,23 @@
+﻿@using System.Security.Claims
+<div class="balance-container">
+    <div class="expense">
+        <p id="expense-category">Total Balance</p>
+        <p id="expense-tag">PHP<input type="number" class="digital-input" placeholder="------------"></p>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <p id="expense-user">@User.FindFirst(ClaimTypes.NameIdentifier)?.Value</p>
+        }
+        <div id="deduction"><button id="budget-btn" class="budgetBtn">Set Budget</button></div>
+    </div>
+    <div class="remaining-expense">
+        <p id="remaining-expense-category">Remaining Balance</p>
+        <p id="remaining-expense-tag">PHP<input type="number" class="digital-input" placeholder="------------"></p>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <p id="remaining-expense-user">@User.FindFirst(ClaimTypes.NameIdentifier)?.Value</p>
+        }
+    </div>
+</div>
+
+
+

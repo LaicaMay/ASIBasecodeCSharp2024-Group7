@@ -35,15 +35,12 @@ public partial class Expense
 
     public bool? SetDay { get; set; }
 
-    [StringLength(50)]
+    [StringLength(250)]
     public string? DaysOfWeek { get; set; }
 
     public DateOnly? StartDate { get; set; }
 
     public DateOnly? EndDate { get; set; }
-
-    [InverseProperty("Expense")]
-    public virtual ICollection<Balance> Balances { get; set; } = new List<Balance>();
 
     [ForeignKey("CategoryId")]
     [InverseProperty("Expenses")]

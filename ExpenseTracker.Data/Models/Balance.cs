@@ -14,8 +14,6 @@ public partial class Balance
 
     public int? UserId { get; set; }
 
-    public int? ExpenseId { get; set; }
-
     [Column(TypeName = "decimal(10, 2)")]
     public decimal? TotalBalance { get; set; }
 
@@ -25,11 +23,20 @@ public partial class Balance
     [Column(TypeName = "decimal(10, 2)")]
     public decimal? TodayExpense { get; set; }
 
-    [ForeignKey("ExpenseId")]
+    public bool? isActive { get; set; }
+    public int? MonthId { get; set; }
+
+    public int? YearId { get; set; }
+
+    [ForeignKey("MonthId")]
     [InverseProperty("Balances")]
-    public virtual Expense? Expense { get; set; }
+    public virtual Month? Month { get; set; }
 
     [ForeignKey("UserId")]
     [InverseProperty("Balances")]
     public virtual User? User { get; set; }
+
+    [ForeignKey("YearId")]
+    [InverseProperty("Balances")]
+    public virtual Year? Year { get; set; }
 }

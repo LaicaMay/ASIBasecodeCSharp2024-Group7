@@ -88,13 +88,13 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
         EndDate: endDate
     };
 
-    fetch('/Expense/AddExpense', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(expenseData)
-    })
+        fetch('/Expense/AddExpense', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(expenseData)
+        })
         .then(response => {
             if (response.ok) {
                 document.getElementById('success-added-modal').classList.remove('hide');

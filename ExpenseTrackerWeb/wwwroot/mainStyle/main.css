@@ -82,12 +82,49 @@
   font-size: 0.9rem;
 }
 
+.remaining-expense {
+    height: 172px;
+    width: 300px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    background-image: url('/images/backgroundImage/card-bg.svg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    position: relative;
+    box-shadow: 3px 3px 0px black;
+}
+
+.remaining-expense p {
+  margin-left: 20px;
+  margin-top: 23px;
+  font-family: sans-serif;
+}
+
+.remaining-expense #expense-category {
+  font-size: 1rem;
+}
+
+.remaining-expense #remaining-expense-tag {
+  font-family: 'Digital Numbers', sans-serif;
+  font-size: 1.6rem;
+}
+
+.remaining-expense #remaining-expense-user {
+  font-size: 0.9rem;
+}
+
 #deduction {
   position: absolute;
   bottom: 15px;
   right: 15px;
   font-family: sans-serif;
 }
+
 
 #table-content {
   display: flex;
@@ -318,6 +355,22 @@ th img {
     justify-content: start;
     position: relative;
   }
+
+  .black-expense {
+    height: 222.4px;
+    width: 390px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    background-image: url('/images/backgroundImage/card-bg.svg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    position: relative;
+}
 
   #view-recent.recent-hide {
     display: none;
