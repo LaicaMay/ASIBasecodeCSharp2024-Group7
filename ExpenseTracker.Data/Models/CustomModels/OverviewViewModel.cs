@@ -8,7 +8,8 @@ namespace ExpenseTracker.Data.Models.CustomModels
 {
     public class OverviewViewModel
     {
-        public List<Expense> UserExpenses { get; set; }
+        public List<Expense> UserExpense { get; set; }
+        public List<Balance> UserBalance { get; set; }
 
     }
 }

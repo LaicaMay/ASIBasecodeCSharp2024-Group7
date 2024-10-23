@@ -23,6 +23,9 @@ public partial class Balance
     [Column(TypeName = "decimal(10, 2)")]
     public decimal? TodayExpense { get; set; }
 
+    [Column(TypeName = "decimal(10, 2)")]
+    public decimal? UpdatedBalance { get; set; }
+
     public bool? isActive { get; set; }
     public int? MonthId { get; set; }
 

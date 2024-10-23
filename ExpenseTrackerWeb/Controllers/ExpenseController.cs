@@ -21,6 +21,8 @@ namespace ExpenseTrackerWeb.Controllers
 
             var expenses = _userExpenseMgr.ListUserExpense(UserId);
 
+            var userBalance = _balanceMgr.ListUserBalance(UserId);
+
             if (!string.IsNullOrEmpty(Search))
             {
                 var searchResults = _expenseSearch.SearchExpenses(Search)
@@ -41,13 +43,19 @@ namespace ExpenseTrackerWeb.Controllers
                 expenses = expenses.OrderBy(e => e.Date).ToList();
             }
 
+            var viewModel = new OverviewViewModel
+            {
+                UserExpense = expenses,
+                UserBalance = userBalance,
+            };
+
             ViewBag.Category = SelectDropDownItem.SelectListItemCategoryByUser(UserId);
             ViewBag.Month = SelectDropDownItem.SelectListsMonth();
             ViewBag.Year = SelectDropDownItem.SelectListsYear();
             ViewBag.CurrentSortOrderCategory = sortOrderCategory;
             ViewBag.CurrentSortOrderDate = sortOrderDate;
 
-            return View(expenses);
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -94,7 +102,7 @@ namespace ExpenseTrackerWeb.Controllers
                 return BadRequest(new { message = "Failed to add expense.", errors = ModelState });
             }
 
-            return Ok(new { message = "Expense added successfully." });
+            return Ok(new { message = "Expense added successfully and balance updated." });
         }
 
         [HttpPut]

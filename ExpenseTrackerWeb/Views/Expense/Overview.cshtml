@@ -1,5 +1,9 @@
 ﻿@using System.Security.Claims
-@model IEnumerable<ExpenseTracker.Data.Models.Expense>
+@model ExpenseTracker.Data.Models.CustomModels.OverviewViewModel
+@{
+    var currentUserIdString = User.FindFirst(ClaimsIdentity.DefaultNameClaimType)?.Value;
+    var currentUserIdInt = Convert.ToInt32(currentUserIdString);
+}
 
 @{
     Layout = "_MainLayout";
@@ -17,7 +21,9 @@
                 </div>
             }
 
-            @await Html.PartialAsync("_UserBudgetPartialView", Model.FirstOrDefault())
+            @await Html.PartialAsync("_UserBudgetPartialView", 
+           Model.UserBalance.FirstOrDefault(u => u.UserId == currentUserIdInt))
+
 
             <div class="bottom-title">
                 Recent Expenses
@@ -53,9 +59,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if (Model != null && Model.Any())
+                        @if (Model.UserExpense != null && Model.UserExpense.Any())
                         {
-                            foreach (var item in Model)
+                            foreach (var item in Model.UserExpense)
                             {
                                 <tr>
                                     <td data-user-id="@item.UserId"    
@@ -200,7 +206,7 @@
             <div id="bgbudget-blur" class="budget-blur-bg"></div>
         </div>
 
-        @await Html.PartialAsync("_EditExpensePartialView", Model.FirstOrDefault())
+        @await Html.PartialAsync("_EditExpensePartialView", Model.UserExpense.FirstOrDefault())
         
         @await Html.PartialAsync("_AddExpensePartialView", new Expense())
 
@@ -208,50 +214,45 @@
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/overview.js"></script>
 <script>
-        document.getElementById('save-budget').addEventListener('click', function(event) {
-    event.stopPropagation();
+    document.getElementById('save-budget').addEventListener('click', function(event) {
+        event.stopPropagation();
 
-    // Disable the save button to prevent multiple clicks
-    const saveButton = document.getElementById('save-budget');
-    saveButton.disabled = true;
+        const saveButton = document.getElementById('save-budget');
+        saveButton.disabled = true;
 
-    const balanceAmount = document.getElementById('balance-amount').value.trim();
-    const balanceMonth = document.getElementById('month-id').value;
-    const yearMonth = document.getElementById('year-id').value;
+        const balanceAmount = document.getElementById('balance-amount').value.trim();
+        const balanceMonth = document.getElementById('month-id').value;
+        const yearMonth = document.getElementById('year-id').value;
 
-    const balanceData = {
-        TotalBalance: balanceAmount,
-        MonthId: balanceMonth,
-        YearId: yearMonth
-    };
+        const balanceData = {
+            TotalBalance: balanceAmount,
+            MonthId: balanceMonth,
+            YearId: yearMonth
+        };
 
-    fetch('/Expense/AddBalance', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(balanceData)
-    })
-    .then(response => { 
-        if (response.ok) {
-            alert('Budget Successfully added!');
-            document.getElementById('set-amountCont').classList.remove('show');
-            document.getElementById('set-amountCont').classList.add('hide');
-        } else {
-            alert('Failed to save expense. Please try again.');
-        }
-        // Re-enable the button once the request is complete
-        saveButton.disabled = false;
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // Re-enable the button if there's an error
-        saveButton.disabled = false;
+        fetch('/Expense/AddBalance', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(balanceData)
+        })
+        .then(response => { 
+            if (response.ok) {
+                alert('Budget Successfully added!');
+                document.getElementById('set-amountCont').classList.remove('show');
+                document.getElementById('set-amountCont').classList.add('hide');
+            } else {
+                alert('Failed to save expense. Please try again.');
+            }
+
+            saveButton.disabled = false;
+        })
+        .catch(error => {
+            console.error('Error:', error);           
+            saveButton.disabled = false;
+        });
     });
-});
-
-
-
 
     document.getElementById('budget-btn').addEventListener('click', function(event){
         event.stopPropagation();

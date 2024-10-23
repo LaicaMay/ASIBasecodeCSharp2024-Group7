@@ -15,10 +15,10 @@ namespace ExpenseTracker.Data.Repository
     public class UserExpenseManager
     {
         private readonly UserManager _userMgr;
+        private readonly BalanceManager _balanceMgr;
         private readonly BaseRepository<Expense> _expense;
         private readonly BaseRepository<VwUsersExpensesView> _vwExpense;
         private readonly BaseRepository<UserExpense> _userExpense;
-
 
         public UserExpenseManager()
         {
@@ -26,6 +26,7 @@ namespace ExpenseTracker.Data.Repository
             _expense = new BaseRepository<Expense>();
             _vwExpense = new BaseRepository<VwUsersExpensesView>();
             _userExpense = new BaseRepository<UserExpense>();
+            _balanceMgr = new BalanceManager();
         }
 
         public List<Expense> ListUserExpense(int userId)
@@ -64,22 +65,26 @@ namespace ExpenseTracker.Data.Repository
                 return ErrorCode.Error;
             }   
 
-            var userExpn = new UserExpense()
+            var userBalance = _balanceMgr.GetActiveBalanceByUserId(expn.UserId);
+
+            if (userBalance == null)
             {
-                UserId = expn.UserId,
-                CategoryId = expn.CategoryId,
-                ExpenseId = expn.ExpenseId
+                return ErrorCode.Error;
+            }
 
-            };
+            userBalance.UpdatedBalance = userBalance.TotalBalance;
 
-            if (_userExpense.Create(userExpn, out err) != ErrorCode.Success)
+            userBalance.UpdatedBalance -= expn.Amount;
+
+            userBalance.RemainingBalance = userBalance.UpdatedBalance;
+
+            if (_balanceMgr.Update(userBalance, ref err) != ErrorCode.Success)
             {
                 return ErrorCode.Error;
             }
 
             return ErrorCode.Success;
         }
-
 
         public ErrorCode Update(Expense expn, ref String err)
         {

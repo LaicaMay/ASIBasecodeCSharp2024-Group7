@@ -67,11 +67,8 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
     }
 
     if (checkbox.checked) {
-        startDate = today;
-        endDate = today;
         date = null; 
     } else {      
-        date = today;
         startDate = null;
         endDate = null; 
     }

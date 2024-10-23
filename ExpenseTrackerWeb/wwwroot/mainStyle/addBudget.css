@@ -20,7 +20,7 @@
 }
 
 #set-amountCont .setAmount {
-    height: 230px;
+    height: 240px;
     width: 350px;
     background-color: #68BB69;
     display: flex;

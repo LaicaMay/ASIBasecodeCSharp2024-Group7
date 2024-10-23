@@ -22,6 +22,7 @@ namespace ExpenseTrackerWeb.Controllers
         public BaseRepository<Expense> _expenseRepo;
         public BaseRepository<Report> _reportRepo;
         public BaseRepository<UserExpense> _userExp;
+        public BaseRepository<Balance> _balanceRepo;
         public BaseRepository<VwUsersExpensesView> _userExpensesview;
   
         public int UserId { get { var userId = Convert.ToInt32(User.FindFirst(ClaimsIdentity.DefaultNameClaimType)?.Value); return userId; } }
@@ -42,7 +43,7 @@ namespace ExpenseTrackerWeb.Controllers
             _userExpensesview = new BaseRepository<VwUsersExpensesView>();
             _userExp = new BaseRepository<UserExpense>();
             _expenseSearch = new ExpenseSearch();
-
+            _balanceRepo = new BaseRepository<Balance>();
         }
     }
 }
