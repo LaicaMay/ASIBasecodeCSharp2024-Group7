@@ -62,6 +62,7 @@ namespace ExpenseTracker.Data.Repository
 
             if (_expense.Create(expn, out err) != ErrorCode.Success)
             {
+                err = "Error creating Expense";
                 return ErrorCode.Error;
             }   
 
@@ -69,17 +70,33 @@ namespace ExpenseTracker.Data.Repository
 
             if (userBalance == null)
             {
+                err = "userBalance is Null";
                 return ErrorCode.Error;
             }
 
-            userBalance.UpdatedBalance = userBalance.TotalBalance;
+            if (userBalance.RemainingBalance == null)
+            {
+                userBalance.RemainingBalance = userBalance.TotalBalance;
+            }
+                       
+            if (!userBalance.TotalBalance.HasValue || userBalance.RemainingBalance <= 0)
+            {
+                err = "Insufficient balance.";
+                return ErrorCode.Error;
+            }
 
-            userBalance.UpdatedBalance -= expn.Amount;
 
-            userBalance.RemainingBalance = userBalance.UpdatedBalance;
+            userBalance.RemainingBalance -= expn.Amount;
+
+            if (userBalance.RemainingBalance < 0)
+            {
+                err = "Expense exceeds remaining balance.";
+                return ErrorCode.Error;
+            }
 
             if (_balanceMgr.Update(userBalance, ref err) != ErrorCode.Success)
             {
+                err = "Error Updating Balance";
                 return ErrorCode.Error;
             }
 
