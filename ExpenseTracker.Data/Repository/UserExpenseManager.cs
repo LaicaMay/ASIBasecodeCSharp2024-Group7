@@ -55,18 +55,37 @@ namespace ExpenseTracker.Data.Repository
             return _expense.Get(id);
         }
 
-        public ErrorCode Create(Expense expn, ref String err)
+        public ErrorCode Add(Expense expn, ref String err)
         {
-
+            var userBalance = _balanceMgr.GetActiveBalanceByUserId(expn.UserId);
+            decimal? totalAmount = 0;
             expn.CreatedDate = DateTime.Now;
 
             if (_expense.Create(expn, out err) != ErrorCode.Success)
             {
                 err = "Error creating Expense";
                 return ErrorCode.Error;
-            }   
+            }
 
-            var userBalance = _balanceMgr.GetActiveBalanceByUserId(expn.UserId);
+            if (expn.StartDate != null && expn.EndDate != null)
+            {
+                DateOnly startDate = expn.StartDate ?? DateOnly.MinValue;
+                DateOnly endDate = expn.EndDate ?? DateOnly.MaxValue;
+
+                var daysOfWeek = expn.DaysOfWeek?.Split(',')
+                                    .Where(day => !string.IsNullOrEmpty(day))
+                                    .Select(day => day.Trim())
+                                    .ToList();
+
+                for (DateOnly date = startDate; date <= endDate; date = date.AddDays(1))
+                {
+                    if (daysOfWeek.Contains(date.DayOfWeek.ToString()))
+                    {
+                        totalAmount += expn.Amount;
+                    }
+                }
+                Console.WriteLine("Total Amount for Selected Days: " + totalAmount);
+            }
 
             if (userBalance == null)
             {
@@ -74,27 +93,23 @@ namespace ExpenseTracker.Data.Repository
                 return ErrorCode.Error;
             }
 
-            if (userBalance.RemainingBalance == null)
-            {
-                userBalance.RemainingBalance = userBalance.TotalBalance;
-            }
-                       
+            userBalance.RemainingBalance ??= userBalance.TotalBalance;
+
             if (!userBalance.TotalBalance.HasValue || userBalance.RemainingBalance <= 0)
             {
                 err = "Insufficient balance.";
                 return ErrorCode.Error;
             }
 
-
-            userBalance.RemainingBalance -= expn.Amount;
-
-            if (userBalance.RemainingBalance < 0)
+            if (totalAmount > userBalance.RemainingBalance)
             {
                 err = "Expense exceeds remaining balance.";
                 return ErrorCode.Error;
             }
 
-            if (_balanceMgr.Update(userBalance, ref err) != ErrorCode.Success)
+            userBalance.RemainingBalance -= totalAmount ?? expn.Amount;
+
+            if (_balanceMgr.UpdateBalance(userBalance, ref err) != ErrorCode.Success)
             {
                 err = "Error Updating Balance";
                 return ErrorCode.Error;

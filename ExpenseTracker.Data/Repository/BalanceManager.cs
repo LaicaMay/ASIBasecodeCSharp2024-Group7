@@ -48,12 +48,12 @@ namespace ExpenseTracker.Data.Repository
                    .FirstOrDefault(b => b.UserId == activUserId && b.isActive == true);
         }
 
-        public ErrorCode Create(Balance balance, ref String err) 
+        public ErrorCode AddBalance(Balance balance, ref String err) 
         {          
             return _balanceRepository.Create(balance, out err);     
         }
 
-        public ErrorCode Update(Balance balance, ref String err)
+        public ErrorCode UpdateBalance(Balance balance, ref String err)
         {
             return _balanceRepository.Update(balance.BalanceId, balance, out err);
         }

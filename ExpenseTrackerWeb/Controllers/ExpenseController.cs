@@ -71,13 +71,13 @@ namespace ExpenseTrackerWeb.Controllers
             if (currentActiveBalance != null)
             {
                 currentActiveBalance.isActive = false;
-                _balanceMgr.Update(currentActiveBalance, ref ErrorMessage);
+                _balanceMgr.UpdateBalance(currentActiveBalance, ref ErrorMessage);
             }
 
             balance.UserId = UserId;          
             balance.isActive = true;
 
-            if (_balanceMgr.Create(balance, ref ErrorMessage) != ErrorCode.Success)
+            if (_balanceMgr.AddBalance(balance, ref ErrorMessage) != ErrorCode.Success)
             {
                 ModelState.AddModelError(String.Empty, ErrorMessage);
                 return BadRequest(new { message = "Failed to add balance.", errors = ModelState });
@@ -96,7 +96,7 @@ namespace ExpenseTrackerWeb.Controllers
 
             expense.UserId = UserId;
 
-            if (_userExpenseMgr.Create(expense, ref ErrorMessage) != ErrorCode.Success)
+            if (_userExpenseMgr.Add(expense, ref ErrorMessage) != ErrorCode.Success)
             {
                 ModelState.AddModelError(String.Empty, ErrorMessage);
                 return BadRequest(new { message = "Failed to add expense.", errors = ModelState });
