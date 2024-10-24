@@ -72,10 +72,7 @@ namespace ExpenseTracker.Data.Repository
                 DateOnly startDate = expn.StartDate ?? DateOnly.MinValue;
                 DateOnly endDate = expn.EndDate ?? DateOnly.MaxValue;
 
-                var daysOfWeek = expn.DaysOfWeek?.Split(',')
-                                    .Where(day => !string.IsNullOrEmpty(day))
-                                    .Select(day => day.Trim())
-                                    .ToList();
+                var daysOfWeek = expn.DaysOfWeek.Split(',').Select(day => day.Trim()).ToList();
 
                 for (DateOnly date = startDate; date <= endDate; date = date.AddDays(1))
                 {
@@ -93,21 +90,33 @@ namespace ExpenseTracker.Data.Repository
                 return ErrorCode.Error;
             }
 
-            userBalance.RemainingBalance ??= userBalance.TotalBalance;
+            if (userBalance.RemainingBalance == null)
+            {
+                userBalance.RemainingBalance = userBalance.TotalBalance;
+            }
 
             if (!userBalance.TotalBalance.HasValue || userBalance.RemainingBalance <= 0)
             {
                 err = "Insufficient balance.";
                 return ErrorCode.Error;
             }
+   
+            if (totalAmount == 0 || totalAmount == null)
+            {
+                userBalance.RemainingBalance -= expn.Amount;
+            }
 
-            if (totalAmount > userBalance.RemainingBalance)
+            if (totalAmount !=  0)
+            {
+                userBalance.RemainingBalance -= totalAmount;
+            }
+                      
+         
+            if (userBalance.RemainingBalance < 0)
             {
                 err = "Expense exceeds remaining balance.";
                 return ErrorCode.Error;
             }
-
-            userBalance.RemainingBalance -= totalAmount ?? expn.Amount;
 
             if (_balanceMgr.UpdateBalance(userBalance, ref err) != ErrorCode.Success)
             {
