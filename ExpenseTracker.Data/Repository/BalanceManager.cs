@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ExpenseTracker.Data.Utils;
 using ExpenseTracker.Resources.Constants;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.Data.Repository
 {
@@ -32,6 +33,8 @@ namespace ExpenseTracker.Data.Repository
             var userId = _userManager.GetUserById(id);
 
             return _balanceRepository._table
+                   .Include(e => e.Month)
+                   .Include(e => e.Year)
                    .Where(m => m.UserId == userId.UserId)
                    .OrderByDescending(m => m.isActive == true)
                    .ToList();

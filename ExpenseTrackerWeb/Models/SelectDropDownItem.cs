@@ -23,6 +23,26 @@ namespace ExpenseTrackerWeb.Models
             return list;
         }
 
+        public static List<SelectListItem> SelectListItemMonthYearByUser(int UserId)
+        {
+            BalanceManager _balanceMgr = new BalanceManager();
+            var list = new List<SelectListItem>();
+
+            foreach (var item in _balanceMgr.ListUserBalance(UserId))
+            {
+                var r = new SelectListItem
+                {
+                    Text = $"{item.Month?.MonthName} {item.Year?.YearCount}",
+                    Value = $"{item.MonthId}-{item.YearId?.ToString()}" 
+                };
+
+                list.Add(r); 
+            }
+
+            return list; 
+        }
+
+
         public static List<SelectListItem> SelectListsMonth()
         {
             MonthYearManager _monthYearMgr = new MonthYearManager();

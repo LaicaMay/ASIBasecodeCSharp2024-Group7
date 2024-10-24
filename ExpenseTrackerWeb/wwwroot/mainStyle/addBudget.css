@@ -110,3 +110,20 @@
 .digital-input {
     -moz-appearance: textfield;
 }
+
+.balance-monthYear {
+    position: absolute;
+    top: -59px;
+    left: 30px;  
+}
+
+.balance-monthYear select {
+    width: 150px;
+    padding: 8px;
+    border-radius: 20px;
+    font-size: 1rem;
+    background-color: #72E25A;
+    text-align: center;
+}
+
+

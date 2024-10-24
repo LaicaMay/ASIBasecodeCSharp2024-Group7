@@ -1,6 +1,14 @@
 ﻿@model ExpenseTracker.Data.Models.Balance
 @using System.Security.Claims
-<div class="balance-container">
+<div class="balance-container" style="position: relative;">
+    <div class="balance-monthYear">
+        <select>         
+            @foreach (var balance in ViewBag.BalanceDate)
+            {
+                <option value="@balance.Value">@balance.Text</option>
+            }
+        </select>
+    </div>
     <div class="expense">
         <p id="expense-category">Total Balance</p>
         <p id="expense-tag">PHP<input type="number" class="digital-input" placeholder="------------" value="@Model.TotalBalance" readonly></p>

@@ -50,6 +50,7 @@ namespace ExpenseTrackerWeb.Controllers
             };
 
             ViewBag.Category = SelectDropDownItem.SelectListItemCategoryByUser(UserId);
+            ViewBag.BalanceDate = SelectDropDownItem.SelectListItemMonthYearByUser(UserId);
             ViewBag.Month = SelectDropDownItem.SelectListsMonth();
             ViewBag.Year = SelectDropDownItem.SelectListsYear();
             ViewBag.CurrentSortOrderCategory = sortOrderCategory;
