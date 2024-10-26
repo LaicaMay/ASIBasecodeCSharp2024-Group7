@@ -9,15 +9,17 @@
 #overview,
 #categories,
 #analytics,
-#settings {
-  text-decoration: none; 
-  color: black;
+#settings,
+#log-out {
+    text-decoration: none;
+    color: black;
 }
 
-
 .web-sidebar  
-#categories:hover,#overview:hover,
+#overview:hover,
+#categories:hover,
 #analytics:hover,
-#settings:hover {
+#settings:hover,
+#log-out:hover {
   color: rgb(77, 192, 77);
 }

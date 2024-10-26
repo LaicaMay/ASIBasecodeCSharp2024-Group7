@@ -6,17 +6,17 @@
 }
 
 #sidebar.show {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 #sidebar {
   position: fixed;
   top: 60px;
   left: 10px;
-  height: 180px;
+  height: 218x;
   width: 140px;
   box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.342);
   border-top-right-radius: 15px;
@@ -62,3 +62,21 @@
   cursor: pointer;
 }
 
+.sidebar 
+#overview,
+#categories,
+#analytics,
+#settings,
+#log-out {
+    text-decoration: none;
+    color: black;
+}
+
+.sidebar  
+#overview:hover,
+#categories:hover,
+#analytics:hover,
+#settings:hover,
+#log-out:hover {
+  color: rgb(77, 192, 77);
+}
