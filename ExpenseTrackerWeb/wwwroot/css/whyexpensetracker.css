@@ -1,0 +1,57 @@
+﻿.general-container {
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center align horizontally */
+    justify-content: flex-start; /* Align items to the top */
+    position: absolute; /* Changed from absolute to relative */
+    top: 30%; /* Space from the top of the parent container */
+    width: 100%; /* Ensure it takes the full width */
+}
+
+.header-title {
+    width: 100%; /* Ensure it taskes the full width */
+    text-align: center; /* Center the title text */
+    margin-bottom: 100px; /* Space between title and cards */
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
+    gap: 20px; /* Gap between cards */
+    max-width: 90vw; /* Limits the container width on large screens */
+    padding: 10px; /* Padding around the grid */
+    justify-content: center; /* Centering the grid */
+    align-content: center; /* Aligning content in the grid */
+}
+
+.card {
+    width: 100%; /* Card takes full width of its grid cell */
+    height: 25vh; /* Height as a percentage of the viewport height */
+    max-width: 250px; /* Maximum width of the card */
+    max-height: 400px; /* Maximum height of the card */
+    min-height: 200px; /* Minimum height of the card */
+    background-color: black; /* Background color of the card */
+    color: white; /* Text color */
+    display: flex; /* Flexbox for centering content */
+    flex-direction: column;
+    align-items: center; /* Centering items vertically */
+    justify-content: center; /* Centering items horizontally */
+    text-align: center; /* Text alignment */
+    padding: 10px; /* Padding inside the card */
+    box-sizing: border-box; /* Box-sizing for proper padding handling */
+    border-radius: 10px; /* Rounded corners */
+    background-color: #ffffff;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.199);
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 2px 2px 20px black;
+}
+
+.card h1 {
+    color: black;
+}
+
+.card p {
+    color: black;
+}

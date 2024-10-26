@@ -16,8 +16,12 @@ namespace ExpenseTrackerWeb.Controllers
                 return RedirectToAction("Overview", "Expense");
             }
             return View();
-        }         
+        }
 
+        public IActionResult WhyExpenseTracker()
+        {
+            return View();
+        }
     }
 
 }
