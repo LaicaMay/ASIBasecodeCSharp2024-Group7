@@ -41,8 +41,6 @@ namespace ExpenseTrackerWeb.Models
 
             return list; 
         }
-
-
         public static List<SelectListItem> SelectListsMonth()
         {
             MonthYearManager _monthYearMgr = new MonthYearManager();

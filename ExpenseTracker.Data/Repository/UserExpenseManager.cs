@@ -61,12 +61,17 @@ namespace ExpenseTracker.Data.Repository
             decimal? totalAmount = 0;
             expn.CreatedDate = DateTime.Now;
 
-            if (_expense.Create(expn, out err) != ErrorCode.Success)
+            if (userBalance.TotalBalance == 0 || userBalance.TotalBalance == null || userBalance.isActive == false)
             {
-                err = "Error creating Expense";
+                if (_expense.Create(expn, out err) != ErrorCode.Success)
+                {
+                    err = "Error creating Expense";
+                    return ErrorCode.Error;
+                }
+                err = "You do not have active balance.";
                 return ErrorCode.Error;
             }
-
+            
             if (expn.StartDate != null && expn.EndDate != null)
             {
                 DateOnly startDate = expn.StartDate ?? DateOnly.MinValue;

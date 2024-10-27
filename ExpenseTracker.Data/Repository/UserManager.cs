@@ -47,6 +47,7 @@ namespace ExpenseTracker.Data.Repository
 
         public ErrorCode SignUp(User u, ref String errMsg)
         {
+                     
             u.Code = Utilities.code.ToString();
             u.CreatedDate = DateTime.Now;
             u.Status = (Int32)Status.InActive;
@@ -68,7 +69,7 @@ namespace ExpenseTracker.Data.Repository
             {
                 return ErrorCode.Error;
             }
-
+          
             return ErrorCode.Success;
         }
 

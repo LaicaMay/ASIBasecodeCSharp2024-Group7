@@ -76,11 +76,21 @@ namespace ExpenseTrackerWeb.Controllers
         [HttpPost]
         public IActionResult SignUp(User u)
         {
-            if (_userManager.SignUp(u, ref ErrorMessage) != ErrorCode.Success)
+            
+            if (_userManager.SignUp(u, ref ErrorMessage) == ErrorCode.Success)
+            {          
+                Balance balance = new Balance { UserId = u.UserId };
+                if (_balanceMgr.DefaultBalance(balance, ref ErrorMessage) != ErrorCode.Success)
+                {
+                    ModelState.AddModelError(String.Empty, ErrorMessage);
+                    return View(u);
+                }
+            } else
             {
                 ModelState.AddModelError(String.Empty, ErrorMessage);
                 return View(u);
             }
+
             TempData["Username"] = u.Username;
             return RedirectToAction("Login");
         }

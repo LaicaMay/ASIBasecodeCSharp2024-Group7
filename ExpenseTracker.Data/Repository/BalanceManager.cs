@@ -51,6 +51,22 @@ namespace ExpenseTracker.Data.Repository
                    .FirstOrDefault(b => b.UserId == activUserId && b.isActive == true);
         }
 
+        public ErrorCode DefaultBalance (Balance balance, ref String err)
+        {
+            if (balance == null)
+            {
+                err = "Balance object cannot be null.";
+                return ErrorCode.Error;
+            }
+
+            balance.TotalBalance = null;
+            balance.MonthId = 13;
+            balance.YearId = 13;
+            balance.isActive = true;
+
+            return _balanceRepository.Create(balance, out err);
+        }
+
         public ErrorCode AddBalance(Balance balance, ref String err) 
         {          
             return _balanceRepository.Create(balance, out err);     
