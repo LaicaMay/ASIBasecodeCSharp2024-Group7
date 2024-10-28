@@ -1,15 +1,6 @@
 ﻿using ExpenseTracker.Data.Models;
-using ExpenseTracker.Data.Models.CustomModels;
-using ExpenseTracker.Data.Utils;
 using ExpenseTracker.Resources.Constants;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace ExpenseTracker.Data.Repository
 {
     public class UserExpenseManager
@@ -71,7 +62,7 @@ namespace ExpenseTracker.Data.Repository
                 err = "You do not have active balance.";
                 return ErrorCode.Error;
             }
-            
+
             if (expn.StartDate != null && expn.EndDate != null)
             {
                 DateOnly startDate = expn.StartDate ?? DateOnly.MinValue;
@@ -84,10 +75,12 @@ namespace ExpenseTracker.Data.Repository
                     if (daysOfWeek.Contains(date.DayOfWeek.ToString()))
                     {
                         totalAmount += expn.Amount;
+                        Console.WriteLine($"Date: {date} - Day: {date.DayOfWeek}");
                     }
                 }
                 Console.WriteLine("Total Amount for Selected Days: " + totalAmount);
             }
+
 
             if (userBalance == null)
             {
@@ -116,7 +109,7 @@ namespace ExpenseTracker.Data.Repository
                 userBalance.RemainingBalance -= totalAmount;
             }
                       
-         
+            
             if (userBalance.RemainingBalance < 0)
             {
                 err = "Expense exceeds remaining balance.";

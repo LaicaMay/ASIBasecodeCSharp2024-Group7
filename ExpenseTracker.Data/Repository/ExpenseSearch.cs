@@ -1,13 +1,6 @@
 ﻿using ExpenseTracker.Data.Data;
 using ExpenseTracker.Data.Models;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Razor.Tokenizer.Symbols;
 
 namespace ExpenseTracker.Data.Repository
 {

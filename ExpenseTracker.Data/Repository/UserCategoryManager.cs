@@ -1,10 +1,4 @@
 ﻿using ExpenseTracker.Data.Models;
-using ExpenseTracker.Data.Utils;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ExpenseTracker.Resources.Constants;
 
 namespace ExpenseTracker.Data.Repository
