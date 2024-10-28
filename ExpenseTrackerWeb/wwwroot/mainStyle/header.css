@@ -12,7 +12,8 @@
   background-repeat: no-repeat;
   background-position: center 0px;
   background-size: cover;
-
+  width: 100%;
+  transition: top 0.7s ease-in-out;
 }
 
 .header .burger {

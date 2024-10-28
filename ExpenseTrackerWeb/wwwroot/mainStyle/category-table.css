@@ -48,6 +48,11 @@
         position: sticky;
         top: 0; /* Fix the thead at the top */
         z-index: 1; /* Ensure the thead is above the scrolling tbody */
+        background-image: url('/images/backgroundImage/thHeaderBack.JPG');
+        background-repeat: no-repeat;
+        background-position: center 0px;
+        background-size: cover;
+        border-bottom: 2px solid #444; /* Add a bottom border for separation */
     }
 
 .table-category th {
@@ -55,7 +60,6 @@
     font-family: sans-serif;
     /*font-weight: 300;
     padding: 5px;*/
-    text-align: start;
     font-weight: 500;
     padding: 10px;
     width: auto;
@@ -65,8 +69,10 @@
     text-align: center;
     font-family: sans-serif;
     font-weight: 300;
-    padding: 3px;
-    width:auto;
+    width: auto;
+    align-self: center;
+    padding: 10px 5px; /* Consistent padding */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effects */
 }
 
 .img-bg {
@@ -91,13 +97,20 @@ th img {
 }
 
 #table-category-content a {
-    text-decoration: none;
+    /*text-decoration: none;
     color: black;
     font-family: sans-serif;
     padding: 6px 15px 6px 15px;
     border-style: solid;
     border-width: 1px;
+    border-radius: 20px;*/
+    text-decoration: none;
+    color: black;
+    font-family: sans-serif;
+    padding: 6px 15px;
+    border: 1px solid #444;
     border-radius: 20px;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
     #table-category-content a:hover {
@@ -204,10 +217,15 @@ th img {
         }
 
             #table-category-content thead th {
-                position: sticky;
+                /*position: sticky;
                 top: 0;
                 z-index: 1;
-                margin-bottom: 20px
+                margin-bottom: 20px;*/
+                text-align: center;
+                font-family: sans-serif;
+                font-weight: 500;
+                padding: 10px 5px; /* Consistent padding */
+                width: auto; /* Keep the width auto for consistent sizing */
             }
 
         #table-category-content table {
@@ -218,6 +236,16 @@ th img {
             table-layout: auto;
             overflow: visible;
         }
+    .table-category thead {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background-image: url('/images/backgroundImage/thHeaderBack.JPG');
+        background-repeat: no-repeat;
+        background-position: center 0px;
+        background-size: cover;
+        border-bottom: 2px solid #444;
+    }
 
     .table-category tbody {
         margin-bottom: 20px;
@@ -230,21 +258,34 @@ th img {
         }
 
     .table-category th {
-        text-align: start;
+       /* text-align: center;
         font-family: sans-serif;
         font-weight: 300;
         padding: 5px;
         width: auto;
-        padding-left: 70px
+        padding-left: 70px;*/
+        text-align: center;
+        font-family: sans-serif;
+        font-weight: 500;
+        padding: 10px 5px; /* Consistent padding */
+        width: auto; /* Keep the width auto for consistent sizing */
     }
 
     .table-category td {
-        text-align: start;
+        /*text-align: center;
         font-family: sans-serif;
         font-weight: 300;
         padding: 10px 3px 6px 70px;
         align-self: center;
+        width: auto;*/
+
+        text-align: center;
+        font-family: sans-serif;
+        font-weight: 300;
         width: auto;
+        align-self: center;
+        padding: 10px 5px; /* Consistent padding */
+        transition: background-color 0.3s ease; /* Smooth transition for hover effects */
     }
 
     .img-bg {
@@ -261,17 +302,25 @@ th img {
 
     th img {
         margin-bottom: 2px;
+        margin-left: 8px;
     }
 
     #table-category-content a {
-        text-decoration: none;
+        /*text-decoration: none;
         color: black;
         font-family: sans-serif;
         padding: 8px 15px 8px 15px;
         border-style: solid;
         border-width: 1px;
         border-radius: 20px;
-        cursor: pointer;
+        cursor: pointer;*/
+        text-decoration: none;
+        color: black;
+        font-family: sans-serif;
+        padding: 6px 15px;
+        border: 1px solid #444;
+        border-radius: 20px;
+        transition: box-shadow 0.3s ease, background-color 0.3s ease;
     }
 
         #table-category-content a:hover {
