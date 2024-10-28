@@ -40,37 +40,34 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>
-                            <div style="display: flex; align-items: center; justify-content: start; padding-left: 0px;">
+                        <td data-label="Category">
+                            <div style="display:flex; align-items: center; justify-content: start;">
                                 <div class="img-bg">
                                     <img src="~/images/iconVec/tags.svg" alt="">
                                 </div>
-                                <p style="margin-left: 10px;">@item.CategoryName</p>
+                                <p style="margin-left:10px;">@item.CategoryName</p>
                             </div>
                         </td>
-                        <td>
-                            <div style="display: flex;align-items: center;justify-content: center;">
-                                <p style="margin-left: 10px;">
+                        <td data-label="Description">
+                            <div style="align-items: center;justify-content: center;">
+                                <p>
                                     @Html.DisplayFor(modelItem => item.Description)
                                 </p>
                             </div>
                         </td>
-                        <td>
-                            <div style="display: flex;align-items: center;justify-content: center;">
+                        <td data-label="Expenses">
+                            <div style="align-items: center;justify-content: center;">
                                 @if (@item.SetAmount != null)
                                 {
-                                    <p style="margin-left: 10px;">
+                                    <p>
                                         ₱@item.SetAmount
                                     </p>
                                 }
                             </div>
                         </td>
-                        <td>
-                            <div style="display: flex;align-items: center;justify-content: center; margin-bottom:10px; margin-top:10px">
-                                <p>
-@*                                     <a asp-action="Details" asp-route-id="@item.CategoryId">Details</a>
- *@                                    <a id="item-details" class="item-details" asp-action="Details" asp-route-id="@item.CategoryId">Details</a>
-                                </p>
+                        <td data-label="Action">
+                            <div style="align-items: center;justify-content: center;">
+                                <a asp-action="Details" asp-route-id="@item.CategoryId">Details</a>
                             </div>
                         </td>
                     </tr>

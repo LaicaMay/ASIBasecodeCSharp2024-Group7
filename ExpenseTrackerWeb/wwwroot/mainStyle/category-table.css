@@ -1,11 +1,10 @@
 ﻿@import url('https://fonts.cdnfonts.com/css/digital-numbers');
 
-.main {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100vw;
+.table-category {
+    width: 100%; /* Ensure it takes full width */
+    table-layout: fixed; /* Make the table layout fixed for consistent cell widths */
+    border-collapse: collapse;
+    margin-top: 10px;
 }
 
 .table-category tbody tr:hover {
@@ -30,102 +29,6 @@
     margin-left: 30px;
 }
 
-    .main-title p {
-        margin-top: 20px;
-    }
-
-.bottom-title {
-    margin-left: 30px;
-    margin-bottom: 20px;
-}
-
-.balance-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.expense {
-    height: 172px;
-    width: 300px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    background-image: url('/images/backgroundImage/card-bg.svg');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: start;
-    position: relative;
-    box-shadow: 3px 3px 0px black;
-}
-
-    .expense p {
-        margin-left: 20px;
-        margin-top: 23px;
-        font-family: sans-serif;
-    }
-
-    .expense #expense-category {
-        font-size: 1rem;
-    }
-
-    .expense #expense-tag {
-        font-family: 'Digital Numbers', sans-serif;
-        font-size: 1.6rem;
-    }
-
-    .expense #expense-user {
-        font-size: 0.9rem;
-    }
-
-.remaining-expense {
-    height: 172px;
-    width: 300px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    background-image: url('/images/backgroundImage/card-bg.svg');
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    justify-content: start;
-    position: relative;
-    box-shadow: 3px 3px 0px black;
-}
-
-    .remaining-expense p {
-        margin-left: 20px;
-        margin-top: 23px;
-        font-family: sans-serif;
-    }
-
-    .remaining-expense #expense-category {
-        font-size: 1rem;
-    }
-
-    .remaining-expense #remaining-expense-tag {
-        font-family: 'Digital Numbers', sans-serif;
-        font-size: 1.6rem;
-    }
-
-    .remaining-expense #remaining-expense-user {
-        font-size: 0.9rem;
-    }
-
-#deduction {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    font-family: sans-serif;
-}
-
-
 #table-category-content {
     display: flex;
     align-items: center;
@@ -142,16 +45,20 @@
     }
 
     #table-category-content thead {
-        position: fixed;
-        /*top: 0;*/ /* Fix the thead at the top */
+        position: sticky;
+        top: 0; /* Fix the thead at the top */
         z-index: 1; /* Ensure the thead is above the scrolling tbody */
     }
 
 .table-category th {
     text-align: center;
     font-family: sans-serif;
-    font-weight: 300;
-    padding: 5px;
+    /*font-weight: 300;
+    padding: 5px;*/
+    text-align: start;
+    font-weight: 500;
+    padding: 10px;
+    width: auto;
 }
 
 .table-category td {
@@ -159,6 +66,7 @@
     font-family: sans-serif;
     font-weight: 300;
     padding: 3px;
+    width:auto;
 }
 
 .img-bg {
@@ -230,40 +138,6 @@ th img {
         background-color: #72E25A;
     }
 
-#view-recent a {
-    text-decoration: none;
-    border-style: solid;
-    border-width: 1px;
-    border-color: gray;
-    color: black;
-    margin-left: 30px;
-    padding: 8px 16px 8px 16px;
-    background-color: #fcfcfc;
-    margin-top: 30px;
-    border-radius: 20px;
-    box-shadow: 0px 1px 5px rgba(46, 46, 46, 0.356);
-}
-
-#add-expense a {
-    text-decoration: none;
-    color: black;
-    padding: 8px 15px 8px 15px;
-    width: 290px;
-    background-color: #68BB69;
-    text-align: center;
-    font-weight: bold;
-    border-radius: 20px;
-    margin-top: 10px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: rgb(65, 65, 65);
-    margin-right: 30px;
-}
-
-#view-recent a:hover {
-    background-color: #50f73a;
-}
-
 .button-search #searchBtn {
     border-radius: 20px;
     padding: 7px 15px 7px 15px;
@@ -285,14 +159,16 @@ th img {
 
 
 @media (max-height: 902px) and (max-width: 999px) {
-    #table-category-content.hide {
-        display: contents;
+    #table-category-content {
+        max-height: 400px; /* Define a max height for the container */
+        overflow-y: auto; /* Allow vertical scrolling */
     }
 }
 
 @media (max-height: 910px) and (max-width: 2241px) {
-    #table-category-content.hide {
-        display: contents;
+    #table-category-content {
+        max-height: 400px; /* Define a max height for the container */
+        overflow-y: auto; /* Allow vertical scrolling */
     }
 }
 
@@ -304,54 +180,6 @@ th img {
 }
 
 @media (min-width: 1097px) and (min-height: 736px) {
-    .balance-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: row;
-        gap: 70px;
-    }
-
-    .expense {
-        height: 222.4px;
-        width: 390px;
-        border-radius: 15px;
-        margin-bottom: 20px;
-        background-image: url('/images/backgroundImage/card-bg.svg');
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        justify-content: start;
-        position: relative;
-    }
-
-    .black-expense {
-        height: 222.4px;
-        width: 390px;
-        border-radius: 15px;
-        margin-bottom: 20px;
-        background-image: url('/images/backgroundImage/card-bg.svg');
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        justify-content: start;
-        position: relative;
-    }
-
-    #view-recent.recent-hide {
-        display: none;
-    }
-
-    #add-expense.recent-hide {
-        display: none;
-    }
-
     #table-category-content.hide {
         display: flex;
     }
@@ -367,8 +195,8 @@ th img {
 
         #table-category-content thead {
             position: sticky;
-/*            top: 0;
-*/            z-index: 1;
+            top: 0;
+            z-index: 1;
             background-image: url('/images/backgroundImage/thHeaderBack.JPG');
             background-repeat: no-repeat;
             background-position: center 0px;
@@ -377,8 +205,8 @@ th img {
 
             #table-category-content thead th {
                 position: sticky;
-/*                top: 0;
-*/                z-index: 1;
+                top: 0;
+                z-index: 1;
                 margin-bottom: 20px
             }
 
@@ -470,16 +298,6 @@ th img {
     .header#hide {
         display: none;
     }
-
-    .main {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        width: 100vw;
-        padding-left: 180px;
-        padding-right: 50px;
-    }
 }
 
 @media (min-width: 793px) {
@@ -517,6 +335,7 @@ th img {
             border-width: 1px;
             margin-top: 10px;
             flex: 1;
+            align-content: center;
         }
 }
 
