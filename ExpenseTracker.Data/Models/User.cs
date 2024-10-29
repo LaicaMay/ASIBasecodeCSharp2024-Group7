@@ -18,7 +18,7 @@ public partial class User
     [StringLength(252)]
     public string? Password { get; set; }
 
-    [StringLength(252)]
+    [NotMapped]
     public string? ConfirmPassword { get; set; }
 
     [StringLength(255)]

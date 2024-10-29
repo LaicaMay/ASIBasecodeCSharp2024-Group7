@@ -83,11 +83,13 @@ namespace ExpenseTrackerWeb.Controllers
                 if (_balanceMgr.DefaultBalance(balance, ref ErrorMessage) != ErrorCode.Success)
                 {
                     ModelState.AddModelError(String.Empty, ErrorMessage);
+                    ViewData["ErrorMessage"] = ErrorMessage;
                     return View(u);
                 }
             } else
             {
                 ModelState.AddModelError(String.Empty, ErrorMessage);
+                ViewData["ErrorMessage"] = ErrorMessage;
                 return View(u);
             }
 

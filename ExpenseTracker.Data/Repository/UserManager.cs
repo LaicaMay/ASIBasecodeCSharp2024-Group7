@@ -1,6 +1,7 @@
 ﻿using ExpenseTracker.Data.Models;
 using ExpenseTracker.Resources.Constants;
 using ExpenseTracker.Data.Utils;
+using System.Text.RegularExpressions;
 
 namespace ExpenseTracker.Data.Repository
 {
@@ -45,33 +46,63 @@ namespace ExpenseTracker.Data.Repository
             return ErrorCode.Success;
         }
 
-        public ErrorCode SignUp(User u, ref String errMsg)
+        public ErrorCode SignUp(User u, ref string errMsg)
         {
-                     
+            var allowedEmailDomains = new[] { "gmail.com", "yahoo.com", "ymail.com" };
+            var errorMessages = new List<string>();  // List to hold all error messages
+
             u.Code = Utilities.code.ToString();
             u.CreatedDate = DateTime.Now;
-            u.Status = (Int32)Status.InActive;
+            u.Status = (int)Status.InActive;
             u.Agree = true;
 
-            if(GetUserByUsername(u.Username) != null)
+            // Username validation
+            if (GetUserByUsername(u.Username) != null)
             {
-                errMsg = "Username already exist";
+                errorMessages.Add("•Username already exists.");
+            }
+            if (!Regex.IsMatch(u.Username, @"^[A-Za-z][A-Za-z0-9]{2,}$"))
+            {
+                errorMessages.Add("•Username must start with a letter and be at least 3 characters long.");
+            }
+
+            // Email validation
+            if (GetUserByEmail(u.Email) != null)
+            {
+                errorMessages.Add("•Email already exists!");
+            }
+            var emailDomain = u.Email.Split('@').Last();
+            if (!allowedEmailDomains.Contains(emailDomain))
+            {
+                errorMessages.Add("•Please enter a valid email.");
+            }
+
+            // Password validation
+            if (u.Password != u.ConfirmPassword)
+            {
+                errorMessages.Add("•Passwords do not match.");
+            }
+            if (!Regex.IsMatch(u.Password, @"^(?=.*[A-Z])(?=.*\W).{8,}$"))
+            {
+                errorMessages.Add("•Password must be at least 8 characters long, contain at least one uppercase letter, and one special character.");
+            }
+
+            // Check if there were any errors and return them
+            if (errorMessages.Any())
+            {
+                errMsg = string.Join("\n", errorMessages);  // Join errors with line breaks
                 return ErrorCode.Error;
             }
 
-            if(GetUserByEmail(u.Email) != null)
+            // Create User if no errors
+            if (_userRepo.Create(u, out errMsg) != ErrorCode.Success)
             {
-                errMsg = "Email already exist!";
                 return ErrorCode.Error;
             }
 
-            if(_userRepo.Create(u, out errMsg) != ErrorCode.Success)
-            {
-                return ErrorCode.Error;
-            }
-          
             return ErrorCode.Success;
         }
+
 
         public ErrorCode UpdateUser(User u, ref String errMsg)
         {
