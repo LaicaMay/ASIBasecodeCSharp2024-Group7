@@ -66,6 +66,11 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
         return;
     }
 
+    if (amount <= 0) {
+        alert('Please enter a valid amount.');
+        return;
+    }
+
     if (checkbox.checked) {
         date = null; 
     } else {      

@@ -15,39 +15,20 @@
     <link href="~/css/landingsidebar.css" rel="stylesheet" />
     <link href="~/css/register.css" rel="stylesheet" />
     <style>
-        .modal {
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.5);
-        }
-        .modal-content {
-            background-color: #fff;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 250px;
-            height: auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            text-align: start;
-            border-radius: 20px;
-        }
-
-        .modal-content span {
+       .validation {
+            position: absolute;
+            bottom: -32px;
+            left: 0px;
             color: red;
-            line-height: 2.0;
-        }
+            text-align: start;
+            height: 50px;
+            width: auto;
+            z-index: 200;
+            font-size: 0.9rem;
+            pointer-events: none;
+       }
     </style>
 </head>
-
-
 <body>
     <header class="header-container">
         <div class="hamburger" id="hamburger">
@@ -100,24 +81,27 @@
 
     <div class="login-container">
        @using (Html.BeginForm("SignUp", "Account", FormMethod.Post))
-{
+       {
             <div class="title">
                 <p>Sign Up</p>
             </div>
-            <div>
-                <input asp-for="Email" type="text" class="email" placeholder="Email" required>            
+            <div style="position: relative; display: inline-block;">
+                <input asp-for="Email" type="text" class="email" placeholder="Email" required>
+                <span class="validation" asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div>
-                <input asp-for="Username" type="text" class="username" placeholder="Username" required>      
+            <div style="position: relative; display: inline-block;">
+                <input asp-for="Username" type="text" class="username" placeholder="Username" required>
+                <span class="validation" asp-validation-for="Username" class="text-danger"></span>
             </div>
             <div class="pass-input">
-                <input asp-for="Password" type="password" class="password" id="password" placeholder="Password" required>
+                <input asp-for="Password" type="password" class="password" id="password" placeholder="Password" required>           
                 <span class="toggle-password" onclick="togglePasswordVisibility()">
                     <img class="img-eye" src="/images/loginImg/openEye.svg" alt="Show/Hide" id="eye-icon">
                 </span>
             </div>
             <div class="pass-input">
                 <input asp-for="ConfirmPassword" type="password" class="password" id="confirm-password" placeholder="Confirm Password" required>
+                <span class="validation" asp-validation-for="Password" class="text-danger"></span>
                 <span class="toggle-password" onclick="toggleConfirmPasswordVisibility()">
                     <img class="img-eye" src="/images/loginImg/openEye.svg" alt="Show/Hide" id="eyeconfirm-icon">
                 </span>
@@ -141,7 +125,7 @@
                 <p>Already have an account?</p>
                 <a href="@Url.Action("Login", "Account")">Login</a>
             </div>
-}
+       }
 
     </div>
     <div id="errorModal" onclick="closeModal()" class="modal" style="display:none;">
@@ -149,27 +133,12 @@
             <img src="/images/loginImg/warning.svg" alt="Alternate Text"  style="height: 30px;"/>
             <span id="errorMessage" class="text-danger"></span>
         </div>
-    </div>
-
-    <script>
-        function showModal(message) {
-            document.getElementById("errorMessage").innerText = message;
-            document.getElementById("errorModal").style.display = "block";
-        }
-
-        function closeModal() {
-            document.getElementById("errorModal").style.display = "none";
-        }
-
-        window.onload = function () {
-            var errorMessage = `@Html.Raw(ViewData["ErrorMessage"])`;
-            if (errorMessage) {
-                showModal(errorMessage);
-            }
-        };
-    </script>
-
+    </div> 
     <script src="~/js/sidebar.js"></script>
     <script src="~/js/login.js"></script>
+    @section Scripts {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    }
 </body>
 </html>

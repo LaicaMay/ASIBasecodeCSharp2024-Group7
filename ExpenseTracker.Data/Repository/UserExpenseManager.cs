@@ -53,13 +53,14 @@ namespace ExpenseTracker.Data.Repository
             expn.CreatedDate = DateTime.Now;
 
             if (userBalance.TotalBalance == 0 || userBalance.TotalBalance == null || userBalance.isActive == false)
-            {
-                if (_expense.Create(expn, out err) != ErrorCode.Success)
-                {
-                    err = "Error creating Expense";
-                    return ErrorCode.Error;
-                }
+            {          
                 err = "You do not have active balance.";
+                return ErrorCode.Error;
+            }
+
+            if (_expense.Create(expn, out err) != ErrorCode.Success)
+            {
+                err = "Error creating Expense";
                 return ErrorCode.Error;
             }
 

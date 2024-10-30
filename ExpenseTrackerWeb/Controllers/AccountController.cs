@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using ExpenseTracker.Resources.Constants;
+using System.Text.RegularExpressions;
 
 namespace ExpenseTrackerWeb.Controllers
 {
@@ -76,20 +77,55 @@ namespace ExpenseTrackerWeb.Controllers
         [HttpPost]
         public IActionResult SignUp(User u)
         {
-            
+            var allowedEmailDomains = new[] { "gmail.com", "yahoo.com", "ymail.com" };
+
+            if (_userManager.GetUserByEmail(u.Email) != null)
+            {
+                ModelState.AddModelError("Email", "Email is already taken.");
+            }
+
+            var emailDomain = u.Email.Split('@').Last();
+            if (!allowedEmailDomains.Contains(emailDomain))
+            {
+                ModelState.AddModelError("Email", "Please enter a valid email.");
+            }
+
+            if (_userManager.GetUserByUsername(u.Username) != null)
+            {
+                ModelState.AddModelError("Username", "Username is already taken.");
+            }
+
+            if (!Regex.IsMatch(u.Username, @"^[A-Za-z][A-Za-z0-9]{2,}$"))
+            {
+                ModelState.AddModelError("Username", "Please enter a valid username");
+            }
+
+            if (u.Password != u.ConfirmPassword)
+            {
+                ModelState.AddModelError("Password", "Password does not match.");
+            }
+
+            if (!Regex.IsMatch(u.Password, @"^(?=.*[A-Z])(?=.*\W).{8,}$"))
+            {
+                ModelState.AddModelError("Password", "Please enter a valid password.");         
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(u);
+            }
+
             if (_userManager.SignUp(u, ref ErrorMessage) == ErrorCode.Success)
-            {          
+            {            
                 Balance balance = new Balance { UserId = u.UserId };
                 if (_balanceMgr.DefaultBalance(balance, ref ErrorMessage) != ErrorCode.Success)
                 {
                     ModelState.AddModelError(String.Empty, ErrorMessage);
-                    ViewData["ErrorMessage"] = ErrorMessage;
                     return View(u);
                 }
             } else
             {
                 ModelState.AddModelError(String.Empty, ErrorMessage);
-                ViewData["ErrorMessage"] = ErrorMessage;
                 return View(u);
             }
 
