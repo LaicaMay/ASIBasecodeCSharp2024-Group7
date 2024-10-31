@@ -137,9 +137,35 @@ body {
   margin-bottom: 10px;
 }
 
+#forgotpass {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    z-index: 200;
+    transform: translate(-50%, -50%)
+}
+
+#forgotpass.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#forgotpass.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#forgotpass .forgot-cont {
+    height: 250px;
+    width: 280px;
+    background-color: white;
+    border-radius: 10px;
+    border: solid;
+    border-width: 1px;
+}
 
 @media (max-width: 512px) {
-  .login-container {
+    .login-container {
     width: 390px;
     height: 350px;
     margin-bottom: 100px;

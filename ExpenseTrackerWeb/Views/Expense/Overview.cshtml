@@ -183,7 +183,7 @@
             <div class="setAmount">
                 <p>Add Budget</p>
                 <div style="position: relative;">
-                    <input id="balance-amount" type="text" placeholder="Amount" style="width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black;" />
+                    <input id="balance-amount" type="number" placeholder="Amount" style="width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black;" />
                     <div style="position: absolute; left: 8px; top: 17px;"><img style="width:16px; " src="~/images/iconVec/money-icon.svg" alt=""></div>
                 </div>   
                 <div style="display:flex; flex-direction: row; align-items: center; justify-content: center; flex-wrap: wrap; gap: 15px;">
@@ -225,6 +225,14 @@
         const balanceMonth = document.getElementById('month-id').value;
         const yearMonth = document.getElementById('year-id').value;
 
+        if (!balanceAmount || !balanceMonth || !yearMonth){
+            alert('Please fill in all required fields.');
+        }
+
+        if (balanceAmount <= 0) {
+            alert('Please enter a valid amount.');
+        }
+      
         const balanceData = {
             TotalBalance: balanceAmount,
             MonthId: balanceMonth,

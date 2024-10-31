@@ -88,7 +88,7 @@
             </div>
             <div class="forgot">
                 <div>
-                    <a class="forgot-pass" href="#">Forgot Password?</a>
+                    <a id="forgot-id" class="forgot-pass" href="#">Forgot Password?</a>
                 </div>
             </div>
             <div class="login-register">
@@ -107,7 +107,26 @@
             <input type="hidden" asp-for="Email" class="form-control" />
         </form>
     </div>
+    <div id="forgotpass" class="hide">
+        <div class="forgot-cont">
+            <p>Forgot Password</p>
+            <input type="email" placeholder="Enter your email."/>
+            <button id="send-forgot">Submit</button>
+        </div>
+    </div>
+    <div id="forgot-blur"></div>
     <script>
+        document.getElementById('forgot-id').addEventListener('click', function (event) {
+            event.stopPropagation();
+
+            let forgotModal = document.getElementById('forgotpass');
+
+            if (forgotModal.classList.contains('hide')) {
+                forgotModal.classList.remove('hide');
+                forgotModal.classList.add('show');
+            }
+        });
+
         function showErrorModal(message) {
             document.getElementById('modalBody').innerText = message;
             document.getElementById('errorModal').style.display = 'block';
