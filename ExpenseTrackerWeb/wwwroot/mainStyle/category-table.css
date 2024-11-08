@@ -55,14 +55,13 @@
 }
 
 .table-category th {
-    text-align: center;
+    text-align: start;
     font-family: sans-serif;
     /*font-weight: 300;
     padding: 5px;*/
     font-weight: 500;
     padding: 10px;
     width: auto;
-    padding-right: 55px;
 }
 
 .table-category td {
@@ -100,7 +99,7 @@ th img {
     display: flex;
     align-items: center;
     justify-content: start;
-    padding-left: 35px;
+    
 }
 
 #table-category-content a {
@@ -125,6 +124,7 @@ th img {
     }
 
 .button-search {
+    margin-top: 165px; 
     display: flex;
     flex-direction: column;
     align-items: center;
