@@ -40,7 +40,7 @@
                 {
                     <tr>
                         <td data-label="Category">
-                            <div style="display:flex; align-items: center; justify-content: center;">
+                            <div class="cat-div">
                                 <div class="img-bg">
                                     <img src="~/images/iconVec/tags.svg" alt="">
                                 </div>
@@ -48,14 +48,14 @@
                             </div>
                         </td>
                         <td data-label="Description">
-                            <div style="align-items: center;justify-content: center;">
+                            <div class="cat-div">
                                 <p>
-                                    @Html.DisplayFor(modelItem => item.Description)
+                                    @item.Description
                                 </p>
                             </div>
                         </td>
                         <td data-label="Expenses">
-                            <div style="align-items: center;justify-content: center;">
+                            <div class="cat-div">
                                 @if (@item.SetAmount != null)
                                 {
                                     <p>
@@ -65,7 +65,7 @@
                             </div>
                         </td>
                         <td data-label="Action">
-                            <div style="align-items: center;justify-content: center;">
+                            <div class="cat-div">
                                 <a asp-action="Details" asp-route-id="@item.CategoryId">Details</a>
                             </div>
                         </td>
