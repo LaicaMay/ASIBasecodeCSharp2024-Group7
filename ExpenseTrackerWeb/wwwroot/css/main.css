@@ -1,39 +1,72 @@
 .main {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding-top: 150px;
-  margin-bottom: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 150px;
+    margin-bottom: 300px;
 }
 
-.main div {
-  margin-bottom: 30px;
-}
+    .main div {
+        margin-bottom: 30px;
+    }
 
 .main-title p, .sub-title p, .get-started-btn {
-  margin: 0;
+    margin: 0;
 }
 
 .main .main-title {
-  font-size: 50px;
-  font-weight: bold;
+    font-size: 50px;
+    font-weight: bold;
 }
 
 .main .sub-title {
-  width: 400px;
+    width: 400px;
 }
 
 .get-started-btn {
-  font-size: 17px;
-  padding: 11px 21px 11px 21px;
-  background-color: #272B2C;
-  color: white;
-  border-radius: 30px;
-  cursor: pointer;
+    font-size: 17px;
+    padding: 11px 21px 11px 21px;
+    background-color: #272B2C;
+    color: white;
+    border-radius: 30px;
+    cursor: pointer;
 }
 
-.get-started-btn:active {
-  background-color: #4a4e52;
+    .get-started-btn:active {
+        background-color: #4a4e52;
+    }
+
+/* Typewriter Animation Effect for the main-title p */
+.main-title p {
+    font-weight: bold;
+    white-space: nowrap; /* Prevents text wrapping */
+    overflow: hidden; /* Hides the text that hasn't appeared yet */
+    border-right: 4px solid black; /* Adds a blinking cursor effect */
+    width: 0; /* Initially the width is 0 */
+    animation: typewriter 5s steps(20, end) infinite, /* Typewriter animation with infinite loop */
+    blinkingCursor 500ms steps(20) infinite normal;
+}
+
+/* Typewriter effect */
+@keyframes typewriter {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 105%;
+    }
+}
+
+/* Blinking cursor effect */
+@keyframes blinkingCursor {
+    from {
+        border-right-color: rgba(0, 0, 0, .75);
+    }
+
+    to {
+        border-right-color: transparent;
+    }
 }
