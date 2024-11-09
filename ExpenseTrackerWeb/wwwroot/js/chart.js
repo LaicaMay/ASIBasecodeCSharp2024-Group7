@@ -1,90 +1,100 @@
-const data = [
-    { month: 'January', value: 30, lineValue: 20 },
-    { month: 'February', value: 86, lineValue: 50 },
-    { month: 'March', value: 168, lineValue: 130 },
-    { month: 'April', value: 234, lineValue: 180 },
-    { month: 'May', value: 56, lineValue: 90 },
-    { month: 'June', value: 97, lineValue: 150 },
-    { month: 'July', value: 200, lineValue: 170 },
-];
+//Line Graph
+const data1 = [1200, 1900, 3000, 5000, 2000, 3700];
+const data2 = [1020, 1090, 3200, 2500, 2040, 2370];
+const data3 = [1200, 1500, 2300, 2500, 2090, 3300];
+const data4 = [100, 100, 200, 200, 200, 300];
+const months = ['June', 'July', 'August', 'September', 'October', 'November'];
 
-const barSvg = d3.select("#barChart");
-const width = +barSvg.attr("width");
-const height = +barSvg.attr("height");
+const labelinput = document.getElementById('Expense-name');
 
-const xScale = d3.scaleBand()
-    .domain(data.map(d => d.month))
-    .range([0, width])
-    .padding(0.1);
-
-const yScale = d3.scaleLinear()
-    .domain([0, d3.max(data, d => Math.max(d.value, d.lineValue))])
-    .range([height, 0]);
-
-// Create bars
-barSvg.selectAll(".bar")
-    .data(data)
-    .enter()
-    .append("rect")
-    .attr("class", "bar")
-    .attr("x", d => xScale(d.month))
-    .attr("y", d => yScale(d.value))
-    .attr("width", xScale.bandwidth())
-    .attr("height", d => height - yScale(d.value));
-
-// Create line
-const line = d3.line()
-    .x((d, i) => xScale(d.month) + xScale.bandwidth() / 2)
-    .y(d => yScale(d.lineValue));
-
-barSvg.append("path")
-    .datum(data)
-    .attr("class", "line")
-    .attr("d", line);
-
-// Create X-axis
-const xAxis = d3.axisBottom(xScale);
-barSvg.append("g")
-    .attr("class", "x-axis")
-    .attr("transform", `translate(0, ${height})`) 
-    .call(xAxis);
-
-const yAxis = d3.axisLeft(yScale)
-    .tickValues(d3.range(0, Math.ceil(d3.max(data, d => Math.max(d.value, d.lineValue))) + 10, 10)); // Set tick values
-
-barSvg.append("g")
-    .attr("class", "y-axis")
-    .call(yAxis);
+const line = document.getElementById('line-graph');
 
 
-//Donut
-const donutSvg = d3.select("#donutChart");
-const donutWidth = +donutSvg.attr("width");
-const donutHeight = +donutSvg.attr("height");
-const radius = Math.min(donutWidth, donutHeight) / 2 - 10;
+new Chart(line, {
+    type: 'bar',
+    data: {
+        labels: months,
+        datasets: [{
+            label: 'Food Expense',
+            data: data1,
+            borderWidth: 1
+        }, {
+            label: 'School Expense',
+            data: data2,
+            borderWidth: 1
+        }, {
+            label: 'Transportation Expense',
+            data: data3,
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
 
-const g = donutSvg.append("g")
-    .attr("transform", `translate(${donutWidth / 2}, ${donutHeight / 2})`);
+    }
+});
 
-const color = d3.scaleOrdinal(d3.schemeCategory10);
+//Pie Chart
+const pie = document.getElementById('pie-chart');
+const piecardview = document.getElementById('changeData');
+const title = document.getElementById('title');
 
-const pie = d3.pie()
-    .value(d => d.value);
+const labeltitle = ['Food Expense', 'School Expense', 'Transportation Expense'];
 
-const arc = d3.arc()
-    .innerRadius(radius * 0.5)
-    .outerRadius(radius);
+const datachange = [data1, data2, data3];
+let indexData = 0;
+let chartInstance;
 
-const arcs = g.selectAll(".arc")
-    .data(pie(data))
-    .enter().append("g")
-    .attr("class", "arc");
+function updateChart() {
 
-arcs.append("path")
-    .attr("d", arc)
-    .attr("fill", (d, i) => color(i));
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
 
-arcs.append("text")
-    .attr("transform", d => `translate(${arc.centroid(d)})`)
-    .attr("dy", "0.35em")
-    .text(d => d.data.month);
+    title.textContent = labeltitle[indexData];
+
+    chartInstance = new Chart(pie, {
+        type: 'pie',
+        data: {
+            labels: months,
+            datasets: [{
+                label: labeltitle[indexData],
+                data: datachange[indexData],
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        boxWidth: 10,
+                    }
+                }
+            },
+            layout: {
+                padding: {
+                    bottom: 20
+                }
+            }
+        }
+    });
+}
+
+console.log(labeltitle[indexData], " and ", datachange[indexData])
+
+piecardview.addEventListener('click', function (event) {
+    indexData = (indexData + 1) % labeltitle.length;
+    updateChart();
+});
+
+updateChart();
