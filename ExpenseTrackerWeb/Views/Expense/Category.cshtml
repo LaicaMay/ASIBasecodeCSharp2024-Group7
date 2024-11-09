@@ -12,7 +12,6 @@
     <div class="main-title">
         <h1>Category</h1>
     </div>
-    <br />
     <div id="table-category-content" class="hide">
         <table class="table-category">
             <thead>
@@ -28,13 +27,13 @@
                         Category
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>
                         @*@Html.DisplayNameFor(model => model.SetAmount)*@
                         Expenses
                     </th>
-                    <th>Action</th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th style="text-align:center">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,13 +48,6 @@
                                 <p style="margin-left:10px;">@item.CategoryName</p>
                             </div>
                         </td>
-                        <td data-label="Description">
-                            <div class="cat-div">
-                                <p>
-                                    @item.Description
-                                </p>
-                            </div>
-                        </td>
                         <td data-label="Expenses">
                             <div class="cat-div">
                                 @if (@item.SetAmount != null)
@@ -66,8 +58,15 @@
                                 }
                             </div>
                         </td>
-                        <td data-label="Action">
+                        <td data-label="Description">
                             <div class="cat-div">
+                                <p>
+                                    @item.Description
+                                </p>
+                            </div>
+                        </td>
+                        <td data-label="Action">
+                            <div>
                                 <a asp-action="Details" asp-route-id="@item.CategoryId">Details</a>
                             </div>
                         </td>
@@ -89,7 +88,8 @@
         </div>
     </div>
 </div>
-<div class="add-category-cont">
+
+@* <div class="add-category-cont">
     <div class="add-category">
         <div class="category-title">
             <p>Add New Category</p>
@@ -111,7 +111,7 @@
             </button>
         </div>
     </div>
-</div>
+</div> *@
 <!-- ADD CATEGORY MODAL -->
 <div id="cat-confirmation-modal" class="hide">
     <div id="cat-confirm" class="hide">
@@ -124,7 +124,7 @@
 </div>
 
 <!-- ADD CATEGORY SUCCESS MODAL -->
-<div id="cat-success-added-modal" class="show">
+<div id="cat-success-added-modal" class="hide">
     <div id="cat-success">
         <img src="/images/iconVec/succes-save.svg" />
         <p style="text-align: center; padding: 20px;">Category successfully added!</p>
@@ -132,7 +132,6 @@
     </div>
     <div id="cat-success-add-blur" class="cat-add-blur-bg"></div>
 </div>
-
 
 <div id="expense-container" class="hide">
     <div id="expense-details">

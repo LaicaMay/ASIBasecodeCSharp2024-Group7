@@ -1,7 +1,9 @@
 ﻿@import url('https://fonts.cdnfonts.com/css/digital-numbers');
 
 .table-category {
-    width: 100%; /* Ensure it takes full width */
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
     table-layout: fixed; /* Make the table layout fixed for consistent cell widths */
     border-collapse: collapse;
     margin-top: 10px;
@@ -36,6 +38,7 @@
     flex-direction: column;
     max-height: 200px;
     overflow-y: auto;
+    width: 100%;
 }
 
 #table-category-content table {
