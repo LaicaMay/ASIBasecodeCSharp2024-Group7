@@ -40,13 +40,8 @@
 }
 
 .header-container a {
-    text-decoration: none;
-    color: black;
-    transition: color 0.3s ease;
-}
-
-.header-container a:hover {
-    color: #68BB69; 
+  text-decoration: none;
+  color: black;
 }
 
 .landing-tags {

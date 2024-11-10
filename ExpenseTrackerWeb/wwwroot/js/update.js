@@ -10,33 +10,29 @@ function toggleEdit() {
     const editSection = document.querySelector('.edit-section');
     const editButton = document.querySelector('.edit-button');
     const actionButtons = document.querySelector('.action-buttons');
-    const themeInputs = document.querySelector('.dropdown');
-    const newPassInput = document.getElementById('#new-password');
-    const confirmPass = document.getElementById('#confirm-password');
+    const themeInputs = document.querySelectorAll('.preference-section input');
 
     if (editSection.style.display === 'none' || editSection.style.display === '') {
         editSection.style.display = 'block';
         editButton.style.display = 'none';
         actionButtons.style.display = 'block';
-        newPassInput.style.display = 'block';
-        confirmPass.style.display = 'block';
-        themeInputs.forEach(input => input.disabled = false);
+        themeInputs.forEach(input => input.disabled = false); // Enable theme inputs
     } else {
         editSection.style.display = 'none';
         editButton.style.display = 'block';
         actionButtons.style.display = 'none';
-        themeInputs.forEach(input => input.disabled = true);
+        themeInputs.forEach(input => input.disabled = true); // Disable theme inputs
     }
 }
 
 function saveChanges() {
-    // save changes
+    // Implement save changes logic
     alert('Changes saved!');
-    toggleEdit();
+    toggleEdit(); // Hide the edit section and show the edit button again
 }
 
 function cancelEdit() {
-    // cancel 
+    // Implement cancel logic
     alert('Edit cancelled!');
-    toggleEdit();
+    toggleEdit(); // Hide the edit section and show the edit button again
 }

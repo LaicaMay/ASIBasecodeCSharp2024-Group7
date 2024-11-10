@@ -1,161 +1,110 @@
-﻿
-.main-2 {
-    height: 90%;
-    width: 87vw;
-    background-color: #e9e8e84b;
-    margin-top: 20px;
+﻿.main-content {
+    width: 80%;
+    margin: auto;
     border-radius: 15px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: rgba(26, 26, 26, 0.747);
-    backdrop-filter: blur(10px);
+    padding: 20px;
+   
 }
 
 .summary-container {
+    width: 90%;
+    height: fit-content;
+    margin: 20px;
     border-radius: 15px;
     border: 2px solid black;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     background-color: #ffffff;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     background-color: #e9e8e84b;
 }
 
-.expenses {
+.expense {
     height: auto;
-    background: linear-gradient(to right, #B7FCA8 0%, #68BB69 92%);
-    margin: 40px;
+    background-color: #e3f2fd;
     padding: 20px;
     border-radius: 15px;
-    border: 2px solid black;
+    margin: 10px;
     display: flex;
     flex-direction: column;
 }
 
-/* Top Part of Expense */
 .topbarinfo {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
-.title-filter-group {
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-    .title-filter-group > img, .title-filter-group > h1, .title-filter-group > h3 {
-        width: auto;
-        height: fit-content;
-        padding: 0 10px 0 10px;
-    }
-
-        .title-filter-group > img:hover {
-            background-color: #68BB69;
-            padding: 14px 10px;
-            border-radius: 20px;
-        }
-
-.topbarinfo > h4 {
+.topbarinfo > h2, .topbarinfo > h4 {
     margin: 0;
     padding: 20px;
-    float: right;
 }
 
 .expensecontents {
     display: flex;
     flex-direction: row;
     flex-grow: 1;
-    flex-wrap: wrap;
     gap: 10px;
 }
 
-.expenseitems {
-    background-color: rgba(255, 255, 255, 0.5);
+.totalexpenses, .groceryexpenses, .schoolexpenses {
+    background-color: #e8f5e9;
     border-radius: 10px;
     border: 2px solid black;
     margin: 20px;
-    text-align: center;
-    flex-grow: 1;
+    text-align:center;
+    flex-grow:1;
     padding: 10px;
     box-sizing: border-box;
 }
 
-    .expenseitems:hover {
-        background-color: rgba(255, 255, 255, 0.7);
-        transform: scale(1.10);
-    }
-
-
-/* Bottom Part of Expense */
 .charts {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    margin: 0 40px;
     gap: 10px;
+
 }
 
-/* For Pie Chart */
-.pie-chart {
-    flex: 1 1 35%;
-    padding: 20px;
-    background-color: #e8f5e9;
-    border-radius: 10px;
-    border: 2px solid black;
-    box-sizing: border-box;
-}
-
-/* For Line Graph */
-.line-graph {
-    flex: 1 1 65%;
-    padding: 20px;
-    background-color: #e8f5e9;
-    border-radius: 10px;
-    border: 2px solid black;
-    box-sizing: border-box;
-}
-
-.pie-container, .line-container {
+.pie-chart, .line-graph {
     display: flex;
+    flex-grow: 1;
+    flex-direction: column;
     align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+    margin: 10px;
     justify-content: center;
-    margin: 0 2%;
-    width: 98%;
-    height: 90%;
+    border: 2px solid black;
+    background-color: #e8f5e9;
+    border-radius: 10px;
 }
 
-canvas {
-    width: 100%;
-    height: auto;
+.charts > div h3 {
+    text-align: center;
+    margin: 0;
+    padding-bottom: 10px;
 }
-
 
 .button-container {
     text-align: center;
-    padding: 30px 0;
+    padding: 10px;
 }
 
-    .button-container button {
-        background-color: #68BB69;
-        color: black;
-        border: 2px solid black;
-        border-radius: 35px;
-        padding: 20px 50px;
-        font-size: 16px;
-        font-weight: 700;
-        cursor: pointer;
-    }
+.button-container button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
 
-        .button-container button:hover {
-            background-color: #62d748;
-        }
+.button-container button:hover {
+    background-color: #0056b3;
+}
 
-/* Output Overlay */
 .overlay {
     position: fixed;
     top: 0;
@@ -163,88 +112,44 @@ canvas {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 1000;
 }
 
 .overlay-content {
+    background: #ffffff;
     padding: 20px;
-    border-radius: 20px;
+    border-radius: 10px;
     width: 80%;
     max-width: 800px;
     height: 80%;
+    overflow-y: auto;
     display: flex;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 10px;
-    border: 2px solid black;
     flex-direction: column;
     gap: 10px;
 }
 
-    .overlay-content .content {
-        flex: 1;
-        overflow-y: auto;
-    }
-
     .overlay-content h2 {
         margin-top: 0;
-        text-align: center;
     }
 
 .overlay-buttons {
     display: flex;
-    justify-content: space-between;
-    margin-top: auto;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
     .overlay-buttons button {
-        background-color: #68BB69;
-        color: black;
-        border: 2px solid black;
-        border-radius: 35px;
-        padding: 20px 50px;
-        font-size: 16px;
-        font-weight: 700;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 20px;
         cursor: pointer;
     }
 
         .overlay-buttons button:hover {
-            background-color: #62d748;
+            background-color: #0056b3;
         }
-
-
-/* Output Overlay */
-
-@media (max-width: 1280px) {
-    .charts {
-        flex-wrap: wrap;
-    }
-
-    .pie-chart {
-        flex: 1 1 50%;
-        max-width: none;
-    }
-
-    .line-graph {
-        flex: 1 1 50%;
-        max-width: none;
-    }
-
-
-    .button-container button {
-        padding: 10px 40px;
-    }
-}
-
-
-@media (max-width: 400px) {
-    .pie-chart {
-        flex: 1 1 100%;
-    }
-
-    .line-graph {
-        flex: 1 1 100%;
-    }
-}

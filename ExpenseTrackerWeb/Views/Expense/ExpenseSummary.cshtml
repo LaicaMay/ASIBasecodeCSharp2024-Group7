@@ -1,94 +1,77 @@
 ﻿@{
     Layout = "_MainLayout";
-    //var expensesJson = Json.Serialize(Model.Expenses);  
-    var monthListJson = Json.Serialize(Model.MonthList);
 }
-<link rel="stylesheet" href="/css/expensesummary.css">
-<link rel="stylesheet" href="/css/chart.css">
-<script src="https://d3js.org/d3.v7.min.js"></script>
 
-<div class="main-2">
-    <div class="expenses">
-        <div class="topbarinfo">
-            <div class="title-filter-group">
-                <h1>
-                    Expenses Summary</h2>
-                    <img src="~/images/backgroundImage/ic_filter.png" id="filterContent" contextmenu="filterButton" />
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="/css/expensesummary.css">
+    <link rel="stylesheet" href="/css/chart.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
 
-            <h4 id="currentDateSpan">January 1 - September 5</h4>
+<body>
+        <div class="main-content">
+        <div class="summary-container">
+            <div class="expenses">
+                <div class="topbarinfo">
+                    <h2>Expenses Summary</h2>
+                    <h4>January 1 - September 5</h4>
+                </div>
+                <div class="expensecontents">
+                    <div class="totalexpenses">
+                        <h3>Php 1000.00</h3>
+                        <h4>Total Expenses</h4>
+                    </div>
+                    <div class="groceryexpenses">
+                        <h3>Php 1000.00</h3>
+                        <h4>Total Expenses</h4>
+                    </div>
+                    <div class="schoolexpenses">
+                        <h3>Php 1000.00</h3>
+                        <h4>Total Expenses</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="charts">
+                <div class="pie-chart">
+                    <h3>Expense Trend</h3>
+                    <div>
+                        <svg id="donutChart" width="200" height="200"></svg>
+                    </div>
+                </div>
+                <div class="line-graph">
+                    <h3>Yearly Report</h3>
+                    <div>
+                        <svg id="barChart" width="400" height="300"></svg>
+                    </div>
+                </div>
+            </div>
+            <div class="button-container">
+                <button id="generateReportButton">Generate Report</button>
+            </div>
         </div>
-        <!-- List Container-->
-        <div class="expensecontents">
-            <!-- List Items (foreach cs)-->
-            <div class="expenseitems">
-                <h1>Php 1000.00</h1>
-                <p>Total Expenses</p>
+
+        <div class="overlay" id="reportOverlay">
+            <div class="overlay-content">
+                <h2>Sample Report</h2>
+                <p><strong>Total Expenses:</strong> $5000</p>
+                <p><strong>Grocery Expenses:</strong> $1500</p>
+                <p><strong>School Expenses:</strong> $1000</p>
+                <div class="overlay-buttons">
+                    <button id="saveReportButton">Save</button>
+                    <button id="exitReportButton">Exit Report</button>
+                </div>
             </div>
-            <div class="expenseitems">
-                <h1 id="">Php 1000.00</h1>
-                <p>Total Expenses</p>
-            </div>
-            <div class="expenseitems">
-                <h1>Php 1000.00</h1>
-                <p>Total Expenses</p>
-            </div>
-            <!-- List Items-->
         </div>
-        <!-- List Container-->
+
     </div>
-    <div class="charts">
-        <div class="pie-chart" id="changeData">
-            <div class="title-filter-group">
-                <h3 id="title"></h3>
-                <img src="~/images/backgroundImage/ic_filter.png" id="piefilterContent" contextmenu="filterButton" />
-            </div>
-            <div class="pie-container">
-                <canvas id="pie-chart"></canvas>
-            </div>
-        </div>
-        <div class="line-graph">
-            <div class="title-filter-group">
-                <h3>Expense Trend</h3>
-                <img src="~/images/backgroundImage/ic_filter.png" id="linefilterContent" contextmenu="filterButton" />
-            </div>
-            <div class="line-container">
-                <canvas id="line-graph"></canvas>
-            </div>
-        </div>
-    </div>
-    <div class="button-container">
-        <button id="generateReportButton">Generate Report</button>
-    </div>
-</div>
+    <script src="~/js/expensesummary.js"></script>
+    <script src="~/js/chart.js"></script>
+</body>
 
 
-<!-- Sample Output Display -->
-<div class="overlay" id="reportOverlay">
-    <div class="overlay-content">
-        <h2>Sample Expense Report</h2>
-        <div class="content">
-            <p><strong>Total Expenses:</strong> $5000</p>
-            <p><strong>Grocery Expenses:</strong> $1500</p>
-            <p><strong>School Expenses:</strong> $1000</p>
-        </div>
-        <div class="overlay-buttons">
-            <button id="saveReportButton">Save</button>
-            <button id="exitReportButton">Exit Report</button>
-        </div>
-    </div>
-</div>
-<!--  Sample Output Display -->
-    </div>
-
-
-<script src="~/js/expensesummary.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="~/js/chart.js"></script>
-
-<script>
-       
-   
-
-</script>
-
+</html>

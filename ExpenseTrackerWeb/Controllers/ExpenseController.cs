@@ -205,25 +205,10 @@ namespace ExpenseTrackerWeb.Controllers
             return View();
         }
 
-        [HttpGet]
         public IActionResult ExpenseSummary()
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Login");
-            }
-
-
-
-            var viewModel = new ExpenseSummaryViewModel
-            {
-                Expenses = _userExpenseMgr.ListUserExpense(UserId),
-                MonthList = _monthYearMgr.ListMonths()
-            };
-
-            return View(viewModel);
+            return View();
         }
-
 
         public IActionResult GenerateReport()
         {

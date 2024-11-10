@@ -11,7 +11,7 @@
 .header-title {
     width: 100%; /* Ensure it taskes the full width */
     text-align: center; /* Center the title text */
-    margin-bottom: 50px; /* Space between title and cards */
+    margin-bottom: 100px; /* Space between title and cards */
 }
 
 .card-container {
@@ -41,26 +41,17 @@
     box-sizing: border-box; /* Box-sizing for proper padding handling */
     border-radius: 10px; /* Rounded corners */
     background-color: #ffffff;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
     background-color: rgba(255, 255, 255, 0.199);
     border-style: solid;
     border-width: 1px;
     box-shadow: 2px 2px 20px black;
-    gap: 15px;
-    transition: all 0.6s ease;
-}
-
-.card:hover {
-    transform: scale(1.05); 
-    box-shadow: 0 0 15px #68BB69, 0 0 25px #68BB69; 
 }
 
 .card h1 {
     color: black;
-    font-size: 25px;
 }
 
 .card p {
     color: black;
-    font-size: 15px;
 }
