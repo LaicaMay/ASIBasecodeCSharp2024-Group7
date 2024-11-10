@@ -79,9 +79,8 @@
                                     align-items: center;
                                     justify-content: start; padding-left: 0px;
                                             ">
-                                            <div class="img-bg">
-                                                <img src="~/images/iconVec/tags.svg" alt="">
-                                            </div>
+                                    <div class="img-bg" style="background-color: @item.Category.ColorPick;">
+                                    </div>
                                             <p style="margin-left: 10px;">@item.Category?.CategoryName</p>
                                         </div>
                                     </td>
@@ -254,13 +253,13 @@
             } else {
                 alert('Failed to save expense. Please try again.');
             }
-
+            location.reload();
             saveButton.disabled = false;
         })
         .catch(error => {
             console.error('Error:', error);           
-            saveButton.disabled = false;
-        });
+            saveButton.disabled = false;             
+            });
     });
 
     document.getElementById('budget-btn').addEventListener('click', function(event){

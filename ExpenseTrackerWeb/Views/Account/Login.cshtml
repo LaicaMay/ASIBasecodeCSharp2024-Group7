@@ -71,9 +71,9 @@
         </div>
     </div>
     <div class="login-container">
-        <form asp-action="Login" method="post">
+        <form asp-action="Login" method="post" id="loginForm">
             <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
-            @Html.AntiForgeryToken()      
+            @Html.AntiForgeryToken()
             <div class="title">
                 <p>Login</p>
             </div>
@@ -96,10 +96,6 @@
                     Login
                 </button>
             </div>
-            <input type="hidden" asp-for="Code" class="form-control" />
-            <input type="hidden" asp-for="Status" class="form-control" />
-            <input type="hidden" asp-for="CreatedDate" class="form-control" />
-            <input type="hidden" asp-for="DateModified" class="form-control" />
             <div class="already-acc">
                 <p>No account?</p>
                 <a href="@Url.Action("SignUp", "Account")">Register</a>
@@ -127,6 +123,32 @@
             }
         });
 
+        document.addEventListener('DOMContentLoaded', function () {
+            var errorMessage = '@Html.Raw(ViewBag.Error)';
+            if (errorMessage && errorMessage.trim() !== '') {
+                showErrorModal(errorMessage);
+            }
+
+            document.querySelector('.reg-btn').addEventListener('click', function (event) {
+                const username = document.querySelector('.username').value.trim();
+                const password = document.querySelector('.password').value.trim();
+
+                if (!username || !password) {
+                    showErrorModal("Please fill out all required fields.");
+                    event.preventDefault();
+                }
+            });
+            document.querySelector('.close-btn').onclick = function () {
+                hideErrorModal();
+            }
+
+            window.onclick = function (event) {
+                if (event.target === document.getElementById('errorModal')) {
+                    hideErrorModal();
+                }
+            }
+        });
+
         function showErrorModal(message) {
             document.getElementById('modalBody').innerText = message;
             document.getElementById('errorModal').style.display = 'block';
@@ -135,23 +157,6 @@
         function hideErrorModal() {
             document.getElementById('errorModal').style.display = 'none';
         }
-
-        document.querySelector('.close-btn').onclick = function () {
-            hideErrorModal();
-        }
-
-        window.onclick = function (event) {
-            if (event.target === document.getElementById('errorModal')) {
-                hideErrorModal();
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            var errorMessage = '@Html.Raw(ViewBag.Error)';
-            if (errorMessage && errorMessage.trim() !== '') {
-                showErrorModal(errorMessage);
-            }
-        });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>

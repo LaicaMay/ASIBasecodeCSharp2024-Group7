@@ -8,6 +8,8 @@
 
 <link href="~/mainstyle/add-category.css" rel="stylesheet" />
 <link href="~/mainstyle/add-expense.css" rel="stylesheet" />
+<link href="~/mainstyle/category-details.css" rel="stylesheet" />
+<link href="~/mainstyle/expense-details.css" rel="stylesheet" />
 <div class="main-container">
     <div class="main-title">
         <h1>Category</h1>
@@ -25,13 +27,12 @@
                                 <img src="~/images/iconVec/@(ViewBag.CurrentSortOrderCategory == "asc" ? "up-arrow.svg" : "down-arrw.svg")" alt="Sort by Category">
                             </button>
                         </form>
-                        Category
+                        Category Name
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Description)
+                        Description
                     </th>
-                    <th>
-                        @*@Html.DisplayNameFor(model => model.SetAmount)*@
+                    <th>        
                         Expenses
                     </th>
                     <th>Action</th>
@@ -41,10 +42,13 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td data-label="Category">
+                        <td data-label="Category"
+                            data-category-id="@item.CategoryId"
+                            data-name-category="@item.CategoryName"
+                            data-description-category="@item.Description">
                             <div class="cat-div">
-                                <div class="img-bg">
-                                    <img src="~/images/iconVec/tags.svg" alt="">
+                                <div class="img-bg" style="background-color: @item.ColorPick;">
+                                    
                                 </div>
                                 <p style="margin-left:10px;">@item.CategoryName</p>
                             </div>
@@ -58,17 +62,12 @@
                         </td>
                         <td data-label="Expenses">
                             <div class="cat-div">
-                                @if (@item.SetAmount != null)
-                                {
-                                    <p>
-                                        ₱@item.SetAmount
-                                    </p>
-                                }
+                                
                             </div>
                         </td>
                         <td data-label="Action">
                             <div class="cat-div">
-                                <a asp-action="Details" asp-route-id="@item.CategoryId">Details</a>
+                                <a class="catDetails">Details</a>
                             </div>
                         </td>
                     </tr>
@@ -85,34 +84,46 @@
                     </div>
                 </div>
             </form>
-            <a asp-action="Create" id="add-id">Add Category</a>
+            <a id="category-add-id">Add Category</a>
         </div>
     </div>
 </div>
-<div class="add-category-cont">
+
+<!-- ADD CATEGORY MODAL -->
+
+<div id="add-category-cont" class="hide">
     <div class="add-category">
         <div class="category-title">
             <p>Add New Category</p>
         </div>
-        <div class="categroy-color">
-            <img src="/images/iconVec/image 9.svg"/>
+        <div class="categroy-color" style="display:flex; flex-direction:column; align-content:center;justify-items:center">
+            <img id="colorPickerImg" src="/images/iconVec/image 9.svg" style="cursor: pointer;" />
+            <input type="color" id="colorCategory" disabled />
         </div>
-        <div class="category-name">     
-            <input id="cat-name" type="text" placeholder="Expense Name" style="width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black;" required />
-            <div style="position: absolute; left: 8px; top: 10px;"><img src="~/images/iconVec/ingredient-icon.svg" alt=""></div>     
+        <div class="category-name">
+            <input id="cat-name" type="text" placeholder="Category Name" style="width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black;" required />
+            <div style="position: absolute; left: 8px; top: 10px;"><img src="~/images/iconVec/ingredient-icon.svg" alt=""></div>
         </div>
         <div class="category-description">
             <textarea id="cat-description" type="text" style="height: 120px; padding:10px; border-radius: 20px; width: 275px; resize: none;" required></textarea>
             <div style="position: absolute; right: 8px; bottom: 10px;"><img src="/images/iconVec/paper-icon.svg" alt=""></div>
         </div>
         <div class="category-button">
-            <button id="save-btn" style="cursor: pointer; width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black; background-color: #272B2C; color: white;" type="button">
+            <button id="category-save-btn" style="cursor: pointer; width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black; background-color: #272B2C; color: white;" type="button">
                 Save Expense
             </button>
         </div>
     </div>
 </div>
-<!-- ADD CATEGORY MODAL -->
+
+<div id="colorPickerModal" class="color-picker-modal hide">
+    <div class="color-picker-content">
+        <input type="color" id="colorInput" />
+        <button id="closeColorPicker">Select Color</button>
+    </div>
+</div>
+
+<!-- ADD CATEGORY SUCCESS MODAL -->
 <div id="cat-confirmation-modal" class="hide">
     <div id="cat-confirm" class="hide">
         <img src="/images/iconVec/warning-save.svg" />
@@ -124,7 +135,7 @@
 </div>
 
 <!-- ADD CATEGORY SUCCESS MODAL -->
-<div id="cat-success-added-modal" class="show">
+<div id="cat-success-added-modal" class="hide">
     <div id="cat-success">
         <img src="/images/iconVec/succes-save.svg" />
         <p style="text-align: center; padding: 20px;">Category successfully added!</p>
@@ -133,14 +144,14 @@
     <div id="cat-success-add-blur" class="cat-add-blur-bg"></div>
 </div>
 
-
-<div id="expense-container" class="hide">
-    <div id="expense-details">
+<!-- DETAILS CATEGORY MODAL -->
+<div id="category-container" class="hide">
+    <div id="category-details">
         <div style="display: flex; align-items: center; justify-content: center;
                             margin-top: 10px;
                             margin-bottom: 10px;">
             <div>
-                <p class="details-expense">Expense Details</p>
+                <p class="details-category">Expense Details</p>
             </div>
         </div>
         <div style="display: flex; flex-direction: row; align-items: center;
@@ -155,39 +166,66 @@
                 </div>
                 <div>
                     <img src="~/images/iconVec/money-icon.svg" alt="">
-                </div>
-                <div>
-                    <img src="~/images/iconVec/CategoryThumbail.svg" alt="">
-                </div>
-                <div>
-                    <img src="~/images/iconVec/bag-icon.svg" alt="">
-                </div>
+                </div>   
                 <div>
                     <img src="/images/iconVec/paper-icon.svg" alt="">
                 </div>
             </div>
             <div style="display: flex; flex-direction: column; margin-left: 20px;
                                 gap: 15px;">
-                <input type="hidden" id="modal-expense-id" value="" />
-                <p id="modal-expense-name"></p>
-                <p id="modal-amount"></p>
-                <p id="modal-category-name"></p>
-                <p id="modal-date"></p>
-                <p id="modal-description"></p>
+                <input type="hidden" id="category-id" value="" />
+                <p id="category-name"></p>
+                <p id="category-amount"></p>            
+                <p id="category-description"></p>
             </div>
         </div>
         <div style="display: flex; align-items: center; justify-content: center;
                             margin-top: 10px;
                             margin-bottom: 10px;">
-            <button id="edit">Edit</button>
+            <button id="categoryedit">Edit</button>
         </div>
         <div style="display: flex; align-items: center; justify-content: center;
                             margin-top: 10px;
                             margin-bottom: 10px;">
-            <button id="del">Delete</button>
+            <button id="categorydel">Delete</button>
         </div>
-    </div>
-    <div class="blur-bg">
     </div>
 </div>
 
+<!-- DELETE CATEGORY CONFIRMATION MODAL -->
+<div id="del-category-cont" class="hide">
+    <div class="del-category-warn">
+        <img src="/images/iconVec/warning-save.svg" />
+        <p>Warning!</p>
+        <p>Deleting this category will also remove all associated expenses.</p>
+        <p>Are you sure you want to proceed?</p>
+        <div style="display:flex; align-items:center; justify-content: center">
+            <button id="delCat-confirm">Delete</button>
+            <button id="delCat-cancel">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- EDIT DETAILS CATEGORY MODAL -->
+<div id="edit-category-cont" class="hide">
+    <div id="edit-category">
+        <input id="edit-category-id" type="hidden" />
+        <p style="margin-top: 20px;">Edit Category</p>
+        <div style="position: relative;">
+            <input id="edit-category-name" type="text" placeholder="Expense Name" style="width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black;" required />
+            <div style="position: absolute; left: 8px; top: 10px;"><img src="~/images/iconVec/ingredient-icon.svg" alt=""></div>
+        </div>         
+        <div style="position: relative;">
+            <textarea id="edit-category-description" type="text" style="height: 120px; padding:10px; border-radius: 20px; width: 275px; resize: none;" required></textarea>
+            <div style="position: absolute; right: 8px; bottom: 10px;"><img src="/images/iconVec/paper-icon.svg" alt=""></div>
+        </div>
+        <button id="edit-category-btn" style="cursor: pointer; width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black; background-color: #272B2C; color: white;" type="button">
+            Save Category
+        </button>
+    </div>  
+</div>
+
+
+<div id="category-add-blur" class="hide"></div>
+
+<script src="~/js/category.js"></script>

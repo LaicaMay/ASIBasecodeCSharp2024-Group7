@@ -45,43 +45,49 @@
   display: block;
 }
 
-#expense-details .details-expense {
-  font-family: 'Circe Rounded Alt', sans-serif;
-  font-size: 1.3rem;
+#expense-details .details-expense,
+#category-details .details-category {
+    font-family: 'Circe Rounded Alt', sans-serif;
+    font-size: 1.3rem;
 }
 
-#expense-details p {
-  font-family: Arial, sans-serif;
-  margin-top: 4px;
-  margin-bottom: 4px;
-  font-size: 0.8rem;
+#expense-details p,
+#category-details p {
+    font-family: Arial, sans-serif;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-size: 0.8rem;
 }
 
-#expense-details #edit {
-  width: 275px;
-  padding: 10px;
-  background-color: #68BB69;
-  border: solid;
-  border-width: 1px;
-  border-radius: 15px;
+#expense-details #edit,
+#category-details #categoryedit {
+    width: 275px;
+    padding: 10px;
+    background-color: #68BB69;
+    border: solid;
+    border-width: 1px;
+    border-radius: 15px;
 }
 
-#expense-details #del {
-  width: 275px;
-  padding: 10px;
-  background-color: #272B2C;
-  color: white;
-  border: solid;
-  border-width: 1px;
-  border-radius: 15px;
+#expense-details #del,
+#category-details #categorydel {
+    width: 275px;
+    padding: 10px;
+    background-color: #272B2C;
+    color: white;
+    border: solid;
+    border-width: 1px;
+    border-radius: 15px;
 }
 
-#expense-details #edit:hover {
-  box-shadow: 3px 3px 0px black;
+#expense-details #edit:hover,
+#category-details #categoryedit:hover {
+    box-shadow: 3px 3px 0px black;
 }
 
-#expense-details #del:hover {
-  box-shadow: 3px 3px 0px black;
+#expense-details #del:hover,
+#category-details #categorydel:hover {
+    box-shadow: 3px 3px 0px black;
 }
 
 

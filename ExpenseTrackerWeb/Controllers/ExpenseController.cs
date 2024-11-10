@@ -145,24 +145,58 @@ namespace ExpenseTrackerWeb.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return BadRequest();
+                return BadRequest(new { message = "User is not authenticated." });
             }
             return View(_userCategoryMgr.ListCategory(UserId));
         }
-
-        public IActionResult AddCategory()
+        [HttpPost]
+        public IActionResult AddCategory([FromBody] Category userCategory)
         {
-            return View();
+            if (!User.Identity.IsAuthenticated)
+            {
+                return BadRequest(new { message = "User is not authenticated." });
+            }
+
+            userCategory.UserId = UserId;
+            userCategory.CreatedDate = DateTime.Now;
+
+            if (_userCategoryMgr.CreateCategory(userCategory, ref ErrorMessage) != ErrorCode.Success)
+            {
+                return BadRequest(new { message = "Category creation failed." });
+            }
+
+            return Ok(new { success = true, message = "Category added successfully." });
         }
 
-        public IActionResult EditCategory()
+        [HttpPut]
+        public IActionResult EditCategory([FromBody] Category category)
         {
-            return View();
+            if (!User.Identity.IsAuthenticated)
+            {
+                return BadRequest(new { message = "User is not authenticated." });
+            }
+
+            category.UserId = UserId;
+
+            if (_userCategoryMgr.UpdateCategory(category, ref ErrorMessage) != ErrorCode.Success)
+            {
+                ModelState.AddModelError(String.Empty, ErrorMessage);
+                return BadRequest(new { message = "Failed to update category.", errors = ModelState });
+            }
+
+            return Ok(new { message = "Category updated successfully." });
         }
 
-        public IActionResult DeleteCategory()
+        [HttpDelete]
+        public IActionResult DeleteCategory(int id)
         {
-            return View();
+            if (_userCategoryMgr.DeleteCategory(id, ref ErrorMessage) != ErrorCode.Success)
+            {
+                ModelState.AddModelError(String.Empty, ErrorMessage);
+                return BadRequest(new { message = "Failed to delete category.", errors = ModelState });
+            }
+
+            return Ok(new { message = "Expense deleted successfully." });
         }
         #endregion
 

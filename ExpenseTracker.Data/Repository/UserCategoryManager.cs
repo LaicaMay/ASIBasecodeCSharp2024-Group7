@@ -32,7 +32,22 @@ namespace ExpenseTracker.Data.Repository
 
         public ErrorCode UpdateCategory(Category category, ref String err)
         {
-            return _category.Update(category.CategoryId, category, out err);
+            var exitingCategory = GetCategoryById(category.CategoryId);
+
+            if (exitingCategory == null)
+            {
+                return ErrorCode.Error;
+            }
+
+            exitingCategory.CategoryName = category.CategoryName;
+            exitingCategory.Description = category.Description;
+
+            if (_category.Update(exitingCategory.CategoryId, exitingCategory, out err) != ErrorCode.Success)
+            {
+                return ErrorCode.Error;
+            }
+
+            return ErrorCode.Success;
         }
 
         public ErrorCode DeleteCategory(int? id, ref String err)
