@@ -22,6 +22,11 @@ namespace ExpenseTrackerWeb.Controllers
         {
             return View();
         }
+
+        public IActionResult OurTeam()
+        {
+            return View();
+        }
     }
 
 }

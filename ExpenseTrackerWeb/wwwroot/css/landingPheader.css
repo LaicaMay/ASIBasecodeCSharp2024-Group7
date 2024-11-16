@@ -10,6 +10,7 @@
   flex-direction: row;
   align-items: end;
   justify-content: start;
+  justify-content: start;
   margin: 0;
   background-color: #fff;
   z-index: 1;
@@ -40,9 +41,14 @@
 }
 
 .header-container a {
-  text-decoration: none;
-  color: black;
+    text-decoration: none;
+    color: black;
+    transition: color 0.3s ease;
 }
+
+    .header-container a:hover {
+        color: #68BB69;
+    }
 
 .landing-tags {
   margin-bottom: 23px;
