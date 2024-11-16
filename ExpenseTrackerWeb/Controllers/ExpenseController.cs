@@ -205,10 +205,65 @@ namespace ExpenseTrackerWeb.Controllers
             return View();
         }
 
-        public IActionResult ExpenseSummary()
+        public IActionResult ExpenseSummary()//(int userId)
         {
+            int userId = 1;
+            var userExpenseManager = new UserExpenseManager();
+            var monthYearManager = new MonthYearManager();
+
+            var months = monthYearManager.ListMonths()
+                                         .OrderBy(m => m.MonthId)
+                                         .Select(m => m.MonthName)
+                                         .ToArray();
+
+            var userExpenses = userExpenseManager.ListUserExpense(userId);
+
+            var groupedExpenses = userExpenses
+                .GroupBy(e => e.Category?.ExpenseCategoryName)
+                .Select(group => new
+                {
+                    Category = group.Key,
+                    MonthlyTotals = months.Select(month =>
+                        group.Where(e => e.Date.HasValue &&
+                                         e.Date.Value.ToString("MMMM") == month)
+                             .Sum(e => e.Amount ?? 0)
+                    ).ToArray()
+                }).ToList();
+
+            var barChartDatasets = groupedExpenses.Select(expense => new
+            {
+                label = expense.Category ?? "Uncategorized",
+                data = expense.MonthlyTotals,
+                borderWidth = 1
+            }).ToList();
+
+            var userBalance = userExpenseManager._balanceMgr.GetActiveBalanceByUserId(userId);
+            var totalBalance = userBalance?.TotalBalance ?? 0;
+            var totalExpenses = userExpenses.Sum(e => e.Amount ?? 0);
+
+            var pieChartLabels = new[] { "Remaining Balance", "Total Expenses" };
+            var pieChartData = new[] { (double)(totalBalance - totalExpenses), (double)totalExpenses };
+
+            //ViewData["Months"] = months;
+            //ViewData["BarChartDatasets"] = barChartDatasets;
+            //ViewData["PieChartLabels"] = pieChartLabels;
+            //ViewData["PieChartData"] = pieChartData;
+
+            // Example 
+            ViewData["Months"] = new[] { "January", "February", "March", "April", "May", "June", "July" };
+            ViewData["BarChartDatasets"] = new List<object>
+            {
+                new { label = "Food Expense", data = new[] { 200.0, 300.0, 400.0, 500.0, 600.0, 700.0, 800.0 } },
+                new { label = "School Expense", data = new[] { 150.0, 250.0, 350.0, 450.0, 550.0, 650.0, 750.0 } }
+            };
+            ViewData["PieChartLabels"] = new[] { "Remaining Balance", "Total Expenses" };
+            ViewData["PieChartData"] = new[] { 5000.0, 2000.0 }; 
+
+
             return View();
         }
+
+
 
         public IActionResult GenerateReport()
         {

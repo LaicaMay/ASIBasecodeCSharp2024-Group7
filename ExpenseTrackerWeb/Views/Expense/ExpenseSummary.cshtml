@@ -1,77 +1,83 @@
 ﻿@{
     Layout = "_MainLayout";
+    var months = (string[])ViewData["Months"];
+    var barChartDatasets = (List<object>)ViewData["BarChartDatasets"];
+    var pieChartLabels = (string[])ViewData["PieChartLabels"];
+    var pieChartData = (double[])ViewData["PieChartData"];
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Page</title>
-    <link rel="stylesheet" href="/css/expensesummary.css">
-    <link rel="stylesheet" href="/css/chart.css">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-</head>
+<link rel="stylesheet" href="/css/expensesummary.css">
+<link rel="stylesheet" href="/css/chart.css">
 
-<body>
-        <div class="main-content">
-        <div class="summary-container">
-            <div class="expenses">
-                <div class="topbarinfo">
-                    <h2>Expenses Summary</h2>
-                    <h4>January 1 - September 5</h4>
-                </div>
-                <div class="expensecontents">
-                    <div class="totalexpenses">
-                        <h3>Php 1000.00</h3>
-                        <h4>Total Expenses</h4>
-                    </div>
-                    <div class="groceryexpenses">
-                        <h3>Php 1000.00</h3>
-                        <h4>Total Expenses</h4>
-                    </div>
-                    <div class="schoolexpenses">
-                        <h3>Php 1000.00</h3>
-                        <h4>Total Expenses</h4>
-                    </div>
-                </div>
+<div class="main-2">
+    <div class="expenses">
+        <div class="topbarinfo">
+            <div class="title-filter-group">
+                <h1>Expenses Summary</h1>
+                <img src="~/images/backgroundImage/ic_filter.png" id="filterContent" contextmenu="filterButton" />
             </div>
-            <div class="charts">
-                <div class="pie-chart">
-                    <h3>Expense Trend</h3>
-                    <div>
-                        <svg id="donutChart" width="200" height="200"></svg>
-                    </div>
-                </div>
-                <div class="line-graph">
-                    <h3>Yearly Report</h3>
-                    <div>
-                        <svg id="barChart" width="400" height="300"></svg>
-                    </div>
-                </div>
+            <h4 id="currentDateSpan">January 1 - September 5</h4>
+        </div>
+        <!-- Expense Details -->
+        <div class="expensecontents">
+            <div class="expenseitems">
+                <h1>Php 1000.00</h1>
+                <p>Total Expenses</p>
             </div>
-            <div class="button-container">
-                <button id="generateReportButton">Generate Report</button>
+            <div class="expenseitems">
+                <h1>Php 2000.00</h1>
+                <p>Total Income</p>
+            </div>
+            <div class="expenseitems">
+                <h1>Php 500.00</h1>
+                <p>Savings</p>
             </div>
         </div>
-
-        <div class="overlay" id="reportOverlay">
-            <div class="overlay-content">
-                <h2>Sample Report</h2>
-                <p><strong>Total Expenses:</strong> $5000</p>
-                <p><strong>Grocery Expenses:</strong> $1500</p>
-                <p><strong>School Expenses:</strong> $1000</p>
-                <div class="overlay-buttons">
-                    <button id="saveReportButton">Save</button>
-                    <button id="exitReportButton">Exit Report</button>
-                </div>
-            </div>
-        </div>
-
     </div>
-    <script src="~/js/expensesummary.js"></script>
-    <script src="~/js/chart.js"></script>
-</body>
+    <div class="charts">
+        <!-- Pie Chart -->
+        <div class="pie-chart" id="changeData">
+            <div class="title-filter-group">
+                <h3>Total Balance vs. Expenses</h3>
+                <img src="~/images/backgroundImage/ic_filter.png" id="piefilterContent" contextmenu="filterButton" />
+            </div>
+            <div class="pie-container">
+                <canvas id="pie-chart"></canvas>
+            </div>
+        </div>
+        <!-- Line Graph -->
+        <div class="line-graph">
+            <div class="title-filter-group">
+                <h3>Expense Trend</h3>
+                <img src="~/images/backgroundImage/ic_filter.png" id="linefilterContent" contextmenu="filterButton" />
+            </div>
+            <div class="line-container">
+                <canvas id="line-graph"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="button-container">
+        <button id="generateReportButton">Generate Report</button>
+    </div>
+</div>
 
+<script src="~/js/expensesummary.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/js/chart.js"></script>
 
-</html>
+<script>
+    const months = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(months));
+    const barChartDatasets = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(barChartDatasets));
+
+    const pieChartLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(pieChartLabels));
+    const pieChartData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(pieChartData));
+
+    createChart(months, barChartDatasets, "line-graph", "bar");
+
+    createChart(pieChartLabels, [{
+        data: pieChartData,
+        backgroundColor: ['#4CAF50', '#FF5722'], // Colors for balance and expenses
+        borderWidth: 1
+    }], "pie-chart", "pie");
+</script>
+
