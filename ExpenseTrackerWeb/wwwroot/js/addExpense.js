@@ -46,7 +46,9 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
     const expenseName = document.getElementById('expense-name').value.trim();
     const amount = document.getElementById('amount').value.trim();
     const categoryId = document.getElementById('category-id').value;
-    const description = document.getElementById('description').value.trim(); 
+    const description = document.getElementById('description').value.trim();
+    const remainingBal = document.getElementById('remainingBalance').value.trim();
+
     let date = document.getElementById('date-only').value.trim();
     let startDate = document.getElementById('start-date').value.trim();
     let endDate = document.getElementById('end-date').value.trim(); 
@@ -71,12 +73,18 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
         return;
     }
 
+    if (amount > remainingBal) {
+        alert('Insufficient Remaining Balance.');
+        return;
+    }
+
     if (checkbox.checked) {
         date = null; 
     } else {      
         startDate = null;
         endDate = null; 
     }
+
 
     const expenseData = {
         ExpenseName: expenseName,
@@ -111,7 +119,8 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
                 document.getElementById('start-date').value = '';
                 document.getElementById('end-date').value = '';
             } else {
-                alert('Failed to save expense. Please try again.');
+                alert('Insufficient Remaining Balance. Please try again.');
+                return;
             }
         })
         .catch(error => console.error('Error:', error));
