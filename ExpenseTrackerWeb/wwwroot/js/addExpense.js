@@ -72,10 +72,10 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
     }
 
     if (checkbox.checked) {
-        date = today; 
+        date = null; 
     } else {      
-        startDate = today;
-        endDate = today; 
+        startDate = null;
+        endDate = null; 
     }
 
     const expenseData = {

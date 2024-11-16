@@ -27,6 +27,17 @@ namespace ExpenseTracker.Data.Repository
             return _expense._table
                 .Include(e => e.Category) 
                 .Where(m => m.UserId == user.UserId)
+                .OrderByDescending(m => m.ExpenseId)
+                .ToList();
+        }
+
+        public List<Expense> ListBarUserExpense(int userId)
+        {
+            var user = _userMgr.GetUserById(userId);
+
+            return _expense._table
+                .Include(e => e.Category)
+                .Where(m => m.UserId == user.UserId)
                 .ToList();
         }
 
