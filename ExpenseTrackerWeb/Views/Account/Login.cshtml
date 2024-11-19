@@ -14,6 +14,7 @@
     <link href="~/css/login.css" rel="stylesheet" />
     <link href="~/css/main.css" rel="stylesheet" />
     <link href="~/css/errorModal.css" rel="stylesheet" />
+    <link href="~/css/spinner.css" rel="stylesheet" />
 </head>
 <body>
     <header class="header-container">
@@ -43,7 +44,6 @@
         </div>
         </form>
     </header>
-    <div class="overlay" id="overlay"></div>
 
     <nav class="sidebar" id="sidebar">
         <div class="logo-sidebar">
@@ -103,24 +103,85 @@
             <input type="hidden" asp-for="Email" class="form-control" />
         </form>
     </div>
+   
     <div id="forgotpass" class="hide">
+        <div class="overlay" id="overlay"></div>
         <div class="forgot-cont">
             <p>Forgot Password</p>
-            <input type="email" placeholder="Enter your email."/>
+            <input id="forgot-email" type="email" placeholder="Enter your email."/>
             <button id="send-forgot">Submit</button>
+            <div id="forgotPasswordMessage" style="color: red; display: none;"></div>
         </div>
+
+        <div class="spinner" id="spinner"></div>
+
+        
     </div>
     <div id="forgot-blur"></div>
     <script>
+        document.getElementById('send-forgot').addEventListener('click', function () {
+            const email = document.getElementById('forgot-email').value.trim();
+            const forgotPasswordMessage = document.getElementById('forgotPasswordMessage');
+            const spinner = document.getElementById('spinner');
+            const overlay = document.getElementById('overlay');
+
+            forgotPasswordMessage.style.display = 'none';
+            forgotPasswordMessage.innerText = '';
+            spinner.style.display = 'block';
+            overlay.style.display = 'block';
+
+            fetch('@Url.Action("ForgotPassword", "Mail")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+
+                if (data.success) {
+                    forgotPasswordMessage.style.color = 'green';
+                    forgotPasswordMessage.innerText = data.message;
+                } else {
+                    forgotPasswordMessage.style.color = 'red';
+                    forgotPasswordMessage.innerText = data.message;
+                }
+                    forgotPasswordMessage.style.display = 'block';
+            })
+            .catch(error => {
+                forgotPasswordMessage.style.color = 'red';
+                forgotPasswordMessage.innerText = 'An error occurred. Please try again.';
+                forgotPasswordMessage.style.display = 'block';
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                spinner.style.display = 'none';
+                overlay.style.display = 'none';
+            });
+        });
+
         document.getElementById('forgot-id').addEventListener('click', function (event) {
             event.stopPropagation();
 
             let forgotModal = document.getElementById('forgotpass');
+            let blur = document.getElementById('forgot-blur');
 
             if (forgotModal.classList.contains('hide')) {
                 forgotModal.classList.remove('hide');
                 forgotModal.classList.add('show');
+                blur.classList.remove('hide');
+                blur.classList.add('show');
             }
+        });
+
+        document.getElementById('forgot-blur').addEventListener('click', function (event) {
+            event.stopPropagation();
+
+            document.getElementById('forgotpass').classList.remove('show');
+            document.getElementById('forgotpass').classList.add('hide');
+            document.getElementById('forgot-blur').classList.remove('show');
+            document.getElementById('forgot-blur').classList.add('hide');
         });
 
         document.addEventListener('DOMContentLoaded', function () {

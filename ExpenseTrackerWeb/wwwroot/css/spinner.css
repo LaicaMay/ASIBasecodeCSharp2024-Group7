@@ -1,0 +1,46 @@
+﻿.spinner {
+    border: 7px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #307a59;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s ease infinite;
+    display: block;
+    position: absolute;
+    top: 40%;
+    left: 45%;
+    z-index: 40002;
+    display: none;
+}
+
+.overlay {
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 120vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 2003;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner-cont {
+    position: absolute;
+    left: 0;
+    bottom: -20px;
+    width: 230px;
+    height: 60px;
+    background-color: white;
+    border-radius: 15px;
+    border-color: #307A59;
+    border-style: solid;
+    border-width: 1px;
+    display: none;
+}

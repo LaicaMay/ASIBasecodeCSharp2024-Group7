@@ -142,8 +142,11 @@ body {
     left: 50%;
     top: 40%;
     z-index: 200;
-    transform: translate(-50%, -50%)
+    transform: translate(-50%, -50%);
+    z-index: 2001;
 }
+
+
 
 #forgotpass.hide {
     opacity: 0;
@@ -156,12 +159,63 @@ body {
 }
 
 #forgotpass .forgot-cont {
-    height: 250px;
-    width: 280px;
+    height: 220px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
     background-color: white;
     border-radius: 10px;
     border: solid;
+    align-items: center;
+    justify-content: start;
     border-width: 1px;
+    gap: 10px
+}
+#forgot-blur {
+    position: absolute;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(3px);
+    z-index: 2000;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#forgot-blur.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#forgot-blur.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.forgot-cont button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 200px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 15px;
+    background-color: #68BB69;
+}
+
+.forgot-cont input[type="email"] {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 35px;
+    width: 200px;
+    border-radius: 30px;
+    margin-top: 10px
+}
+
+.forgot-cont p {
+    margin-top: 30px;
+    font-size: 1.5rem;
 }
 
 @media (max-width: 512px) {
