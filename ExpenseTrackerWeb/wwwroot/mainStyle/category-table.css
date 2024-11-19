@@ -34,7 +34,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    max-height: 200px;
+    /*max-height: 200px;*/
     overflow-y: auto;
 }
 
@@ -52,6 +52,7 @@
     background-repeat: no-repeat;
     background-position: center 0px;
     background-size: cover;
+    padding-left: 45px;
 }
 
 .table-category th {
@@ -62,6 +63,7 @@
     font-weight: 500;
     padding: 10px;
     width: auto;
+    padding-left: 45px;
 }
 
 .table-category td {
@@ -99,7 +101,7 @@ th img {
     display: flex;
     align-items: center;
     justify-content: start;
-    
+    padding-left: 38px;
 }
 
 #table-category-content a {
@@ -123,12 +125,22 @@ th img {
         background-color: #72E25A;
     }
 
-.button-search {
-    margin-top: 165px; 
-    display: flex;
+/*.button-search {*/
+    /*margin-top: 165px;*/ 
+    /*display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}*/
+.button-search {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+    position: absolute;
+    bottom: 20px;
 }
 
 .button-search a {
@@ -175,6 +187,10 @@ th img {
         height: 75vh;
         width: 87vw;
     }
+    #table-category-content {
+        max-height: 400px; /* Define a max height for the container */
+        overflow-y: auto; /* Allow vertical scrolling */
+    }
 }
 
 
@@ -197,6 +213,10 @@ th img {
         height: 75vh;
         width: 87vw;
     }
+    #table-category-content {
+        max-height: 400px; /* Define a max height for the container */
+        overflow-y: auto; /* Allow vertical scrolling */
+    }
 }
 
 @media (min-width: 1097px) and (min-height: 736px) {
@@ -209,7 +229,7 @@ th img {
         align-items: center;
         justify-content: start;
         flex-direction: column;
-        height: 200px;
+        /*height: 200px;*/
         overflow-y: auto;
     }
 
@@ -221,6 +241,7 @@ th img {
         background-repeat: no-repeat;
         background-position: center 0px;
         background-size: cover;
+        padding-left: 45px;
     }
 
     #table-category-content thead th {
@@ -258,6 +279,7 @@ th img {
         background-repeat: no-repeat;
         background-position: center 0px;
         background-size: cover;
+        padding-left: 45px;
     }
 
     .table-category tbody {
@@ -271,7 +293,7 @@ th img {
         }
 
     .table-category th {
-       /* text-align: center;
+        /* text-align: center;
         font-family: sans-serif;
         font-weight: 300;
         padding: 5px;
@@ -282,6 +304,7 @@ th img {
         font-weight: 500;
         padding: 10px 5px; /* Consistent padding */
         width: auto; /* Keep the width auto for consistent sizing */
+        padding-left: 45px;
     }
 
     .table-category td {
@@ -400,5 +423,3 @@ th img {
             align-content: center;
         }
 }
-
-
