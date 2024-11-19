@@ -15,9 +15,15 @@ namespace ExpenseTrackerWeb.Controllers
         #region ExpenseManagement
         public IActionResult Overview(string Search = "", string sortOrderCategory = "reset", string sortOrderDate = "reset")
         {
-            if (!User.Identity.IsAuthenticated)
+            var existUser = _userManager.GetUserById(UserId);
+
+            if (User.Identity.IsAuthenticated)
             {
-                return BadRequest();
+                if (existUser.isVerify == false)
+                {
+                    return RedirectToAction("Verify", "Account");
+                }
+
             }
 
             var expenses = _userExpenseMgr.ListUserExpense(UserId);

@@ -49,10 +49,11 @@ namespace ExpenseTracker.Data.Repository
         public ErrorCode SignUp(User u, ref string errMsg)
         {
             
-            u.Code = Utilities.code.ToString();
+            //u.Code = Utilities.code.ToString();
             u.CreatedDate = DateTime.Now;
             u.Status = (int)Status.InActive;
-            u.Agree = true;      
+            u.Agree = true;
+            u.isVerify = false;
 
             if (_userRepo.Create(u, out errMsg) != ErrorCode.Success)
             {

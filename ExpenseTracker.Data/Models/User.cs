@@ -37,6 +37,8 @@ public partial class User
 
     public bool Agree { get; set; }
 
+    public bool isVerify { get; set; }
+
     [InverseProperty("User")]
     public virtual ICollection<Balance> Balances { get; set; } = new List<Balance>();
 
