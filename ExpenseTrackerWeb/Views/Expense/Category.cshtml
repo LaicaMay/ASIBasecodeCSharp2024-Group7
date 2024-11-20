@@ -33,7 +33,7 @@
                         Description
                     </th>
                     <th>        
-                        Expenses
+                        Total Expenses
                     </th>
                     <th>Action</th>
                 </tr>
@@ -45,7 +45,8 @@
                         <td data-label="Category"
                             data-category-id="@item.CategoryId"
                             data-name-category="@item.CategoryName"
-                            data-description-category="@item.Description">
+                            data-description-category="@item.Description"
+                            data-totalamount="@item.TotalAmount">
                             <div class="cat-div">
                                 <div class="img-bg" style="background-color: @item.ColorPick;">
                                     
@@ -62,7 +63,9 @@
                         </td>
                         <td data-label="Expenses">
                             <div class="cat-div">
-                                
+                                <p>
+                                    ₱@item.TotalAmount
+                                </p>
                             </div>
                         </td>
                         <td data-label="Action">

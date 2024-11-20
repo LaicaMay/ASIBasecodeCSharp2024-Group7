@@ -41,6 +41,7 @@ namespace ExpenseTracker.Data.Repository
 
             exitingCategory.CategoryName = category.CategoryName;
             exitingCategory.Description = category.Description;
+            exitingCategory.TotalAmount = category.TotalAmount;
 
             if (_category.Update(exitingCategory.CategoryId, exitingCategory, out err) != ErrorCode.Success)
             {

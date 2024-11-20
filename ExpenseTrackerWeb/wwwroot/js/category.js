@@ -130,10 +130,12 @@
             const categoryId = parentRow.getAttribute('data-category-id');
             const categoryName = parentRow.getAttribute('data-name-category');
             const description = parentRow.getAttribute('data-description-category');
+            const totalAmount = parentRow.getAttribute('data-totalamount');
 
             document.getElementById('category-id').value = categoryId;
             document.getElementById('category-name').textContent = categoryName;
             document.getElementById('category-description').textContent = description;
+            document.getElementById('category-amount').textContent = totalAmount;
 
             let detailsCatModal = document.getElementById('category-container');
             let blur = document.getElementById('category-add-blur');

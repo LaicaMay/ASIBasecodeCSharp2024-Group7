@@ -73,10 +73,10 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
         return;
     }
 
-    if (amount > remainingBal) {
-        alert('Insufficient Remaining Balance.');
-        return;
-    }
+    //if (amount > remainingBal) {
+    //    alert('Insufficient Remaining Balance.');
+    //    return;
+    //}
 
     if (checkbox.checked) {
         date = null; 
