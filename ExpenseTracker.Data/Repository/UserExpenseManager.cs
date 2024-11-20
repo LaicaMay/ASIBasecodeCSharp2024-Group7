@@ -10,6 +10,7 @@ namespace ExpenseTracker.Data.Repository
         private readonly BaseRepository<Expense> _expense;
         private readonly BaseRepository<VwUsersExpensesView> _vwExpense;
         private readonly BaseRepository<UserExpense> _userExpense;
+        private readonly UserCategoryManager _userCategoryMgr;
 
         public UserExpenseManager()
         {
@@ -18,6 +19,7 @@ namespace ExpenseTracker.Data.Repository
             _vwExpense = new BaseRepository<VwUsersExpensesView>();
             _userExpense = new BaseRepository<UserExpense>();
             _balanceMgr = new BalanceManager();
+            _userCategoryMgr = new UserCategoryManager();
         }
 
         public List<Expense> ListUserExpense(int userId)
@@ -60,6 +62,7 @@ namespace ExpenseTracker.Data.Repository
         public ErrorCode Add(Expense expn, ref String err)
         {
             var userBalance = _balanceMgr.GetActiveBalanceByUserId(expn.UserId);
+             var existCategory = _userCategoryMgr.GetCategoryById(expn.CategoryId);
             decimal? totalAmount = 0;
             expn.CreatedDate = DateTime.Now;
 
@@ -73,6 +76,11 @@ namespace ExpenseTracker.Data.Repository
             {
                 err = "Error creating Expense";
                 return ErrorCode.Error;
+            }
+
+            if (expn.StartDate == null && expn.EndDate == null)
+            {
+                existCategory.TotalAmount = (existCategory.TotalAmount ?? 0) + expn.Amount;
             }
 
             if (expn.StartDate != null && expn.EndDate != null)
@@ -91,9 +99,9 @@ namespace ExpenseTracker.Data.Repository
                     }
                 }
                 Console.WriteLine("Total Amount for Selected Days: " + totalAmount);
+                existCategory.TotalAmount = (existCategory.TotalAmount ?? 0) + totalAmount;
             }
-
-
+        
             if (userBalance == null)
             {
                 err = "userBalance is Null";
@@ -125,6 +133,11 @@ namespace ExpenseTracker.Data.Repository
             if (userBalance.RemainingBalance < 0)
             {
                 err = "Expense exceeds remaining balance.";
+                return ErrorCode.Error;
+            }
+       
+            if (_userCategoryMgr.UpdateCategory(existCategory, ref err) != ErrorCode.Success)
+            {
                 return ErrorCode.Error;
             }
 

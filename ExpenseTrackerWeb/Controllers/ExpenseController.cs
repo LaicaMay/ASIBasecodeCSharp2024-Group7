@@ -110,23 +110,7 @@ namespace ExpenseTrackerWeb.Controllers
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
                 return BadRequest(new { message = "Failed to add expense.", errors = ModelState });
-            }
-
-            var existCategory = _userCategoryMgr.GetCategoryById(expense.CategoryId);
-            if (existCategory == null)
-            {
-                return BadRequest(new { message = "Category not found." });
-            }
-
-            //Update the TotalAmount for the category
-            existCategory.TotalAmount = (existCategory.TotalAmount ?? 0) + expense.Amount;
-
-            //Save the updated category
-            if (_userCategoryMgr.UpdateCategory(existCategory, ref ErrorMessage) != ErrorCode.Success)
-            {
-                ModelState.AddModelError(string.Empty, ErrorMessage);
-                return BadRequest(new { message = "Failed to update category amount.", errors = ModelState });
-            }
+            }       
 
             return Ok(new { message = "Expense added successfully and balance updated." });
         }
