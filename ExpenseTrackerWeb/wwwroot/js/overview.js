@@ -10,6 +10,7 @@
                 const date = parentRow.getAttribute('data-date');
                 const description = parentRow.getAttribute('data-description');
                 const startDate = parentRow.getAttribute('data-start-date');
+                const endDate = parentRow.getAttribute('data-end-date');
 
                 document.getElementById('modal-expense-id').value = expenseId;
                 document.getElementById('modal-expense-name').textContent = expenseName;
@@ -17,6 +18,7 @@
                 document.getElementById('modal-category-name').textContent = categoryName;
                 document.getElementById('modal-date').textContent = (date === null || date === '') ? startDate : date;
                 document.getElementById('modal-description').textContent = description;
+                document.getElementById('modal-end-date').textContent = endDate;
 
                 var modalId = document.getElementById('modal-expense-id')
 
@@ -79,7 +81,7 @@
                     document.getElementById('expense-container').classList.remove('show');
                     document.getElementById('expense-container').classList.add('hide');
 
-                    const successModal = document.getElementById('success-added-modal');
+                    const successModal = document.getElementById('success-del-modal');
                     successModal.classList.remove('hide');
                     successModal.classList.add('show');
                     setTimeout(() => {

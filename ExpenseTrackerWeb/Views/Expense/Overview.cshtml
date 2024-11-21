@@ -136,7 +136,8 @@
                     <div style="display: flex; flex-direction: column;
                                 margin-left: 20px;
                                 gap: 15px;
-                                margin-top: 5px;">
+                                margin-top: 5px;
+                                position:relative;">
                         <div>
                             <img src="~/images/iconVec/ingredient-icon.svg" alt="">
                         </div>
@@ -149,17 +150,23 @@
                         <div>
                             <img src="~/images/iconVec/bag-icon.svg" alt="">
                         </div>
+                        <div class="endDate">
+                            <img src="~/images/iconVec/redEndDate.svg" alt="">
+                        </div>
                         <div>
                             <img src="/images/iconVec/paper-icon.svg" alt="">
                         </div>
                     </div>
                     <div style="display: flex; flex-direction: column; margin-left: 20px;
-                                gap: 15px;">
+                                gap: 15px; position:relative">
                         <input type="hidden" id="modal-expense-id" value=""/>
                         <p id="modal-expense-name"></p>
                         <p id="modal-amount"></p>
                         <p id="modal-category-name"></p>
                         <p id="modal-date"></p>
+                        <div class="endDates">
+                            <p id="modal-end-date"></p>
+                        </div>
                         <p id="modal-description"></p>
                     </div>
                 </div>

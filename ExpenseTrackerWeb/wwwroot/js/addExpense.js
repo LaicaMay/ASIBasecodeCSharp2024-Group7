@@ -204,3 +204,14 @@ document.getElementById('done-b').addEventListener('click', function (event) {
 
     location.reload();
 });
+
+document.getElementById('done-del').addEventListener('click', function (event) {
+    event.stopPropagation();
+
+    document.getElementById('success-del-modal').classList.remove('show');
+    document.getElementById('success-del-modal').classList.add('hide');
+    document.getElementById('add-expense-container').classList.remove('show');
+    document.getElementById('add-expense-container').classList.add('hide');
+
+    location.reload();
+});

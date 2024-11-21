@@ -176,7 +176,8 @@
 }
 
 #success-added-modal,
-#cat-success-added-modal {
+#cat-success-added-modal,
+#success-del-modal {
     position: absolute;
     top: 40%;
     left: 50%;
@@ -188,21 +189,24 @@
 }
 
 #success-added-modal.hide,
-#cat-success-added-modal.hide{
+#cat-success-added-modal.hide,
+#success-del-modal.hide {
     opacity: 0;
     pointer-events: none; 
     transform: translate(-50%, -50%) scale(0.8);
 }
 
 #success-added-modal.show,
-#cat-success-added-modal.show{
+#cat-success-added-modal.show,
+#success-del-modal.show {
     opacity: 1;
     pointer-events: auto;
     transform: translate(-50%, -50%) scale(1); 
 }
 
 #success,
-#cat-success {
+#cat-success,
+#success-del {
     position: relative;
     z-index: 201;
     height: 180px;
@@ -220,7 +224,8 @@
 }
 
 #success-added-modal button,
-#cat-success-added-modal button {
+#cat-success-added-modal button,
+#success-del-modal button{
     width: 100px;
     padding: 5px;
     align-self: center;
@@ -230,7 +235,8 @@
 }
 
 #success-added-modal button:active,
-#cat-success-added-modal button:active{
+#cat-success-added-modal button:active,
+#success-del-modal button:active{
    background-color: #e2e2e2;
 }
 

@@ -17,7 +17,19 @@
 #edit-form-cont.show {
     opacity: 1;
     pointer-events: auto;
-} 
+}
+
+.endDate {
+    position: absolute;
+    bottom: 38.5px;
+    right: -160px;
+}
+
+.endDates {
+    position: absolute;
+    bottom: 35px;
+    right: -160px;
+}
 
 #edit-form {
     position: relative;

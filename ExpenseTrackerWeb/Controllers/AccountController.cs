@@ -31,6 +31,9 @@ namespace ExpenseTrackerWeb.Controllers
                 if (existUser.isVerify == false)
                 {
                     return RedirectToAction("Verify");
+                } else if (existUser.isVerify == false)
+                {
+                    return RedirectToAction("Login");
                 }
 
                 return RedirectToAction("Overview", "Expense");
