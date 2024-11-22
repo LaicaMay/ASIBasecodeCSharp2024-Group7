@@ -1,0 +1,230 @@
+﻿.main-2 {
+    width: 90%;
+    height: fit-content;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px solid black;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: #e9e8e84b;
+}
+
+.expenses {
+    height: auto;
+    background-color: #e9e8e84b;
+    border-radius: 15px;
+    border: 2px solid black;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbarinfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.topbarinfo > h4 {
+    margin: 0;
+    padding: 20px;
+    float: right;
+}
+
+.expensecontents {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.expenseitems {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    border: 2px solid black;
+    margin: 20px;
+    text-align: center;
+    flex-grow: 1;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.expenseitems:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+    transform: scale(1.10);
+}
+
+.title-filter-group {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.title-filter-group > img, .title-filter-group > h1, .title-filter-group > h3 {
+    width: auto;
+    height: fit-content;
+    padding: 0 10px 0 10px;
+}
+
+.title-filter-group > img:hover {
+    background-color: #68BB69;
+    padding: 14px 10px;
+    border-radius: 20px;
+}
+
+
+.charts {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0 1%;
+    gap: 10px;
+}
+
+.pie-container, .line-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 2%;
+    width: 99%;
+    height: 400px;
+}
+
+.pie-chart {
+    flex: 1 1 35%;
+    padding: 20px;
+    background-color: #e8f5e9;
+    border-radius: 10px;
+    border: 2px solid black;
+    box-sizing: border-box;
+}
+
+.line-graph {
+    flex: 1 1 65%;
+    padding: 20px;
+    background-color: #e8f5e9;
+    border-radius: 10px;
+    border: 2px solid black;
+    box-sizing: border-box;
+}
+
+.button-container {
+    text-align: center;
+    padding: 10px;
+}
+
+.button-container button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.button-container button:hover {
+    background-color: #0056b3;
+}
+
+.modal {
+    display: none; /* Initially hidden */
+    position: fixed;
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4); /* Black with transparency */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 900px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.close-btn {
+    font-size: 30px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #888;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.modal-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.modal-btn:hover {
+    background-color: #45a049;
+}
+
+
+@media (max-width: 1280px) {
+    .charts {
+        flex-wrap: wrap;
+    }
+
+    .pie-chart {
+        flex: 1 1 50%;
+        max-width: none;
+    }
+
+    .line-graph {
+        flex: 1 1 50%;
+        max-width: none;
+    }
+
+
+    .button-container button {
+        padding: 10px 40px;
+    }
+}
+
+
+@media (max-width: 400px) {
+    .pie-chart {
+        flex: 1 1 100%;
+    }
+
+    .line-graph {
+        flex: 1 1 100%;
+    }
+}
