@@ -14,12 +14,12 @@
     <div class="main-title">
         <h1>Category</h1>
     </div>
-    <br />
     <div id="table-category-content" class="hide">
         <table class="table-category">
             <thead>
                 <tr>
                     <th>
+                        Category Name
                         <form action="@Url.Action("Category", "Expense")" method="get" style="display: inline;">
                             <input type="hidden" name="sortOrderCategory" value="@((ViewBag.CurrentSortOrderCategory == "asc") ? "reset" : "asc")" />
                             <input type="hidden" name="sortOrderDate" value="reset" />
@@ -27,12 +27,11 @@
                                 <img src="~/images/iconVec/@(ViewBag.CurrentSortOrderCategory == "asc" ? "up-arrow.svg" : "down-arrw.svg")" alt="Sort by Category">
                             </button>
                         </form>
-                        Category Name
                     </th>
                     <th>
                         Description
                     </th>
-                    <th>        
+                    <th>
                         Total Expenses
                     </th>
                     <th>Action</th>
@@ -49,7 +48,6 @@
                             data-totalamount="@item.TotalAmount">
                             <div class="cat-div">
                                 <div class="img-bg" style="background-color: @item.ColorPick;">
-                                    
                                 </div>
                                 <p style="margin-left:10px;">@item.CategoryName</p>
                             </div>
@@ -63,9 +61,18 @@
                         </td>
                         <td data-label="Expenses">
                             <div class="cat-div">
-                                <p>
-                                    ₱@item.TotalAmount
-                                </p>
+                                @if (@item.TotalAmount == null)
+                                {
+                                    <p>
+                                        No amount set
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p>
+                                        ₱@item.TotalAmount
+                                    </p>
+                                }
                             </div>
                         </td>
                         <td data-label="Action">
@@ -169,7 +176,7 @@
                 </div>
                 <div>
                     <img src="~/images/iconVec/money-icon.svg" alt="">
-                </div>   
+                </div>
                 <div>
                     <img src="/images/iconVec/paper-icon.svg" alt="">
                 </div>
@@ -178,7 +185,7 @@
                                 gap: 15px;">
                 <input type="hidden" id="category-id" value="" />
                 <p id="category-name"></p>
-                <p id="category-amount"></p>            
+                <p id="category-amount"></p>
                 <p id="category-description"></p>
             </div>
         </div>
@@ -217,7 +224,7 @@
         <div style="position: relative;">
             <input id="edit-category-name" type="text" placeholder="Expense Name" style="width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black;" required />
             <div style="position: absolute; left: 8px; top: 10px;"><img src="~/images/iconVec/ingredient-icon.svg" alt=""></div>
-        </div>         
+        </div>
         <div style="position: relative;">
             <textarea id="edit-category-description" type="text" style="height: 120px; padding:10px; border-radius: 20px; width: 275px; resize: none;" required></textarea>
             <div style="position: absolute; right: 8px; bottom: 10px;"><img src="/images/iconVec/paper-icon.svg" alt=""></div>
@@ -225,7 +232,7 @@
         <button id="edit-category-btn" style="cursor: pointer; width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black; background-color: #272B2C; color: white;" type="button">
             Save Category
         </button>
-    </div>  
+    </div>
 </div>
 
 

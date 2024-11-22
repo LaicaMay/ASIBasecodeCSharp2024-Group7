@@ -46,8 +46,8 @@
 
     #table-category-content thead {
         position: sticky;
-        top: 0; /* Fix the thead at the top */
-        z-index: 1; /* Ensure the thead is above the scrolling tbody */
+        top: 0;
+        z-index: 1;
         background-image: url('/images/backgroundImage/thHeaderBack.JPG');
         background-repeat: no-repeat;
         background-position: center 0px;
@@ -213,6 +213,7 @@ th img {
     .main-container {
         height: 75vh;
         width: 87vw;
+        position: relative;
     }
 
     #table-category-content {
@@ -248,9 +249,9 @@ th img {
 
             #table-category-content thead th {
                 /*position: sticky;
-        top: 0;
-        z-index: 1;
-        margin-bottom: 20px;*/
+                top: 0;
+                z-index: 1;
+                margin-bottom: 20px;*/
                 text-align: start;
                 font-family: sans-serif;
                 font-weight: 500;
@@ -284,6 +285,7 @@ th img {
         background-position: center 0px;
         background-size: cover;
         padding-left: 45px;
+        text-align: start;
     }
 
     .table-category tbody {
@@ -303,7 +305,7 @@ th img {
         padding: 5px;
         width: auto;
         padding-left: 70px;*/
-        text-align: center;
+        text-align: start;
         font-family: sans-serif;
         font-weight: 500;
         padding: 10px 5px; /* Consistent padding */
@@ -389,7 +391,7 @@ th img {
     }
 }
 
-@media (min-width: 793px) {
+@media (min-width: 700px) {
     .button-search {
         display: flex;
         flex-direction: row;
@@ -399,7 +401,10 @@ th img {
         margin-top: 10px;
         position: absolute;
         bottom: 20px;
+        margin-left: 50px;
+        margin-right: 50px;
     }
+
 
         .button-search a {
             text-decoration: none;
@@ -425,5 +430,54 @@ th img {
             margin-top: 10px;
             flex: 1;
             align-content: center;
+        }
+
+    .cat-div {
+        display: flex;
+        padding-left: 38px;
+        overflow-y: auto;
+        overflow-x: auto;
+        max-width: 100%;
+        max-height: 400px;
+    }
+}
+
+@media (max-width: 699px) {
+    .button-search {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 20px;
+        position: absolute;
+        bottom: 10px;
+        width: 80%;
+        max-width: 500px;
+        gap: 5px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+        .button-search input {
+            max-width: 500px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            margin-top: 10px;
+            display: inline-block;
+            box-sizing: border-box;
+        }
+
+        .button-search a {
+            max-width: 500px;
+            text-decoration: none;
+            color: black;
+            font-family: sans-serif;
+            padding: 6px 15px;
+            border: 1px solid #444;
+            border-radius: 20px;
+            transition: box-shadow 0.3s ease, background-color 0.3s ease;
+            display: inline-block;
+            box-sizing: border-box;
         }
 }
