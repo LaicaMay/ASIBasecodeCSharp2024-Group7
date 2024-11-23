@@ -82,7 +82,7 @@ namespace ExpenseTrackerWeb.Controllers
                 _balanceMgr.UpdateBalance(currentActiveBalance, ref ErrorMessage);
             }
 
-            balance.UserId = UserId;          
+            balance.UserId = UserId;
             balance.isActive = true;
 
             if (_balanceMgr.AddBalance(balance, ref ErrorMessage) != ErrorCode.Success)
@@ -110,7 +110,7 @@ namespace ExpenseTrackerWeb.Controllers
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
                 return BadRequest(new { message = "Failed to add expense.", errors = ModelState });
-            }       
+            }
 
             return Ok(new { message = "Expense added successfully and balance updated." });
         }
@@ -132,7 +132,7 @@ namespace ExpenseTrackerWeb.Controllers
                 ModelState.AddModelError(String.Empty, ErrorMessage);
                 return BadRequest(new { message = "Failed to update expense.", errors = ModelState });
             }
-          
+
             return Ok(new { message = "Expense updated successfully." });
         }
 
@@ -140,7 +140,7 @@ namespace ExpenseTrackerWeb.Controllers
         public IActionResult DeleteExpense(int id)
         {
 
-            if(_userExpenseMgr.Delete(id, ref ErrorMessage) != ErrorCode.Success)
+            if (_userExpenseMgr.Delete(id, ref ErrorMessage) != ErrorCode.Success)
             {
                 ModelState.AddModelError(String.Empty, ErrorMessage);
                 return BadRequest(new { message = "Failed to delete expense.", errors = ModelState });
@@ -227,13 +227,12 @@ namespace ExpenseTrackerWeb.Controllers
             var userExpenses = _userExpenseMgr.ListUserExpense(UserId);
             var userCategories = _userCategoryMgr.ListCategory(UserId);
 
-
             var categoryMap = userCategories.ToDictionary(c => c.CategoryId, c => c.CategoryName);
 
             var categorizedExpenses = new Dictionary<string, decimal[]>();
             foreach (var categoryName in categoryMap.Values)
             {
-                categorizedExpenses[categoryName] = new decimal[12]; 
+                categorizedExpenses[categoryName] = new decimal[12];
             }
 
             foreach (var expense in userExpenses)
@@ -243,37 +242,45 @@ namespace ExpenseTrackerWeb.Controllers
                     var categoryId = expense.CategoryId.Value;
                     var categoryName = categoryMap.ContainsKey(categoryId) ? categoryMap[categoryId] : "Uncategorized";
 
-                    var monthIndex = expense.StartDate.Value.Month ; 
+                    var monthIndex = expense.StartDate.Value.Month;
                     if (monthIndex >= 0 && monthIndex < 12)
                     {
-                        var amount = expense.Amount ?? 0m; 
+                        var amount = expense.Amount ?? 0m;
                         categorizedExpenses[categoryName][monthIndex] += amount;
                     }
                 }
             }
 
-            // Prepare Bar Chart datasets
             var barChartDatasets = categorizedExpenses.Select(entry => new
             {
-                label = entry.Key,  // Category name
-                data = entry.Value.Select(value => (double)value).ToArray(), 
+                label = entry.Key, 
+                data = entry.Value.Select(value => (double)value).ToArray(),
                 borderWidth = 1
             }).ToList();
 
             var totalBalance = userBalance.Sum(e => e.TotalBalance ?? 0m);
-            var totalExpenses = userExpenses.Sum(e => e.Amount ?? 0m); 
+            var totalExpenses = userExpenses.Sum(e => e.Amount ?? 0m);
 
             var pieChartLabels = new[] { "Total Balance", "Total Expenses" };
-            var pieChartData = new[] { (double)totalBalance, (double)totalExpenses }; 
+            var pieChartData = new[] { (double)totalBalance, (double)totalExpenses };
+
+            //var sampleTopExpenses = new[]
+            //        {
+            //    new { CategoryName = "Food", ExpenseName = "Lunch", Amount = 300m },
+            //    new { CategoryName = "Transportation", ExpenseName = "Gas", Amount = 200m },
+            //    new { CategoryName = "Utilities", ExpenseName = "Electric Bill", Amount = 100m }
+            //};
 
             ViewData["Months"] = months;
             ViewData["BarChartDatasets"] = barChartDatasets;
             ViewData["PieChartLabels"] = pieChartLabels;
             ViewData["PieChartData"] = pieChartData;
-
+            //ViewData["Top3Expenses"] = top3Expenses;  
+            //ViewData["Top3Expenses"] = sampleTopExpenses;
 
             return View();
         }
+
 
         [HttpGet]
         [HttpPost]

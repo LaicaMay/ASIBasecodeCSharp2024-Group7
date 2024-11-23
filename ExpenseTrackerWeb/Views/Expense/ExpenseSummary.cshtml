@@ -5,7 +5,7 @@
     var barChartDatasets = ViewData["BarChartDatasets"];
     var pieChartLabels = ViewData["PieChartLabels"] as string[] ?? Array.Empty<string>();
     var pieChartData = ViewData["PieChartData"] as double[] ?? Array.Empty<double>();
-   
+    //var topExp = ViewData["Top3Expenses"];
 }
 
 <link rel="stylesheet" href="/css/expsummary.css"/>
@@ -78,25 +78,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (ViewData["UserExpenses"] is IEnumerable<dynamic> userExpenses)
-                    {
-                        foreach (var expense in userExpenses)
-                        {
-                            <tr>
-                                <td>@expense.ExpenseName</td>
-                                <td>Php @string.Format("{0:N2}", expense.Amount)</td>
-                                <td>@expense.Category</td>
-                                <td>@expense.Date</td>
-                                <td>@expense.Description</td>
-                            </tr>
-                        }
-                    }
-                    else
-                    {
-                        <tr>
-                            <td colspan="5">No expense data available.</td>
-                        </tr>
-                    }
+           
                 </tbody>
             </table>
         </div>
@@ -118,10 +100,10 @@
     const barChartDatasets = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(barChartDatasets));
     const pieChartLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(pieChartLabels));
     const pieChartData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(pieChartData));
+    //const topExps = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(topExp));
 
-
-    console.log({ months, barChartDatasets, pieChartLabels, barChartDatasets, userExpenses });
-
+    console.log({ months, barChartDatasets, pieChartLabels, barChartDatasets, userExpenses, topExps });
+    //console.log(topExps);
 
     createChart(months, barChartDatasets, "line-graph", "bar");
     createChart(pieChartLabels, [{
