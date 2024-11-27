@@ -61,7 +61,7 @@
                         </td>
                         <td data-label="Expenses">
                             <div class="cat-div">
-                                @if (@item.TotalAmount == null)
+                                @if (@item.TotalAmount == null || @item.TotalAmount == 0)
                                 {
                                     <p>
                                         No amount set

@@ -167,9 +167,11 @@ namespace ExpenseTracker.Data.Repository
             decimal? newLessAmount = 0;
             decimal? updatedBalance = 0;
             decimal? updatedTotalAmount = 0;
+            decimal? newTotalAmount = 0;
+            decimal? newTotalLessAmount = 0;
             var existingExpense = GetExpenseById(expn.ExpenseId);
             var existBal = _balanceMgr.GetActiveBalanceByUserId(existingExpense.UserId);
-            var existCategory = _userCategoryMgr.GetCategoryById(existingExpense.CategoryId);
+            
 
             if (existingExpense == null)
             {
@@ -178,6 +180,7 @@ namespace ExpenseTracker.Data.Repository
 
             if (expn.Amount < existingExpense.Amount)
             {
+                var existCategory = _userCategoryMgr.GetCategoryById(existingExpense.CategoryId);
                 newLessAmount = existingExpense.Amount - expn.Amount;
                 updatedBalance = existBal.RemainingBalance + newLessAmount;
                 existBal.RemainingBalance = updatedBalance;
@@ -196,6 +199,7 @@ namespace ExpenseTracker.Data.Repository
 
             if (expn.Amount > existingExpense.Amount)
             {
+                var existCategory = _userCategoryMgr.GetCategoryById(existingExpense.CategoryId);
                 newLessAmount = existingExpense.Amount - expn.Amount;
                 updatedBalance = existBal.RemainingBalance + newLessAmount;
                 existBal.RemainingBalance = updatedBalance;
@@ -212,9 +216,35 @@ namespace ExpenseTracker.Data.Repository
                 }
             }
 
+            
             existingExpense.ExpenseName = expn.ExpenseName;
-            existingExpense.Amount = expn.Amount;
             existingExpense.Date = expn.Date;
+            existingExpense.Amount = expn.Amount;
+            
+            if (existingExpense.CategoryId != expn.CategoryId)
+            {
+                var updatedCategory = _userCategoryMgr.GetCategoryById(existingExpense.CategoryId);
+                newTotalLessAmount = updatedCategory.TotalAmount - existingExpense.Amount;
+                updatedCategory.TotalAmount = newTotalLessAmount;
+
+                if (_userCategoryMgr.UpdateCategory(updatedCategory, ref err) != ErrorCode.Success)
+                {
+                    return ErrorCode.Error;
+                }
+
+
+                var existNewCategory = _userCategoryMgr.GetCategoryById(expn.CategoryId);
+                newTotalAmount = existNewCategory.TotalAmount + existingExpense.Amount;
+                existNewCategory.TotalAmount = newTotalAmount;
+
+                if(_userCategoryMgr.UpdateCategory(existNewCategory, ref err) != ErrorCode.Success)
+                {
+                    return ErrorCode.Error;
+                }
+
+               
+            }
+
             existingExpense.CategoryId = expn.CategoryId;
             existingExpense.Description = expn.Description;
             existingExpense.UserId = expn.UserId;
