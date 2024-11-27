@@ -33,15 +33,15 @@ namespace ExpenseTracker.Data.Repository
                 .ToList();
         }
 
-        public List<Expense> ListBarUserExpense(int userId)
-        {
-            var user = _userMgr.GetUserById(userId);
+        //public List<Expense> ListBarUserExpense(int userId)
+        //{
+        //    var user = _userMgr.GetUserById(userId);
 
-            return _expense._table
-                .Include(e => e.Category)
-                .Where(m => m.UserId == user.UserId)
-                .ToList();
-        }
+        //    return _expense._table
+        //        .Include(e => e.Category)
+        //        .Where(m => m.UserId == user.UserId)
+        //        .ToList();
+        //}
 
         public List<VwUsersExpensesView> ListExpense(int userId)
         {
@@ -62,14 +62,9 @@ namespace ExpenseTracker.Data.Repository
         public ErrorCode Add(Expense expn, ref String err)
         {
             var userBalance = _balanceMgr.GetActiveBalanceByUserId(expn.UserId);
-             var existCategory = _userCategoryMgr.GetCategoryById(expn.CategoryId);
+            var existCategory = _userCategoryMgr.GetCategoryById(expn.CategoryId);
             decimal? totalAmount = 0;
             expn.CreatedDate = DateTime.Now;
-
-            //if (userBalance.RemainingBalance == null)
-            //{
-            //    userBalance.RemainingBalance = userBalance.TotalBalance;
-            //}
 
             if (expn.Amount > userBalance.RemainingBalance)
             {
@@ -111,8 +106,14 @@ namespace ExpenseTracker.Data.Repository
                 }
                 //Console.WriteLine("Total Amount for Selected Days: " + totalAmount);
                 existCategory.TotalAmount = (existCategory.TotalAmount ?? 0) + totalAmount;
-            }   
-        
+                var existExpense = GetExpenseById(expn.ExpenseId);
+                existExpense.Amount = totalAmount;
+                if (_expense.Update(existExpense.ExpenseId, existExpense, out err) != ErrorCode.Success)
+                {
+                    return ErrorCode.Error;
+                }
+            }
+
             if (userBalance == null)
             {
                 err = "userBalance is Null";
@@ -163,11 +164,52 @@ namespace ExpenseTracker.Data.Repository
 
         public ErrorCode Update(Expense expn, ref String err)
         {
+            decimal? newLessAmount = 0;
+            decimal? updatedBalance = 0;
+            decimal? updatedTotalAmount = 0;
             var existingExpense = GetExpenseById(expn.ExpenseId);
+            var existBal = _balanceMgr.GetActiveBalanceByUserId(existingExpense.UserId);
+            var existCategory = _userCategoryMgr.GetCategoryById(existingExpense.CategoryId);
 
             if (existingExpense == null)
             {
                 return ErrorCode.Error;
+            }
+
+            if (expn.Amount < existingExpense.Amount)
+            {
+                newLessAmount = existingExpense.Amount - expn.Amount;
+                updatedBalance = existBal.RemainingBalance + newLessAmount;
+                existBal.RemainingBalance = updatedBalance;
+                if (_balanceMgr.UpdateBalance(existBal, ref err) != ErrorCode.Success)
+                {
+                    return ErrorCode.Error;
+                }
+
+                updatedTotalAmount = existCategory.TotalAmount - newLessAmount;
+                existCategory.TotalAmount = updatedTotalAmount;
+                if (_userCategoryMgr.UpdateCategory(existCategory, ref err) != ErrorCode.Success)
+                {
+                    return ErrorCode.Error;
+                }
+            }
+
+            if (expn.Amount > existingExpense.Amount)
+            {
+                newLessAmount = existingExpense.Amount - expn.Amount;
+                updatedBalance = existBal.RemainingBalance + newLessAmount;
+                existBal.RemainingBalance = updatedBalance;
+                if (_balanceMgr.UpdateBalance(existBal, ref err) != ErrorCode.Success)
+                {
+                    return ErrorCode.Error;
+                }
+
+                updatedTotalAmount = existCategory.TotalAmount - newLessAmount;
+                existCategory.TotalAmount = updatedTotalAmount;
+                if (_userCategoryMgr.UpdateCategory(existCategory, ref err) != ErrorCode.Success)
+                {
+                    return ErrorCode.Error;
+                }
             }
 
             existingExpense.ExpenseName = expn.ExpenseName;
@@ -178,12 +220,13 @@ namespace ExpenseTracker.Data.Repository
             existingExpense.UserId = expn.UserId;
             existingExpense.CreatedDate = expn.CreatedDate;
             existingExpense.DateModified = DateTime.Now;
-
+         
             if (_expense.Update(expn.ExpenseId, expn, out err) != ErrorCode.Success)
             {
                 return ErrorCode.Error;
-            }     
+            }
 
+           
             return ErrorCode.Success;
         }
 

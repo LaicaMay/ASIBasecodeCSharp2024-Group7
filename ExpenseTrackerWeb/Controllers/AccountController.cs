@@ -35,8 +35,8 @@ namespace ExpenseTrackerWeb.Controllers
                 {
                     return RedirectToAction("Login");
                 }
-
                 return RedirectToAction("Overview", "Expense");
+
             }
 
             ViewBag.Error = string.Empty;

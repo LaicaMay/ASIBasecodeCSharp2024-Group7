@@ -72,8 +72,8 @@
                                         data-amount="@item.Amount"                    
                                         data-date="@(item.Date?.ToString("yyyy-MM-dd") ?? string.Empty)"
                                         data-description="@item.Description"
-                                        data-start-date="@item.StartDate"
-                                        data-end-date="@item.EndDate"
+                                        data-start-date="@(item.StartDate?.ToString("yyyy-MM-dd") ?? string.Empty)"
+                                        data-end-date="@(item.EndDate?.ToString("yyyy-MM-dd") ?? string.Empty)"
                                     >
                                         <div style="display: flex;
                                     align-items: center;

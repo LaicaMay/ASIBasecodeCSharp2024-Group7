@@ -33,8 +33,10 @@
                     document.getElementById('edit-expense-id').value = expenseId;
                     document.getElementById('edit-expense-name').value = expenseName;
                     document.getElementById('edit-amount').value = amount;
-                    document.getElementById('edit-date').value = date;
+                    document.getElementById('edit-date').value = (date === null || date === '') ? startDate : date;
                     document.getElementById('edit-description').value = description;         
+
+         
 
                     const categoryDropdown = document.getElementById('edit-category-id');
                     for (let i = 0; i < categoryDropdown.options.length; i++) {

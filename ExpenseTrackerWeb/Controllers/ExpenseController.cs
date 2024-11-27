@@ -6,6 +6,7 @@ using ExpenseTracker.Data.Utils;
 using ExpenseTracker.Data.Models.CustomModels;
 using ExpenseTrackerWeb.Models;
 using ExpenseTracker.Data.Repository;
+using System;
 
 namespace ExpenseTrackerWeb.Controllers
 {
@@ -140,6 +141,50 @@ namespace ExpenseTrackerWeb.Controllers
         [HttpDelete]
         public IActionResult DeleteExpense(int id)
         {
+            decimal? newRemainingBal = 0;
+            decimal? newCategoryAmount = 0;
+
+            if(!User.Identity.IsAuthenticated)
+            {
+                return BadRequest(new { message = "User is not aunthenticated" });
+            }
+
+            var existExpense = _userExpenseMgr.GetExpenseById(id);
+            var existBalance = _balanceMgr.GetActiveBalanceByUserId(UserId);
+            var existCategory = _userCategoryMgr.GetCategoryById(existExpense.CategoryId);
+
+            if (existExpense == null) 
+            {
+                return BadRequest(new { message = "Expense is null." });
+            }
+
+            if (existBalance == null) 
+            {
+                return BadRequest(new { message = "Balance is null." });
+            }
+
+            if (existCategory == null)
+            {
+                return BadRequest(new { message = "Category is null." });
+            }
+
+            newRemainingBal = existBalance.RemainingBalance + existExpense.Amount;
+            existBalance.RemainingBalance = newRemainingBal;
+
+            if (_balanceMgr.UpdateBalance(existBalance, ref ErrorMessage) != ErrorCode.Success)
+            {
+                ModelState.AddModelError(String.Empty, ErrorMessage);
+                return BadRequest(new { message = "Failed to update balance amount.", errors = ModelState });
+            }
+
+            newCategoryAmount = existCategory.TotalAmount - existExpense.Amount;
+            existCategory.TotalAmount = newCategoryAmount;
+
+            if (_userCategoryMgr.UpdateCategory(existCategory, ref ErrorMessage) != ErrorCode.Success)
+            {
+                ModelState.AddModelError(String.Empty, ErrorMessage);
+                return BadRequest(new { message = "Failed to update category amount.", errors = ModelState });
+            }
 
             if (_userExpenseMgr.Delete(id, ref ErrorMessage) != ErrorCode.Success)
             {
@@ -201,6 +246,34 @@ namespace ExpenseTrackerWeb.Controllers
         [HttpDelete]
         public IActionResult DeleteCategory(int id)
         {
+            decimal? updateBalance = 0;
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                return BadRequest(new { message = "User is not authenticated." });
+            }
+            var existCategory = _userCategoryMgr.GetCategoryById(id);
+            var existActiveBal = _balanceMgr.GetActiveBalanceByUserId(UserId);
+
+            if(existCategory == null)
+            {
+                return BadRequest(new { message = "existCategory is null." });
+            }
+
+            if(existActiveBal == null)
+            {
+                return BadRequest(new { message = "existActiveBal is null." });
+            }
+
+            updateBalance = existActiveBal.RemainingBalance + existCategory.TotalAmount;
+            existActiveBal.RemainingBalance = updateBalance;
+
+            if(_balanceMgr.UpdateBalance(existActiveBal, ref ErrorMessage) != ErrorCode.Success)
+            {
+                ModelState.AddModelError(String.Empty, ErrorMessage);
+                return BadRequest(new { message = "Failed to update balance.", errors = ModelState });
+            }
+
             if (_userCategoryMgr.DeleteCategory(id, ref ErrorMessage) != ErrorCode.Success)
             {
                 ModelState.AddModelError(String.Empty, ErrorMessage);
@@ -215,21 +288,6 @@ namespace ExpenseTrackerWeb.Controllers
         {
             return View();
         }
-
-
-        //public IActionResult GetUserBal([FromBody] Balance userBal)
-        //{
-        //    if (User.Identity.IsAuthenticated)
-        //    {
-        //        return RedirectToAction("Login", "Account");
-
-        //    }
-
-        //    var existUserBal = _balanceMgr.ListUserBalance(UserId);
-
-
-        //    return View();
-        //}
 
         [HttpGet]
         public IActionResult ExpenseSummary()
@@ -291,7 +349,6 @@ namespace ExpenseTrackerWeb.Controllers
             return View();
         }
 
-
         [HttpGet]
         [HttpPost]
         public IActionResult GenerateReport()
@@ -324,10 +381,5 @@ namespace ExpenseTrackerWeb.Controllers
                 expenses = userExpensesReport
             });
         }
-
-
-
-
-
     }
 }
