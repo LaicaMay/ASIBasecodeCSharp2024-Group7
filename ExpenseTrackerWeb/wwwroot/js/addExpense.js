@@ -47,7 +47,6 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
     const amount = document.getElementById('amount').value.trim();
     const categoryId = document.getElementById('category-id').value;
     const description = document.getElementById('description').value.trim();
-    const remainingBal = document.getElementById('remainingBalance').value.trim();
 
     let date = document.getElementById('date-only').value.trim();
     let startDate = document.getElementById('start-date').value.trim();
@@ -73,10 +72,11 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
         return;
     }
 
-    //if (amount > remainingBal) {
-    //    alert('Insufficient Remaining Balance.');
-    //    return;
+    //if (remainingBal == null || remainingBal == 0) {
+
+    //    remainingBal = totalBal;
     //}
+
 
     if (checkbox.checked) {
         date = null; 
@@ -95,7 +95,7 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
         SetDay: setDay,
         DaysOfWeek: daysOfWeek,
         StartDate: startDate,
-        EndDate: endDate
+        EndDate: endDate,   
     };
 
         fetch('/Expense/AddExpense', {

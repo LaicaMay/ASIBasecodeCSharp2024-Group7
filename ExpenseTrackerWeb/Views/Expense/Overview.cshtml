@@ -158,7 +158,7 @@
                         </div>
                     </div>
                     <div style="display: flex; flex-direction: column; margin-left: 20px;
-                                gap: 15px; position:relative">
+                                gap: 15px; position:relative; left: 10px;">
                         <input type="hidden" id="modal-expense-id" value=""/>
                         <p id="modal-expense-name"></p>
                         <p id="modal-amount"></p>
@@ -190,6 +190,7 @@
                 <p>Add Budget</p>
                 <div style="position: relative;">
                     <input id="balance-amount" type="number" placeholder="Amount" style="width: 275px; padding: 10px 10px 10px 25px; border-radius: 20px; border: 1px solid black;" />
+                    <input id="remainingUserBal" type="hidden"/>
                     <div style="position: absolute; left: 8px; top: 17px;"><img style="width:16px; " src="~/images/iconVec/money-icon.svg" alt=""></div>
                 </div>   
                 <div style="display:flex; flex-direction: row; align-items: center; justify-content: center; flex-wrap: wrap; gap: 15px;">
@@ -220,6 +221,7 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/overview.js"></script>
+
 <script>
     document.getElementById('save-budget').addEventListener('click', function(event) {
         event.stopPropagation();
@@ -230,6 +232,7 @@
         const balanceAmount = document.getElementById('balance-amount').value.trim();
         const balanceMonth = document.getElementById('month-id').value;
         const yearMonth = document.getElementById('year-id').value;
+
 
         if (!balanceAmount || !balanceMonth || !yearMonth){
             alert('Please fill in all required fields.');

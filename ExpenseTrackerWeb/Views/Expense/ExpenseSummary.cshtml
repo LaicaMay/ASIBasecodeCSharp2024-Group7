@@ -5,7 +5,6 @@
     var barChartDatasets = ViewData["BarChartDatasets"];
     var pieChartLabels = ViewData["PieChartLabels"] as string[] ?? Array.Empty<string>();
     var pieChartData = ViewData["PieChartData"] as double[] ?? Array.Empty<double>();
-    //var topExp = ViewData["Top3Expenses"];
 }
 
 <link rel="stylesheet" href="/css/expsummary.css"/>
@@ -100,10 +99,10 @@
     const barChartDatasets = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(barChartDatasets));
     const pieChartLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(pieChartLabels));
     const pieChartData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(pieChartData));
-    //const topExps = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(topExp));
+    
 
-    console.log({ months, barChartDatasets, pieChartLabels, barChartDatasets, userExpenses, topExps });
-    //console.log(topExps);
+    console.log({ months, barChartDatasets, pieChartLabels, barChartDatasets, userExpenses });
+    
 
     createChart(months, barChartDatasets, "line-graph", "bar");
     createChart(pieChartLabels, [{

@@ -84,6 +84,7 @@ namespace ExpenseTrackerWeb.Controllers
 
             balance.UserId = UserId;
             balance.isActive = true;
+            balance.RemainingBalance = balance.TotalBalance;
 
             if (_balanceMgr.AddBalance(balance, ref ErrorMessage) != ErrorCode.Success)
             {
@@ -215,6 +216,21 @@ namespace ExpenseTrackerWeb.Controllers
             return View();
         }
 
+
+        //public IActionResult GetUserBal([FromBody] Balance userBal)
+        //{
+        //    if (User.Identity.IsAuthenticated)
+        //    {
+        //        return RedirectToAction("Login", "Account");
+
+        //    }
+
+        //    var existUserBal = _balanceMgr.ListUserBalance(UserId);
+
+
+        //    return View();
+        //}
+
         [HttpGet]
         public IActionResult ExpenseSummary()
         {
@@ -251,6 +267,7 @@ namespace ExpenseTrackerWeb.Controllers
                 }
             }
 
+
             var barChartDatasets = categorizedExpenses.Select(entry => new
             {
                 label = entry.Key, 
@@ -264,20 +281,13 @@ namespace ExpenseTrackerWeb.Controllers
             var pieChartLabels = new[] { "Total Balance", "Total Expenses" };
             var pieChartData = new[] { (double)totalBalance, (double)totalExpenses };
 
-            //var sampleTopExpenses = new[]
-            //        {
-            //    new { CategoryName = "Food", ExpenseName = "Lunch", Amount = 300m },
-            //    new { CategoryName = "Transportation", ExpenseName = "Gas", Amount = 200m },
-            //    new { CategoryName = "Utilities", ExpenseName = "Electric Bill", Amount = 100m }
-            //};
+            
 
             ViewData["Months"] = months;
             ViewData["BarChartDatasets"] = barChartDatasets;
             ViewData["PieChartLabels"] = pieChartLabels;
             ViewData["PieChartData"] = pieChartData;
-            //ViewData["Top3Expenses"] = top3Expenses;  
-            //ViewData["Top3Expenses"] = sampleTopExpenses;
-
+            
             return View();
         }
 

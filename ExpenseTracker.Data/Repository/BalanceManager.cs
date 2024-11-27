@@ -31,7 +31,7 @@ namespace ExpenseTracker.Data.Repository
                    .Include(e => e.Year)
                    .Where(m => m.UserId == userId.UserId)
                    .OrderByDescending(m => m.isActive == true)
-                   .ToList();
+                   .ToList();   
         }
 
         public Balance GetUserBalanceByUserId(int userId)

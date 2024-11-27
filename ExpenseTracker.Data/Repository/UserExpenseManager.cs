@@ -66,6 +66,17 @@ namespace ExpenseTracker.Data.Repository
             decimal? totalAmount = 0;
             expn.CreatedDate = DateTime.Now;
 
+            //if (userBalance.RemainingBalance == null)
+            //{
+            //    userBalance.RemainingBalance = userBalance.TotalBalance;
+            //}
+
+            if (expn.Amount > userBalance.RemainingBalance)
+            {
+                err = "Insufficient Remaining Balance. Please try again..";
+                return ErrorCode.Error;
+            }
+
             if (userBalance.TotalBalance == 0 || userBalance.TotalBalance == null || userBalance.isActive == false)
             {          
                 err = "You do not have active balance.";
@@ -95,12 +106,12 @@ namespace ExpenseTracker.Data.Repository
                     if (daysOfWeek.Contains(date.DayOfWeek.ToString()))
                     {
                         totalAmount += expn.Amount;
-                        Console.WriteLine($"Date: {date} - Day: {date.DayOfWeek}");
+                        //Console.WriteLine($"Date: {date} - Day: {date.DayOfWeek}");
                     }
                 }
-                Console.WriteLine("Total Amount for Selected Days: " + totalAmount);
+                //Console.WriteLine("Total Amount for Selected Days: " + totalAmount);
                 existCategory.TotalAmount = (existCategory.TotalAmount ?? 0) + totalAmount;
-            }
+            }   
         
             if (userBalance == null)
             {

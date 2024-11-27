@@ -171,7 +171,7 @@ namespace ExpenseTrackerWeb.Controllers
 
                         var sendersEmail = _configuration["EmailSettings:SendersEmail"];
                         var sendersPassword = _configuration["EmailSettings:SendersPassword"];
-                        var noreplyEmail = "no-reply@ecofridge.com";
+                        var noreplyEmail = "no-reply@expensetracker.com";
                         var subject = "Verification Code";
 
                         var body = $@"
@@ -181,11 +181,11 @@ namespace ExpenseTrackerWeb.Controllers
                                     <p>Hello,</p>
                                     <p>Your Verification is:</p>
                                     <p style='font-size: 18px; font-weight: bold; color: #307a59;'>{u.Code}</p>
-                                    <p>You can change it in your profile settings once you log in.</p>
+                                    <p>Your account is verified now.</p>
                                     <hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;' />
                                     <p>If you didn't request this, please ignore this email or contact support.</p>
                                     <p>Thank you,</p>
-                                    <p><strong>Team Snackers</strong></p>
+                                    <p><strong>Team Alliance Group7</strong></p>
                                 </div>
                             </div>";
 
