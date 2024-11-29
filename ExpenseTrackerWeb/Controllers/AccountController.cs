@@ -13,6 +13,7 @@ using System.Net;
 
 namespace ExpenseTrackerWeb.Controllers
 {
+    //[Route("api/[controller]")]
     public class AccountController : BaseController
     {
         IConfiguration _configuration;
@@ -180,8 +181,7 @@ namespace ExpenseTrackerWeb.Controllers
                                     <h2 style='color: #333;'>Verification Code</h2>
                                     <p>Hello,</p>
                                     <p>Your Verification is:</p>
-                                    <p style='font-size: 18px; font-weight: bold; color: #307a59;'>{u.Code}</p>
-                                    <p>Your account is verified now.</p>
+                                    <p style='font-size: 18px; font-weight: bold; color: #307a59;'>{u.Code}</p>                                  
                                     <hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;' />
                                     <p>If you didn't request this, please ignore this email or contact support.</p>
                                     <p>Thank you,</p>
@@ -261,6 +261,50 @@ namespace ExpenseTrackerWeb.Controllers
 
             return View();
         }
+
+        [AllowAnonymous]
+        //[HttpPost("ChangePassword")]
+        public IActionResult ChangePassword([FromBody] ChangePasswordModel changePass)
+        {
+
+            var existUser = _userManager.GetUserByGuidPassword(changePass.Password);
+
+            if (existUser == null)
+            {
+                return BadRequest(new { message = "User does not exist." });
+            }
+
+            if (!existUser.isVerify)
+            {
+                return BadRequest(new { message = "User is not verified." });
+            }
+
+            if (existUser.Password != changePass.Password)
+            {
+                return BadRequest(new { message = "Incorrect password." });
+            }
+
+            if (changePass.NewPassword != changePass.NewConfirmPassword)
+            {
+                return BadRequest(new { message = "New password and confirm password do not match." });
+            }
+
+            if (!Regex.IsMatch(changePass.NewPassword, @"^(?=.*[A-Z])(?=.*\W).{8,}$"))
+            {
+                return BadRequest(new { message = "Please enter a valid password." });
+            }
+
+            existUser.Password = changePass.NewPassword;
+
+            if (_userManager.UpdateUser(existUser, ref ErrorMessage) != ErrorCode.Success)
+            {
+                ModelState.AddModelError(String.Empty, ErrorMessage);
+                return BadRequest(new { message = "Failed to Update user.", errors = ModelState });
+            }
+
+            return Ok(new { message = "Password changed successfully." });
+
+            }
 
         [Authorize]
         public IActionResult Update()

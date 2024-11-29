@@ -72,12 +72,6 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
         return;
     }
 
-    //if (remainingBal == null || remainingBal == 0) {
-
-    //    remainingBal = totalBal;
-    //}
-
-
     if (checkbox.checked) {
         date = null; 
     } else {      

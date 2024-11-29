@@ -43,14 +43,17 @@ namespace ExpenseTrackerWeb.Controllers
                                     <h2 style='color: #333;'>Password Reset Request</h2>
                                     <p>Hello,</p>
                                     <p>Your new temporary password is:</p>
-                                    <p style='font-size: 18px; font-weight: bold; color: #307a59;'>{temporaryPassword}</p>
-                                    <p>You can change it in your profile settings once you log in.</p>
+                                    <p style='font-size: 18px; font-weight: bold; color: #307a59;'>{temporaryPassword}</p>                             
                                     <hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;' />
                                     <p>If you didn't request this, please ignore this email or contact support.</p>
                                     <p>Thank you,</p>
                                     <p><strong>Alliance Team Group7</strong></p>
+                                    <a style='background-color: #68BB69; border: 2px solid white; padding: 10px 20px; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; display: inline-block;'>
+                                    Change your password
+                                    </a>
                                 </div>
                             </div>";
+
                 user.Password = temporaryPassword;
 
                 if (_userManager.UpdateUser(user, ref ErrorMessage) == ErrorCode.Success)
@@ -60,7 +63,7 @@ namespace ExpenseTrackerWeb.Controllers
                         message.From = new MailAddress(noreplyEmail);
                         message.To.Add(user.Email);
                         message.Subject = subject;
-                        message.Body = body;
+                        message.Body = body;    
                         message.IsBodyHtml = true;
 
                         using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))

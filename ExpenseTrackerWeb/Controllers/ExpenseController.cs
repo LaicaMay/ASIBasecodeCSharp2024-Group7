@@ -194,6 +194,25 @@ namespace ExpenseTrackerWeb.Controllers
 
             return Ok(new { message = "Expense deleted successfully." });
         }
+
+
+        public IActionResult GetActiveUserBalance(int userBal)
+        {
+            if(!User.Identity.IsAuthenticated)
+            {
+                return BadRequest(new { message = "User is not aunthenticated" });
+            }
+
+            if (userBal == null || userBal == 0)
+            {
+                userBal = UserId;
+            }
+
+            var userActiveBal = _balanceMgr.GetActiveBalanceByUserId(userBal);
+
+            return Json(userActiveBal);
+        }
+
         #endregion
 
         #region CategoryManagement

@@ -29,7 +29,7 @@ namespace ExpenseTracker.Data.Repository
 
         public User GetUserByEmail(String email)
         {
-                return _userRepo._table.Where(m => m.Email == email).FirstOrDefault();
+            return _userRepo._table.Where(m => m.Email == email).FirstOrDefault();
         }
         #endregion
 
@@ -76,6 +76,11 @@ namespace ExpenseTracker.Data.Repository
         public UserInformation GetUserInfoById(int id)
         {
             return _userInfo.Get(id);
+        }
+
+        public User GetUserByGuidPassword(String password)
+        {
+            return _userRepo._table.Where(m => m.Password == password).FirstOrDefault();
         }
     }
 }
