@@ -27,7 +27,9 @@ public partial class User
     [StringLength(255)]
     public string? Code { get; set; }
 
-    public int? Status { get; set; }
+    [Column(TypeName = "datetime")]
+    public DateTime? ExpiryCodeDate { get; set; }
+    public bool? Status { get; set; }
 
     [Column(TypeName = "datetime")]
     public DateTime? CreatedDate { get; set; }

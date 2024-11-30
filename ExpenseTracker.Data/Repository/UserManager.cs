@@ -22,7 +22,6 @@ namespace ExpenseTracker.Data.Repository
         {
             return _userRepo.Get(userId);
         }
-
         public User GetUserByUsername(String username)
         {
             return _userRepo._table.Where(m => m.Username == username).FirstOrDefault();
@@ -48,12 +47,8 @@ namespace ExpenseTracker.Data.Repository
         }
 
         public ErrorCode SignUp(User u, ref string errMsg)
-        {
-            
-            //u.Code = Utilities.code.ToString();
+        {          
             u.CreatedDate = DateTime.Now;
-            u.Status = (int)Status.InActive;
-            u.Agree = true;
             u.isVerify = false;
 
             if (_userRepo.Create(u, out errMsg) != ErrorCode.Success)

@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using ExpenseTracker.Data.Utils;
 using System.Net.Mail;
 using System.Net;
+using NuGet.Common;
 
 namespace ExpenseTrackerWeb.Controllers
 {
@@ -84,6 +85,7 @@ namespace ExpenseTrackerWeb.Controllers
         {
             return View();              
         }
+
         [AllowAnonymous]
         [HttpPost]
         public IActionResult SignUp(User u)
@@ -126,8 +128,9 @@ namespace ExpenseTrackerWeb.Controllers
                 return View(u);
             }
 
+            u.ExpiryCodeDate = DateTime.UtcNow.AddHours(1);
             u.Code = Utilities.code.ToString();
-
+            u.Status = true;
             if (_userManager.SignUp(u, ref ErrorMessage) == ErrorCode.Success)
             {                  
                 Balance balance = new Balance { UserId = u.UserId };
@@ -161,9 +164,10 @@ namespace ExpenseTrackerWeb.Controllers
                                     <h2 style='color: #333;'>Verification Code</h2>
                                     <p>Hello,</p>
                                     <p>Your Verification is:</p>
-                                    <p style='font-size: 18px; font-weight: bold; color: #307a59;'>{u.Code}</p>                                  
+                                    <p style='font-size: 18px; font-weight: bold; color: #307a59;'>{u.Code}</p>                                                                                  
                                     <hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;' />
                                     <p>If you didn't request this, please ignore this email or contact support.</p>
+                                    <p>Note: This code will expire in 1 hour.</p>
                                     <p>Thank you,</p>
                                     <p><strong>Team Alliance Group7</strong></p>
                                 </div>
@@ -203,26 +207,32 @@ namespace ExpenseTrackerWeb.Controllers
             return RedirectToAction("Login");
         }
 
+        [Authorize]
         public IActionResult Verify()
-        {                                
+        {
+            var existUser = _userManager.GetUserById(UserId);
+
+            if (User.Identity.IsAuthenticated && existUser.isVerify == true)
+            {
+                return RedirectToAction("Overview", "Expense");
+            }
             return View();
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost]
         public IActionResult Verify(VerifyViewModel code)
         {
-
             var existUser = _userManager.GetUserById(UserId);
-
-            if (existUser == null)
+            
+            if (existUser.UserId == null || existUser.UserId == 0)
             {
                 ModelState.AddModelError(String.Empty, "User does not exist.");
             }
 
-            if (existUser.Code != code.ConfirmCode)
+            if (existUser.Code != code.ConfirmCode || existUser.ExpiryCodeDate < DateTime.UtcNow || existUser.Status == false)
             {
-                ModelState.AddModelError("ConfirmCode", "Please enter your valid code.");
+                ModelState.AddModelError("ConfirmCode", "Please enter a valid code.");
             }
 
             if (!ModelState.IsValid)
@@ -230,9 +240,10 @@ namespace ExpenseTrackerWeb.Controllers
                 return View(code);
             }
 
-            if (existUser.Code == code.ConfirmCode)
+            if (existUser.Code == code.ConfirmCode && DateTime.UtcNow < existUser.ExpiryCodeDate && existUser.Status == true)
             {
                 existUser.isVerify = true;
+                existUser.Status = false;
                 if (_userManager.UpdateUser(existUser, ref ErrorMessage) == ErrorCode.Success)
                 {
                     return RedirectToAction("Overview", "Expense");
@@ -241,7 +252,6 @@ namespace ExpenseTrackerWeb.Controllers
 
             return View();
         }
-
 
         [AllowAnonymous]
         [HttpPost]
