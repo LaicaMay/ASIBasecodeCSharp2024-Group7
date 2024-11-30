@@ -79,7 +79,6 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
         endDate = null; 
     }
 
-
     const expenseData = {
         ExpenseName: expenseName,
         Amount: amount,

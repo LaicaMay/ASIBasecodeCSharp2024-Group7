@@ -45,8 +45,6 @@ namespace ExpenseTrackerWeb.Controllers
                 var noreplyEmail = "no-reply@expensetracker.com";
                 var subject = "Forgot Password";
 
-                Guid guid = Guid.NewGuid();
-                var temporaryPassword = guid.ToString("N").Substring(0, 8);
                 string token = Guid.NewGuid().ToString("N");
 
                 var userToken = new PasswordResetToken()
@@ -69,12 +67,15 @@ namespace ExpenseTrackerWeb.Controllers
                             <div style='font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;'>
                                 <div style='max-width: 600px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);'>
                                     <h2 style='color: #333;'>Password Reset Request</h2>
-                                    <p>Hello,</p>
+                                    <p>Hello {user.Username},</p>
                                     <p>Click the button below to reset your password:</p>
                                     <a href='{changePasswordUrl}' style='background-color: #68BB69; border: 2px solid white; padding: 10px 20px; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; display: inline-block;'>
                                         Change your password
                                     </a>
                                     <p>This link will expire in 1 hour.</p>
+                                    <p>If you didn't request this, please ignore this email or contact support.</p>
+                                    <p>Thank you,</p>
+                                    <p><strong>Team Alliance Group7</strong></p>
                                 </div>
                             </div>";
 

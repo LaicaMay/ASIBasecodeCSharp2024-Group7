@@ -25,26 +25,10 @@ namespace ExpenseTrackerWeb.Controllers
         }
         public IActionResult Login(string ReturnUrl)
         {
-            var existUser = _userManager.GetUserById(UserId);
-
-            if (User.Identity.IsAuthenticated)
-            {
-                if (existUser.isVerify == false)
-                {
-                    return RedirectToAction("Verify");
-                } else if (existUser.isVerify == false)
-                {
-                    return RedirectToAction("Login");
-                }
-                return RedirectToAction("Overview", "Expense");
-
-            }
-
             ViewBag.Error = string.Empty;
             ViewBag.ReturnUrl = ReturnUrl;
             return View();
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password, string ReturnUrl)
@@ -98,11 +82,7 @@ namespace ExpenseTrackerWeb.Controllers
         [AllowAnonymous]
         public IActionResult SignUp()
         {
-            if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Overview", "Expense");
-
-            return View();
-                
+            return View();              
         }
         [AllowAnonymous]
         [HttpPost]
@@ -296,7 +276,48 @@ namespace ExpenseTrackerWeb.Controllers
 
             existUser.Password = changePass.NewPassword;
 
-            if (_userManager.UpdateUser(existUser, ref ErrorMessage) != ErrorCode.Success)
+            if (_userManager.UpdateUser(existUser, ref ErrorMessage) == ErrorCode.Success)
+            {
+                var activeToken = _userManager.GetActiveTokenByUserId(changePass.UserId);
+                if (activeToken != null)
+                {
+                    activeToken.IsActive = false;
+                    _userManager.UpdateUserToken(activeToken, ref ErrorMessage);
+
+                    var sendersEmail = _configuration["EmailSettings:SendersEmail"];
+                    var sendersPassword = _configuration["EmailSettings:SendersPassword"];
+                    var noreplyEmail = "no-reply@expensetracker.com";
+                    var subject = "Passord Change Notice";
+
+                    var body = $@"
+                            <div style='font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;'>
+                                <div style='max-width: 600px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);'>
+                                    <h2 style='color: #333;'>Password Change</h2>
+                                    <p>Hello {existUser.Username}, your password was change successfully.</p>
+                                    <p>You can login now with your new password.</p>   
+                                    <p>If you didn't request this, please ignore this email or contact support.</p>
+                                    <p>Thank you,</p>
+                                    <p><strong>Team Alliance Group7</strong></p>
+                                </div>
+                            </div>";
+
+                    using (MailMessage message = new MailMessage())
+                    {
+                        message.From = new MailAddress(noreplyEmail);
+                        message.To.Add(existUser.Email);
+                        message.Subject = subject;
+                        message.Body = body;
+                        message.IsBodyHtml = true;
+
+                        using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                        {
+                            smtp.Credentials = new NetworkCredential(sendersEmail, sendersPassword);
+                            smtp.EnableSsl = true;
+                            smtp.Send(message);
+                        }
+                    }
+                }
+            } else
             {
                 ModelState.AddModelError(string.Empty, ErrorMessage);
                 return BadRequest(new
@@ -306,14 +327,7 @@ namespace ExpenseTrackerWeb.Controllers
                         .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(e => e.ErrorMessage))
                 });
             }
-
-            var activeToken = _userManager.GetActiveTokenByUserId(changePass.UserId);
-            if (activeToken != null)
-            {
-                activeToken.IsActive = false;
-                _userManager.UpdateUserToken(activeToken, ref ErrorMessage);
-            }
-
+           
             return Ok(new { success = true, message = "Password updated successfully." });
         }
 

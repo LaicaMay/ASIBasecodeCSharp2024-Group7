@@ -11,10 +11,6 @@ namespace ExpenseTrackerWeb.Controllers
     {
         public IActionResult ExpenseTracker()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Overview", "Expense");
-            }
             return View();
         }
 
