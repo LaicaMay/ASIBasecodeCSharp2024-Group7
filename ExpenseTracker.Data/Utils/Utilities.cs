@@ -17,6 +17,6 @@ namespace ExpenseTracker.Data.Utils
                 Random r = new Random();
                 return r.Next(100000, 999999);
             }
-        }      
+        }   
     }
 }

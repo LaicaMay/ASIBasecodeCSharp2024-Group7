@@ -1,16 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace ExpenseTracker.Data.Models.CustomModels
+namespace ExpenseTracker.Data.Models;
+
+[Table("PasswordResetToken")]
+public partial class PasswordResetToken
 {
-    public class PasswordResetToken
-    {
-        public int Id { get; set; }
-        public string UserId { get; set; }
-        public string Token { get; set; }
-        public DateTime ExpiryDate { get; set; }
-    }
+    [Key]
+    public int Id { get; set; }
+
+    public int UserId { get; set; }
+
+    [StringLength(250)]
+    [Unicode(false)]
+    public string? Token { get; set; }
+
+    public bool? IsActive { get; set; }
+
+    [Column(TypeName = "datetime")]
+    public DateTime? ExpiryDate { get; set; }
+
+    [ForeignKey("UserId")]
+    [InverseProperty("PasswordResetTokens")]
+    public virtual User? User { get; set; }
 }

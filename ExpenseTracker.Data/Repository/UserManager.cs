@@ -9,11 +9,12 @@ namespace ExpenseTracker.Data.Repository
     {
         private readonly BaseRepository<User> _userRepo;
         private readonly BaseRepository<UserInformation> _userInfo;
-
+        private readonly BaseRepository<PasswordResetToken> _passwordResetTokenRepo;
         public UserManager()
         {
             _userRepo = new BaseRepository<User>();
             _userInfo = new BaseRepository<UserInformation>();
+            _passwordResetTokenRepo = new BaseRepository<PasswordResetToken>();
         }
 
         #region Get User By -
@@ -82,5 +83,18 @@ namespace ExpenseTracker.Data.Repository
         {
             return _userRepo._table.Where(m => m.Password == password).FirstOrDefault();
         }
+
+        public PasswordResetToken GetActiveTokenByUserId(int? activUserId)
+        {
+            return _passwordResetTokenRepo._table
+                   .FirstOrDefault(b => b.UserId == activUserId && b.IsActive == true);
+        }
+
+        public ErrorCode UpdateUserToken(PasswordResetToken pass, ref String errMsg)
+        {
+            return _passwordResetTokenRepo.Update(pass.Id, pass, out errMsg);
+        }
+
+        
     }
 }

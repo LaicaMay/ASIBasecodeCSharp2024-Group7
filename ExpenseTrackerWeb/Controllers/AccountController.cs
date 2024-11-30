@@ -262,31 +262,31 @@ namespace ExpenseTrackerWeb.Controllers
             return View();
         }
 
+
         [AllowAnonymous]
-        //[HttpPost("ChangePassword")]
+        [HttpPost]
         public IActionResult ChangePassword([FromBody] ChangePasswordModel changePass)
         {
-
-            var existUser = _userManager.GetUserByGuidPassword(changePass.Password);
+            var existUser = _userManager.GetUserById(changePass.UserId);
 
             if (existUser == null)
             {
-                return BadRequest(new { message = "User does not exist." });
+                return BadRequest(new { message = "User is not authenticated." });
             }
 
-            if (!existUser.isVerify)
+            if (existUser.isVerify == null || existUser.isVerify == false)
             {
-                return BadRequest(new { message = "User is not verified." });
+                return BadRequest(new { message = "User is not verified or does not exist." });
             }
 
-            if (existUser.Password != changePass.Password)
+            if(changePass.NewPassword == "" || changePass.NewConfirmPassword == "")
             {
-                return BadRequest(new { message = "Incorrect password." });
+                return BadRequest(new { message = "All fields are required." });
             }
 
             if (changePass.NewPassword != changePass.NewConfirmPassword)
             {
-                return BadRequest(new { message = "New password and confirm password do not match." });
+                return BadRequest(new { message = "Passwords does not match." });
             }
 
             if (!Regex.IsMatch(changePass.NewPassword, @"^(?=.*[A-Z])(?=.*\W).{8,}$"))
@@ -298,13 +298,92 @@ namespace ExpenseTrackerWeb.Controllers
 
             if (_userManager.UpdateUser(existUser, ref ErrorMessage) != ErrorCode.Success)
             {
-                ModelState.AddModelError(String.Empty, ErrorMessage);
-                return BadRequest(new { message = "Failed to Update user.", errors = ModelState });
+                ModelState.AddModelError(string.Empty, ErrorMessage);
+                return BadRequest(new
+                {
+                    message = "Failed to update user.",
+                    errors = ModelState.Where(kvp => kvp.Value.Errors.Any())
+                        .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(e => e.ErrorMessage))
+                });
             }
 
-            return Ok(new { message = "Password changed successfully." });
-
+            var activeToken = _userManager.GetActiveTokenByUserId(changePass.UserId);
+            if (activeToken != null)
+            {
+                activeToken.IsActive = false;
+                _userManager.UpdateUserToken(activeToken, ref ErrorMessage);
             }
+
+            return Ok(new { success = true, message = "Password updated successfully." });
+        }
+
+
+        //[HttpPost("ChangePassword")]
+        //[AllowAnonymous]
+        //[HttpPost]
+        //public IActionResult ChangePassword([FromBody] ChangePasswordModel changePass)
+        //{
+
+        //    var existUser = _userManager.GetUserById(changePass.UserId);
+
+        //    var activeToken = _userManager.GetActiveTokenByUserId(changePass.UserId);
+
+        //    if (existUser == null)
+        //    {
+        //        return BadRequest(new { message = "User is not authenticated." });
+        //    }     
+
+        //    if (existUser.isVerify == null || existUser.isVerify == false) 
+        //    {
+        //        return BadRequest(new { message = "User is not verified or exist." });
+        //    }
+
+        //    if (changePass.NewPassword != changePass.NewConfirmPassword)
+        //    {
+        //        return BadRequest(new { message = "New password does not match." });
+        //    }
+
+        //    if (!Regex.IsMatch(changePass.NewPassword, @"^(?=.*[A-Z])(?=.*\W).{8,}$"))
+        //    {
+        //        return BadRequest(new { message = "Please enter a valid password." });
+        //    }
+
+        //    existUser.Password = changePass.NewPassword;
+
+        //    if (_userManager.UpdateUser(existUser, ref ErrorMessage) != ErrorCode.Success)
+        //    {
+        //        ModelState.AddModelError(String.Empty, ErrorMessage);
+        //        return BadRequest(new { message = "Failed to Update user.", errors = ModelState });
+        //    }
+
+        //    if (activeToken != null)
+        //    {
+        //        activeToken.IsActive = false;
+        //        _userManager.UpdateUserToken(activeToken, ref ErrorMessage);
+        //    }
+
+        //    return Ok(new { success = true, message = "Password updated successfully." });
+        //}
+
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string token)
+        {
+            var resetToken = _db.PasswordResetTokens
+                .FirstOrDefault(t => t.Token == token && t.ExpiryDate > DateTime.UtcNow && t.IsActive == true);
+
+            if (resetToken == null)
+            {
+                return Unauthorized("Invalid or expired token.");
+            }
+
+            var model = new ChangePasswordModel
+            {
+                Token = token,
+                UserId = resetToken.UserId
+            };
+
+            return PartialView("_ChangePassword", model);
+        }
 
         [Authorize]
         public IActionResult Update()

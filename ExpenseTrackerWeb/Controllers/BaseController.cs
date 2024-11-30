@@ -24,6 +24,7 @@ namespace ExpenseTrackerWeb.Controllers
         public BaseRepository<UserExpense> _userExp;
         public BaseRepository<Balance> _balanceRepo;
         public BaseRepository<VwUsersExpensesView> _userExpensesview;
+        public BaseRepository<PasswordResetToken> _userPasswordToken;
   
         public int UserId { get { var userId = Convert.ToInt32(User.FindFirst(ClaimsIdentity.DefaultNameClaimType)?.Value); return userId; } }
         
@@ -44,6 +45,7 @@ namespace ExpenseTrackerWeb.Controllers
             _userExp = new BaseRepository<UserExpense>();
             _expenseSearch = new ExpenseSearch();
             _balanceRepo = new BaseRepository<Balance>();
+            _userPasswordToken = new BaseRepository<PasswordResetToken>();
         }
     }
 }
