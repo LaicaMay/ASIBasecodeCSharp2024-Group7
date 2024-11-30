@@ -1,8 +1,10 @@
 ﻿using ExpenseTracker.Data.Models;
+using ExpenseTracker.Services.Repository;
 using ExpenseTracker.Resources.Constants;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExpenseTracker.Data.Repository
+
+namespace ExpenseTracker.Services.Repository
 {
     public class BalanceManager
     {
@@ -31,7 +33,7 @@ namespace ExpenseTracker.Data.Repository
                    .Include(e => e.Year)
                    .Where(m => m.UserId == userId.UserId)
                    .OrderByDescending(m => m.isActive == true)
-                   .ToList();   
+                   .ToList();
         }
 
         public Balance GetUserBalanceByUserId(int userId)
@@ -45,7 +47,7 @@ namespace ExpenseTracker.Data.Repository
                    .FirstOrDefault(b => b.UserId == activUserId && b.isActive == true);
         }
 
-        public ErrorCode DefaultBalance (Balance balance, ref String err)
+        public ErrorCode DefaultBalance(Balance balance, ref String err)
         {
             if (balance == null)
             {
@@ -61,9 +63,9 @@ namespace ExpenseTracker.Data.Repository
             return _balanceRepository.Create(balance, out err);
         }
 
-        public ErrorCode AddBalance(Balance balance, ref String err) 
-        {          
-            return _balanceRepository.Create(balance, out err);     
+        public ErrorCode AddBalance(Balance balance, ref String err)
+        {
+            return _balanceRepository.Create(balance, out err);
         }
 
         public ErrorCode UpdateBalance(Balance balance, ref String err)
@@ -71,6 +73,6 @@ namespace ExpenseTracker.Data.Repository
             return _balanceRepository.Update(balance.BalanceId, balance, out err);
         }
 
-     
+
     }
 }

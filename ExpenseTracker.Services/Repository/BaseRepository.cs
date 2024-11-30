@@ -1,12 +1,12 @@
 ﻿using ExpenseTracker.Data.Contracts;
 using ExpenseTracker.Data.Data;
-using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.Resources.Constants;
+using Microsoft.EntityFrameworkCore;
 
-namespace ExpenseTracker.Data.Repository
+namespace ExpenseTracker.Services.Repository
 {
     public class BaseRepository<T> : IBaseRepository<T>
-        where T : class
+         where T : class
     {
         public DbContext _db;
         public DbSet<T> _table;

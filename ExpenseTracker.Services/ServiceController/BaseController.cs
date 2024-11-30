@@ -1,11 +1,10 @@
 ﻿using ExpenseTracker.Data.Data;
 using ExpenseTracker.Data.Models;
-using ExpenseTracker.Data.Models.CustomModels;
-using ExpenseTracker.Data.Repository;
+using ExpenseTracker.Services.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace ExpenseTrackerWeb.Controllers
+namespace ExpenseTracker.Services.Controllers
 {
     public class BaseController : Controller
     {

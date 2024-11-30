@@ -1,5 +1,4 @@
-﻿
-namespace ExpenseTracker.Data.Models.CustomModels
+﻿namespace ExpenseTracker.Data.Models.CustomModels
 {
     public class ExpenseSummaryViewModel
     {

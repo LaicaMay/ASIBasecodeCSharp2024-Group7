@@ -2,7 +2,7 @@
 using ExpenseTracker.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ExpenseTracker.Data.Repository
+namespace ExpenseTracker.Services.Repository
 {
     public class ExpenseSearch
     {

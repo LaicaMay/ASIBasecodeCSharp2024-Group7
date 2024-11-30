@@ -1,7 +1,12 @@
 ﻿using ExpenseTracker.Data.Models;
 using ExpenseTracker.Resources.Constants;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ExpenseTracker.Data.Repository
+namespace ExpenseTracker.Services.Repository
 {
     public class UserCategoryManager
     {

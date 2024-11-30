@@ -1,13 +1,13 @@
 ﻿using ExpenseTracker.Data.Models;
 
-namespace ExpenseTracker.Data.Repository
+namespace ExpenseTracker.Services.Repository
 {
     public class MonthYearManager
     {
         private BaseRepository<Month> _month;
         private BaseRepository<Year> _year;
 
-        public MonthYearManager() 
+        public MonthYearManager()
         {
             _month = new BaseRepository<Month>();
             _year = new BaseRepository<Year>();

@@ -1,9 +1,7 @@
 ﻿using ExpenseTracker.Data.Models;
 using ExpenseTracker.Resources.Constants;
-using ExpenseTracker.Data.Utils;
-using System.Text.RegularExpressions;
 
-namespace ExpenseTracker.Data.Repository
+namespace ExpenseTracker.Services.Repository
 {
     public class UserManager
     {
@@ -47,7 +45,7 @@ namespace ExpenseTracker.Data.Repository
         }
 
         public ErrorCode SignUp(User u, ref string errMsg)
-        {          
+        {
             u.CreatedDate = DateTime.Now;
             u.isVerify = false;
 
@@ -90,6 +88,6 @@ namespace ExpenseTracker.Data.Repository
             return _passwordResetTokenRepo.Update(pass.Id, pass, out errMsg);
         }
 
-        
+
     }
 }
