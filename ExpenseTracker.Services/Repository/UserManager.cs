@@ -1,5 +1,6 @@
 ﻿using ExpenseTracker.Data.Models;
 using ExpenseTracker.Resources.Constants;
+using Microsoft.AspNetCore.Identity;
 
 namespace ExpenseTracker.Services.Repository
 {
@@ -31,10 +32,20 @@ namespace ExpenseTracker.Services.Repository
         }
         #endregion
 
-        public ErrorCode SignIn(String username, String password, ref String errMsg)
+        public ErrorCode SignIn(string username, string password, ref string errMsg)
         {
             var userSignIn = GetUserByUsername(username);
-            if (userSignIn == null || !userSignIn.Password.Equals(password))
+            if (userSignIn == null)
+            {
+                errMsg = "Invalid username or password.";
+                return ErrorCode.Error;
+            }
+
+            // Hash the entered password and compare it with the stored hashed password
+            var passwordHasher = new PasswordHasher<User>();  // Assuming User is your user class
+            var result = passwordHasher.VerifyHashedPassword(userSignIn, userSignIn.Password, password);
+
+            if (result == PasswordVerificationResult.Failed)
             {
                 errMsg = "Invalid username or password.";
                 return ErrorCode.Error;
@@ -43,6 +54,19 @@ namespace ExpenseTracker.Services.Repository
             errMsg = "Login Successful";
             return ErrorCode.Success;
         }
+
+        //public ErrorCode SignIn(String username, String password, ref String errMsg)
+        //{
+        //    var userSignIn = GetUserByUsername(username);
+        //    if (userSignIn == null || !userSignIn.Password.Equals(password))
+        //    {
+        //        errMsg = "Invalid username or password.";
+        //        return ErrorCode.Error;
+        //    }
+
+        //    errMsg = "Login Successful";
+        //    return ErrorCode.Success;
+        //}
 
         public ErrorCode SignUp(User u, ref string errMsg)
         {

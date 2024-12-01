@@ -12,6 +12,7 @@ using System.Net.Mail;
 using System.Net;
 using ExpenseTracker.Services.Controllers;
 using NuGet.Common;
+using Microsoft.AspNetCore.Identity;
 
 namespace ExpenseTrackerWeb.Controllers
 {
@@ -128,6 +129,9 @@ namespace ExpenseTrackerWeb.Controllers
             {
                 return View(u);
             }
+
+            var passwordHasher = new PasswordHasher<User>();
+            u.Password = passwordHasher.HashPassword(u, u.Password);
 
             u.ExpiryCodeDate = DateTime.UtcNow.AddHours(1);
             u.Code = Utilities.code.ToString();
@@ -285,7 +289,8 @@ namespace ExpenseTrackerWeb.Controllers
                 return BadRequest(new { message = "Please enter a valid password." });
             }
 
-            existUser.Password = changePass.NewPassword;
+            var passwordHasher = new PasswordHasher<User>();
+            existUser.Password = passwordHasher.HashPassword(existUser, changePass.NewPassword);
 
             if (_userManager.UpdateUser(existUser, ref ErrorMessage) == ErrorCode.Success)
             {
