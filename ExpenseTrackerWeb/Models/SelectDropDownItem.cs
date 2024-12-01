@@ -1,4 +1,4 @@
-﻿using ExpenseTracker.Data.Repository;
+﻿using ExpenseTracker.Services.Repository;
 using System.Web.Mvc;
 
 namespace ExpenseTrackerWeb.Models

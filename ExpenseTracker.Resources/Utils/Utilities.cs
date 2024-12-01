@@ -1,4 +1,4 @@
-﻿namespace ExpenseTracker.Data.Utils
+﻿namespace ExpenseTracker.Resources.Utils
 {
     public class Utilities
     {
@@ -9,6 +9,6 @@
                 Random r = new Random();
                 return r.Next(100000, 999999);
             }
-        }   
+        }
     }
 }

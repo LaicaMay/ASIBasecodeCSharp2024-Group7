@@ -1,4 +1,4 @@
-﻿@model ExpenseTracker.Data.Models.CustomModels.VerifyViewModel
+﻿@* @model ExpenseTracker.Data.Models.CustomModels.ResendNewCodeModel
 @{
     Layout = null;
 }
@@ -63,22 +63,22 @@
         </div>
     </nav>
 
-    <form asp-action="Verify" asp-controller="Account" method="post">
-    <div class="login-container">
-        <h3>Verify your Account</h3>
-        <div style="display:flex; flex-direction: column; align-items: center; justify-content: center; position:relative">
-            <input asp-for="ConfirmCode" type="text" style="padding-top: 10px;
+    <form asp-action="ResendVerification" asp-controller="Mail" method="post">
+        <div class="login-container">
+            <h3>Verify your Account</h3>
+            <div style="display:flex; flex-direction: column; align-items: center; justify-content: center; position:relative">
+                <input asp-for="ConfirmCode" type="text" style="padding-top: 10px;
                                                      padding-bottom: 10px;
                                                      padding-left: 35px;
                                                      width: 300px;
                                                      border-radius: 30px;
                                                      margin-top: 10px;"
-            placeholder="Enter your code."/>    
-        <div class="invalid-code">
-             <span class="validation" asp-validation-for="ConfirmCode" class="text-danger" style="color:red;"></span>
-        </div>
-        </div>
-        <button type="submit" style="padding-top: 10px;
+                       placeholder="Enter your code." />
+                <div class="invalid-code">
+                    <span class="validation" asp-validation-for="ConfirmCode" class="text-danger" style="color:red;"></span>
+                </div>
+            </div>
+            <button type="submit" style="padding-top: 10px;
                                      padding-bottom: 10px;
                                      width: 300px;
                                      border-radius: 30px;
@@ -86,27 +86,14 @@
                                      margin-top: 15px;
                                      font-size: 15px;
                                      background-color: #68BB69;">
-            Submit
-        </button>
+                Submit
+            </button>
 
-
-        <div class="resendCode-cont">
-        <a id="resendView">Resend new code?</a>
-        </div>      
-    </div>
-    </form>   
-
-    <div id="resend-new-cont" class="hide">
-        <h3>Resend new code</h3>
-        <input id="resend-email" type="email" placeholder="Your Email." />
-        <button id="send-new-code">Send</button>
-        <span id="resend-error-message"></span>
-    </div>
-    <div id="login-blur" class="hide"></div>
+        </div>
+    </form>
     @section Scripts {
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
     }
-    <script src="~/js/resendcode.js"></script>
 </body>
-</html>
+</html> *@

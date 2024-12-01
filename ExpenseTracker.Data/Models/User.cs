@@ -27,7 +27,9 @@ public partial class User
     [StringLength(255)]
     public string? Code { get; set; }
 
-    public int? Status { get; set; }
+    [Column(TypeName = "datetime")]
+    public DateTime? ExpiryCodeDate { get; set; }
+    public bool? Status { get; set; }
 
     [Column(TypeName = "datetime")]
     public DateTime? CreatedDate { get; set; }
@@ -37,7 +39,7 @@ public partial class User
 
     public bool Agree { get; set; }
 
-    public bool isVerify { get; set; }
+    public bool? isVerify { get; set; }
 
     [InverseProperty("User")]
     public virtual ICollection<Balance> Balances { get; set; } = new List<Balance>();
@@ -47,6 +49,9 @@ public partial class User
 
     [InverseProperty("User")]
     public virtual ICollection<Expense> Expenses { get; set; } = new List<Expense>();
+
+    [InverseProperty("User")]
+    public virtual ICollection<PasswordResetToken> PasswordResetTokens { get; set; } = new List<PasswordResetToken>();
 
     [InverseProperty("User")]
     public virtual ICollection<Report> Reports { get; set; } = new List<Report>();

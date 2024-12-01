@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignUp</title>
+    <title>Login</title>
     <link href="https://fonts.cdnfonts.com/css/circe-rounded" rel="stylesheet">
     <link href="~/css/landingsidebar.css" rel="stylesheet" />
     <link href="~/css/landingpheader.css" rel="stylesheet" />
@@ -31,10 +31,10 @@
             <a href="@Url.Action("ExpenseTracker", "Home")">Home</a>
         </div>
         <div class="landing-tags">
-            <a href="#">Why ExpenseTracker?</a>
+            <a href="@Url.Action("WhyExpenseTracker", "Home")">Why ExpenseTracker?</a>
         </div>
         <div class="landing-tags">
-            <a href="#">Our Team</a>
+            <a href="@Url.Action("OurTeam", "Home")">Our Team</a>
         </div>
         <form method="get" asp-controller="Account" asp-action="SignUp">
         <div>
@@ -54,10 +54,10 @@
             <a href="@Url.Action("ExpenseTracker", "Home")">Home</a>
         </div>
         <div class="why-expense">
-            <a href="#">Why ExpenseTracker?</a>
+            <a href="@Url.Action("WhyExpenseTracker", "Home")">Why ExpenseTracker?</a>
         </div>
         <div class="our-team">
-            <a href="#">Our Team</a>
+            <a href="@Url.Action("OurTeam", "Home")">Our Team</a>
         </div>
         <div class="close-btn">
             <a href="javascript:void(0)" class="closebtn" id="close-btn">&times;</a>
@@ -108,8 +108,8 @@
         <div class="overlay" id="overlay"></div>
         <div class="forgot-cont">
             <p>Forgot Password</p>
-            <input id="forgot-email" type="email" placeholder="Enter your email."/>
-            <button id="send-forgot">Submit</button>
+            <input id="forgot-email" type="email" placeholder="Enter your email." required/>
+            <button type="submit" id="send-forgot">Submit</button>
             <div id="forgotPasswordMessage" style="color: red; display: none;"></div>
         </div>
 
@@ -124,6 +124,13 @@
             const forgotPasswordMessage = document.getElementById('forgotPasswordMessage');
             const spinner = document.getElementById('spinner');
             const overlay = document.getElementById('overlay');
+
+            if (!email) {
+                forgotPasswordMessage.style.display = 'block';
+                forgotPasswordMessage.style.color = 'red';
+                forgotPasswordMessage.innerText = 'Email is required.';
+                return;
+            }
 
             forgotPasswordMessage.style.display = 'none';
             forgotPasswordMessage.innerText = '';

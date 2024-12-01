@@ -1,9 +1,6 @@
 using ExpenseTracker.Data.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using ExpenseTracker.Data.Contracts;
-using Microsoft.AspNetCore.Authorization;
-using ExpenseTracker.Resources.Constants;
+using ExpenseTracker.Services.Controllers;
 
 namespace ExpenseTrackerWeb.Controllers
 {
@@ -11,10 +8,6 @@ namespace ExpenseTrackerWeb.Controllers
     {
         public IActionResult ExpenseTracker()
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Overview", "Expense");
-            }
             return View();
         }
 

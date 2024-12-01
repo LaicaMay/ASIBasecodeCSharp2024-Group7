@@ -5,20 +5,20 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.Data.Models.CustomModels
 {
     public class ChangePasswordModel
     {
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
 
-        [StringLength(252)]
-        public string? Password { get; set; }
+        [StringLength(250)]
+        [Unicode(false)]
+        public string? Token { get; set; }
 
-        [NotMapped]
         public string? NewPassword { get; set; }
 
-        [NotMapped]
         public string? NewConfirmPassword { get; set; }
     }
 }

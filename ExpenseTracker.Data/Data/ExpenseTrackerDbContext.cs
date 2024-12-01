@@ -24,6 +24,8 @@ public partial class ExpenseTrackerDbContext : DbContext
 
     public virtual DbSet<Month> Months { get; set; }
 
+    public virtual DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+
     public virtual DbSet<Report> Reports { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -46,7 +48,9 @@ public partial class ExpenseTrackerDbContext : DbContext
         {
             entity.HasOne(d => d.Month).WithMany(p => p.Balances).HasConstraintName("FK_Balance_Month");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Balances).HasConstraintName("FK_Balance_User");
+            entity.HasOne(d => d.User).WithMany(p => p.Balances)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Balance_User");
 
             entity.HasOne(d => d.Year).WithMany(p => p.Balances).HasConstraintName("FK_Balance_Year");
         });
@@ -58,9 +62,16 @@ public partial class ExpenseTrackerDbContext : DbContext
 
         modelBuilder.Entity<Expense>(entity =>
         {
-            entity.HasOne(d => d.Category).WithMany(p => p.Expenses).HasConstraintName("FK_Expense_Category");
+            entity.HasOne(d => d.Category).WithMany(p => p.Expenses)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Expense_Category");
 
             entity.HasOne(d => d.User).WithMany(p => p.Expenses).HasConstraintName("FK_Expense_User");
+        });
+
+        modelBuilder.Entity<PasswordResetToken>(entity =>
+        {
+            entity.HasOne(d => d.User).WithMany(p => p.PasswordResetTokens).HasConstraintName("FK_PasswordResetToken_User");
         });
 
         modelBuilder.Entity<Report>(entity =>

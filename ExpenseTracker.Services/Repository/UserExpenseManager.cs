@@ -1,7 +1,8 @@
 ﻿using ExpenseTracker.Data.Models;
 using ExpenseTracker.Resources.Constants;
 using Microsoft.EntityFrameworkCore;
-namespace ExpenseTracker.Data.Repository
+
+namespace ExpenseTracker.Services.Repository
 {
     public class UserExpenseManager
     {
@@ -27,7 +28,7 @@ namespace ExpenseTracker.Data.Repository
             var user = _userMgr.GetUserById(userId);
 
             return _expense._table
-                .Include(e => e.Category) 
+                .Include(e => e.Category)
                 .Where(m => m.UserId == user.UserId)
                 .OrderByDescending(m => m.ExpenseId)
                 .ToList();
@@ -73,7 +74,7 @@ namespace ExpenseTracker.Data.Repository
             }
 
             if (userBalance.TotalBalance == 0 || userBalance.TotalBalance == null || userBalance.isActive == false)
-            {          
+            {
                 err = "You do not have active balance.";
                 return ErrorCode.Error;
             }
@@ -130,24 +131,24 @@ namespace ExpenseTracker.Data.Repository
                 err = "Insufficient balance.";
                 return ErrorCode.Error;
             }
-   
+
             if (totalAmount == 0 || totalAmount == null)
             {
                 userBalance.RemainingBalance -= expn.Amount;
             }
 
-            if (totalAmount !=  0)
+            if (totalAmount != 0)
             {
                 userBalance.RemainingBalance -= totalAmount;
             }
-                      
-            
+
+
             if (userBalance.RemainingBalance < 0)
             {
                 err = "Expense exceeds remaining balance.";
                 return ErrorCode.Error;
             }
-       
+
             if (_userCategoryMgr.UpdateCategory(existCategory, ref err) != ErrorCode.Success)
             {
                 return ErrorCode.Error;
@@ -171,7 +172,7 @@ namespace ExpenseTracker.Data.Repository
             decimal? newTotalLessAmount = 0;
             var existingExpense = GetExpenseById(expn.ExpenseId);
             var existBal = _balanceMgr.GetActiveBalanceByUserId(existingExpense.UserId);
-            
+
 
             if (existingExpense == null)
             {
@@ -216,11 +217,11 @@ namespace ExpenseTracker.Data.Repository
                 }
             }
 
-            
+
             existingExpense.ExpenseName = expn.ExpenseName;
             existingExpense.Date = expn.Date;
             existingExpense.Amount = expn.Amount;
-            
+
             if (existingExpense.CategoryId != expn.CategoryId)
             {
                 var updatedCategory = _userCategoryMgr.GetCategoryById(existingExpense.CategoryId);
@@ -237,12 +238,12 @@ namespace ExpenseTracker.Data.Repository
                 newTotalAmount = existNewCategory.TotalAmount + existingExpense.Amount;
                 existNewCategory.TotalAmount = newTotalAmount;
 
-                if(_userCategoryMgr.UpdateCategory(existNewCategory, ref err) != ErrorCode.Success)
+                if (_userCategoryMgr.UpdateCategory(existNewCategory, ref err) != ErrorCode.Success)
                 {
                     return ErrorCode.Error;
                 }
 
-               
+
             }
 
             existingExpense.CategoryId = expn.CategoryId;
@@ -250,13 +251,13 @@ namespace ExpenseTracker.Data.Repository
             existingExpense.UserId = expn.UserId;
             existingExpense.CreatedDate = expn.CreatedDate;
             existingExpense.DateModified = DateTime.Now;
-         
+
             if (_expense.Update(expn.ExpenseId, expn, out err) != ErrorCode.Success)
             {
                 return ErrorCode.Error;
             }
 
-           
+
             return ErrorCode.Success;
         }
 

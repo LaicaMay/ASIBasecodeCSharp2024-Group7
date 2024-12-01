@@ -37,6 +37,7 @@ body {
     border-width: 1px;
     border-radius: 20px;
     background-color: rgba(255, 255, 255, 0.199);
+    position: relative;
 }
 
 .login-container h3 {
@@ -44,57 +45,57 @@ body {
     font-size: 1.8rem;
 }
 
-    .login-container input[type="text"] {
-        padding-top: 10px;
-        padding-bottom: 10px;
-        padding-left: 35px;
-        width: 300px;
-        border-radius: 30px;
-        margin-bottom: 15px;
-    }
+.login-container input[type="text"] {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 35px;
+    width: 300px;
+    border-radius: 30px;
+    margin-bottom: 15px;
+}
 
-    .login-container .forgot {
-        font-size: 13px;
-    }
+.login-container .forgot {
+    font-size: 13px;
+}
 
-    .login-container .forgot-pass {
-        text-decoration: none;
-        padding-left: 170px;
-        font-weight: none;
-    }
+.login-container .forgot-pass {
+    text-decoration: none;
+    padding-left: 170px;
+    font-weight: none;
+}
 
-    .login-container a {
-        color: black;
-    }
+.login-container a {
+    color: black;
+}
 
-    .login-container .title {
-        font-size: 27px;
-        margin-top: 20px;
-        margin-bottom: 30px;
-    }
+.login-container .title {
+    font-size: 27px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
 
-    .login-container button {
-        padding-top: 10px;
-        padding-bottom: 10px;
-        width: 300px;
-        border-radius: 30px;
-        font-weight: bold;
-        margin-top: 15px;
-        font-size: 15px;
-        background-color: #68BB69;
-    }
+.login-container button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 300px;
+    border-radius: 30px;
+    font-weight: bold;
+    margin-top: 15px;
+    font-size: 15px;
+    background-color: #68BB69;
+}
 
-    .login-container .already-acc {
-        margin-top: 15px;
-        font-size: 13px;
-        display: flex;
-        flex-direction: row;
-        margin-left: 83px;
-    }
+.login-container .already-acc {
+    margin-top: 15px;
+    font-size: 13px;
+    display: flex;
+    flex-direction: row;
+    margin-left: 83px;
+}
 
-    .login-container a {
-        margin-left: 20px;
-    }
+.login-container a {
+    margin-left: 20px;
+}
 
 .email {
     background-image: url('/images/loginImg/email.svg');
@@ -153,29 +154,29 @@ body {
 
 
 
-    #forgotpass.hide {
-        opacity: 0;
-        pointer-events: none;
-    }
+#forgotpass.hide {
+    opacity: 0;
+    pointer-events: none;
+}
 
-    #forgotpass.show {
-        opacity: 1;
-        pointer-events: auto;
-    }
+#forgotpass.show {
+    opacity: 1;
+    pointer-events: auto;
+}
 
-    #forgotpass .forgot-cont {
-        height: 220px;
-        width: 300px;
-        display: flex;
-        flex-direction: column;
-        background-color: white;
-        border-radius: 10px;
-        border: solid;
-        align-items: center;
-        justify-content: start;
-        border-width: 1px;
-        gap: 10px
-    }
+#forgotpass .forgot-cont {
+    height: 220px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border-radius: 10px;
+    border: solid;
+    align-items: center;
+    justify-content: start;
+    border-width: 1px;
+    gap: 10px
+}
 
 #forgot-blur {
     position: absolute;
@@ -190,15 +191,15 @@ body {
     visibility: hidden;
 }
 
-    #forgot-blur.hide {
-        opacity: 0;
-        visibility: hidden;
-    }
+#forgot-blur.hide {
+    opacity: 0;
+    visibility: hidden;
+}
 
-    #forgot-blur.show {
-        opacity: 1;
-        visibility: visible;
-    }
+#forgot-blur.show {
+    opacity: 1;
+    visibility: visible;
+}
 
 .forgot-cont button {
     padding-top: 10px;
@@ -231,13 +232,13 @@ body {
         margin-bottom: 100px;
     }
 
-        .login-container .already-acc {
-            margin-top: 15px;
-            font-size: 13px;
-            display: flex;
-            flex-direction: row;
-            margin-left: 80px;
-        }
+    .login-container .already-acc {
+        margin-top: 15px;
+        font-size: 13px;
+        display: flex;
+        flex-direction: row;
+        margin-left: 80px;
+    }
 }
 
 @media (max-width: 395px) {
@@ -247,65 +248,155 @@ body {
         margin-bottom: 100px;
     }
 
-        .login-container input[type="text"] {
-            padding-top: 10px;
-            padding-bottom: 10px;
-            padding-left: 35px;
-            width: 240px;
-            border-radius: 30px;
-            margin-bottom: 15px;
-        }
+    .login-container input[type="text"] {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 35px;
+        width: 240px;
+        border-radius: 30px;
+        margin-bottom: 15px;
+    }
 
-        .login-container .password {
-            padding-top: 10px;
-            padding-bottom: 10px;
-            padding-left: 35px;
-            width: 240px;
-            border-radius: 30px;
-            margin-bottom: 15px;
-        }
+    .login-container .password {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 35px;
+        width: 240px;
+        border-radius: 30px;
+        margin-bottom: 15px;
+    }
 
-        .login-container label {
-            font-size: 14px;
-        }
+    .login-container label {
+        font-size: 14px;
+    }
 
-        .login-container .title {
-            font-size: 27px;
-            margin-top: 20px;
-            margin-bottom: 30px;
-        }
+    .login-container .title {
+        font-size: 27px;
+        margin-top: 20px;
+        margin-bottom: 30px;
+    }
 
-        .login-container button {
-            padding-top: 10px;
-            padding-bottom: 10px;
-            width: 240px;
-            border-radius: 30px;
-            font-weight: bold;
-            margin-top: 15px;
-            font-size: 15px;
-            background-color: #68BB69;
-        }
+    .login-container button {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        width: 240px;
+        border-radius: 30px;
+        font-weight: bold;
+        margin-top: 15px;
+        font-size: 15px;
+        background-color: #68BB69;
+    }
 
-        .login-container .already-acc {
-            margin-top: 15px;
-            font-size: 13px;
-            display: flex;
-            flex-direction: row;
-            margin-left: 50px;
-        }
+    .login-container .already-acc {
+        margin-top: 15px;
+        font-size: 13px;
+        display: flex;
+        flex-direction: row;
+        margin-left: 50px;
+    }
 
-        .login-container a {
-            margin-left: 20px;
-        }
+    .login-container a {
+        margin-left: 20px;
+    }
 
-        .login-container .forgot-pass {
-            text-decoration: none;
-            padding-left: 110px;
-            font-weight: 0;
-        }
+    .login-container .forgot-pass {
+        text-decoration: none;
+        padding-left: 110px;
+        font-weight: 0;
+    }
 }
 
 .invalid-code {
     position: absolute;
     bottom: -9px;
+}
+
+.resendCode-cont {
+    position: absolute;
+    bottom: 20px;
+    right: 50px
+}
+
+.resendCode-cont a {
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+#resend-new-cont {
+    background-color: white;
+    width: 350px;
+    height: 200px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    border: solid;
+    border-width: 1px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#resend-new-cont.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#resend-new-cont.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#resend-new-cont input[type="email"] {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 35px;
+    width: 300px;
+    border-radius: 30px;
+    margin-top: 10px
+}
+
+#resend-new-cont button {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 300px;
+    border-radius: 30px;
+    font-weight: bold;
+    margin-top: 15px;
+    font-size: 15px;
+    background-color: #68BB69;
+}
+
+#login-blur {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(3px);
+    height: 100vh;
+    width: 100vw;
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#login-blur.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#login-blur.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#resend-error-message {
+    position: absolute;
+    bottom: 7px;
 }

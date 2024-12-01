@@ -10,6 +10,9 @@ using System.Text.RegularExpressions;
 using ExpenseTracker.Data.Utils;
 using System.Net.Mail;
 using System.Net;
+using ExpenseTracker.Services.Controllers;
+using NuGet.Common;
+using Microsoft.AspNetCore.Identity;
 
 namespace ExpenseTrackerWeb.Controllers
 {
@@ -25,26 +28,10 @@ namespace ExpenseTrackerWeb.Controllers
         }
         public IActionResult Login(string ReturnUrl)
         {
-            var existUser = _userManager.GetUserById(UserId);
-
-            if (User.Identity.IsAuthenticated)
-            {
-                if (existUser.isVerify == false)
-                {
-                    return RedirectToAction("Verify");
-                } else if (existUser.isVerify == false)
-                {
-                    return RedirectToAction("Login");
-                }
-                return RedirectToAction("Overview", "Expense");
-
-            }
-
             ViewBag.Error = string.Empty;
             ViewBag.ReturnUrl = ReturnUrl;
             return View();
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Login(string username, string password, string ReturnUrl)
@@ -98,12 +85,9 @@ namespace ExpenseTrackerWeb.Controllers
         [AllowAnonymous]
         public IActionResult SignUp()
         {
-            if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Overview", "Expense");
-
-            return View();
-                
+            return View();              
         }
+
         [AllowAnonymous]
         [HttpPost]
         public IActionResult SignUp(User u)
@@ -146,13 +130,17 @@ namespace ExpenseTrackerWeb.Controllers
                 return View(u);
             }
 
-            u.Code = Utilities.code.ToString();
+            var passwordHasher = new PasswordHasher<User>();
+            u.Password = passwordHasher.HashPassword(u, u.Password);
 
+            u.ExpiryCodeDate = DateTime.UtcNow.AddHours(1);
+            u.Code = Utilities.code.ToString();
+            u.Status = true;
             if (_userManager.SignUp(u, ref ErrorMessage) == ErrorCode.Success)
             {                  
                 Balance balance = new Balance { UserId = u.UserId };
                 if (_balanceMgr.DefaultBalance(balance, ref ErrorMessage) == ErrorCode.Success)
-                {                 
+                {   
                     if (u.Code != null)
                     {
                         List<Claim> claims = new List<Claim>()
@@ -181,9 +169,10 @@ namespace ExpenseTrackerWeb.Controllers
                                     <h2 style='color: #333;'>Verification Code</h2>
                                     <p>Hello,</p>
                                     <p>Your Verification is:</p>
-                                    <p style='font-size: 18px; font-weight: bold; color: #307a59;'>{u.Code}</p>                                  
+                                    <p style='font-size: 18px; font-weight: bold; color: #307a59;'>{u.Code}</p>                                                                                  
                                     <hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;' />
                                     <p>If you didn't request this, please ignore this email or contact support.</p>
+                                    <p>Note: This code will expire in 1 hour.</p>
                                     <p>Thank you,</p>
                                     <p><strong>Team Alliance Group7</strong></p>
                                 </div>
@@ -223,26 +212,32 @@ namespace ExpenseTrackerWeb.Controllers
             return RedirectToAction("Login");
         }
 
+        [Authorize]
         public IActionResult Verify()
-        {                                
+        {
+            var existUser = _userManager.GetUserById(UserId);
+
+            if (User.Identity.IsAuthenticated && existUser.isVerify == true)
+            {
+                return RedirectToAction("Overview", "Expense");
+            }
             return View();
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost]
         public IActionResult Verify(VerifyViewModel code)
         {
-
             var existUser = _userManager.GetUserById(UserId);
-
-            if (existUser == null)
+            
+            if (existUser.UserId == null || existUser.UserId == 0)
             {
                 ModelState.AddModelError(String.Empty, "User does not exist.");
             }
 
-            if (existUser.Code != code.ConfirmCode)
+            if (existUser.Code != code.ConfirmCode || existUser.ExpiryCodeDate < DateTime.UtcNow || existUser.Status == false)
             {
-                ModelState.AddModelError("ConfirmCode", "Please enter your valid code.");
+                ModelState.AddModelError("ConfirmCode", "Please enter a valid code.");
             }
 
             if (!ModelState.IsValid)
@@ -250,9 +245,10 @@ namespace ExpenseTrackerWeb.Controllers
                 return View(code);
             }
 
-            if (existUser.Code == code.ConfirmCode)
+            if (existUser.Code == code.ConfirmCode && DateTime.UtcNow < existUser.ExpiryCodeDate && existUser.Status == true)
             {
                 existUser.isVerify = true;
+                existUser.Status = false;
                 if (_userManager.UpdateUser(existUser, ref ErrorMessage) == ErrorCode.Success)
                 {
                     return RedirectToAction("Overview", "Expense");
@@ -263,30 +259,29 @@ namespace ExpenseTrackerWeb.Controllers
         }
 
         [AllowAnonymous]
-        //[HttpPost("ChangePassword")]
+        [HttpPost]
         public IActionResult ChangePassword([FromBody] ChangePasswordModel changePass)
         {
-
-            var existUser = _userManager.GetUserByGuidPassword(changePass.Password);
+            var existUser = _userManager.GetUserById(changePass.UserId);
 
             if (existUser == null)
             {
-                return BadRequest(new { message = "User does not exist." });
+                return BadRequest(new { message = "User is not authenticated." });
             }
 
-            if (!existUser.isVerify)
+            if (existUser.isVerify == null || existUser.isVerify == false)
             {
-                return BadRequest(new { message = "User is not verified." });
+                return BadRequest(new { message = "User is not verified or does not exist." });
             }
 
-            if (existUser.Password != changePass.Password)
+            if(changePass.NewPassword == "" || changePass.NewConfirmPassword == "")
             {
-                return BadRequest(new { message = "Incorrect password." });
+                return BadRequest(new { message = "All fields are required." });
             }
 
             if (changePass.NewPassword != changePass.NewConfirmPassword)
             {
-                return BadRequest(new { message = "New password and confirm password do not match." });
+                return BadRequest(new { message = "Passwords does not match." });
             }
 
             if (!Regex.IsMatch(changePass.NewPassword, @"^(?=.*[A-Z])(?=.*\W).{8,}$"))
@@ -294,17 +289,131 @@ namespace ExpenseTrackerWeb.Controllers
                 return BadRequest(new { message = "Please enter a valid password." });
             }
 
-            existUser.Password = changePass.NewPassword;
+            var passwordHasher = new PasswordHasher<User>();
+            existUser.Password = passwordHasher.HashPassword(existUser, changePass.NewPassword);
 
-            if (_userManager.UpdateUser(existUser, ref ErrorMessage) != ErrorCode.Success)
+            if (_userManager.UpdateUser(existUser, ref ErrorMessage) == ErrorCode.Success)
             {
-                ModelState.AddModelError(String.Empty, ErrorMessage);
-                return BadRequest(new { message = "Failed to Update user.", errors = ModelState });
+                var activeToken = _userManager.GetActiveTokenByUserId(changePass.UserId);
+                if (activeToken != null)
+                {
+                    activeToken.IsActive = false;
+                    _userManager.UpdateUserToken(activeToken, ref ErrorMessage);
+
+                    var sendersEmail = _configuration["EmailSettings:SendersEmail"];
+                    var sendersPassword = _configuration["EmailSettings:SendersPassword"];
+                    var noreplyEmail = "no-reply@expensetracker.com";
+                    var subject = "Passord Change Notice";
+
+                    var body = $@"
+                            <div style='font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;'>
+                                <div style='max-width: 600px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);'>
+                                    <h2 style='color: #333;'>Password Change</h2>
+                                    <p>Hello {existUser.Username}, your password was change successfully.</p>
+                                    <p>You can login now with your new password.</p>   
+                                    <p>If you didn't request this, please ignore this email or contact support.</p>
+                                    <p>Thank you,</p>
+                                    <p><strong>Team Alliance Group7</strong></p>
+                                </div>
+                            </div>";
+
+                    using (MailMessage message = new MailMessage())
+                    {
+                        message.From = new MailAddress(noreplyEmail);
+                        message.To.Add(existUser.Email);
+                        message.Subject = subject;
+                        message.Body = body;
+                        message.IsBodyHtml = true;
+
+                        using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                        {
+                            smtp.Credentials = new NetworkCredential(sendersEmail, sendersPassword);
+                            smtp.EnableSsl = true;
+                            smtp.Send(message);
+                        }
+                    }
+                }
+            } else
+            {
+                ModelState.AddModelError(string.Empty, ErrorMessage);
+                return BadRequest(new
+                {
+                    message = "Failed to update user.",
+                    errors = ModelState.Where(kvp => kvp.Value.Errors.Any())
+                        .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(e => e.ErrorMessage))
+                });
+            }
+           
+            return Ok(new { success = true, message = "Password updated successfully." });
+        }
+
+
+        //[HttpPost("ChangePassword")]
+        //[AllowAnonymous]
+        //[HttpPost]
+        //public IActionResult ChangePassword([FromBody] ChangePasswordModel changePass)
+        //{
+
+        //    var existUser = _userManager.GetUserById(changePass.UserId);
+
+        //    var activeToken = _userManager.GetActiveTokenByUserId(changePass.UserId);
+
+        //    if (existUser == null)
+        //    {
+        //        return BadRequest(new { message = "User is not authenticated." });
+        //    }     
+
+        //    if (existUser.isVerify == null || existUser.isVerify == false) 
+        //    {
+        //        return BadRequest(new { message = "User is not verified or exist." });
+        //    }
+
+        //    if (changePass.NewPassword != changePass.NewConfirmPassword)
+        //    {
+        //        return BadRequest(new { message = "New password does not match." });
+        //    }
+
+        //    if (!Regex.IsMatch(changePass.NewPassword, @"^(?=.*[A-Z])(?=.*\W).{8,}$"))
+        //    {
+        //        return BadRequest(new { message = "Please enter a valid password." });
+        //    }
+
+        //    existUser.Password = changePass.NewPassword;
+
+        //    if (_userManager.UpdateUser(existUser, ref ErrorMessage) != ErrorCode.Success)
+        //    {
+        //        ModelState.AddModelError(String.Empty, ErrorMessage);
+        //        return BadRequest(new { message = "Failed to Update user.", errors = ModelState });
+        //    }
+
+        //    if (activeToken != null)
+        //    {
+        //        activeToken.IsActive = false;
+        //        _userManager.UpdateUserToken(activeToken, ref ErrorMessage);
+        //    }
+
+        //    return Ok(new { success = true, message = "Password updated successfully." });
+        //}
+
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string token)
+        {
+            var resetToken = _db.PasswordResetTokens
+                .FirstOrDefault(t => t.Token == token && t.ExpiryDate > DateTime.UtcNow && t.IsActive == true);
+
+            if (resetToken == null)
+            {
+                return Unauthorized("Invalid or expired token.");
             }
 
-            return Ok(new { message = "Password changed successfully." });
+            var model = new ChangePasswordModel
+            {
+                Token = token,
+                UserId = resetToken.UserId
+            };
 
-            }
+            return PartialView("_ChangePassword", model);
+        }
 
         [Authorize]
         public IActionResult Update()
