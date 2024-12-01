@@ -1,4 +1,5 @@
-﻿@{
+﻿@model ExpenseTracker.Data.Models.Balance
+@{
     Layout = "_MainLayout";
     ViewData["Title"] = "Expense Summary";
 
@@ -6,47 +7,48 @@
     var curExpMon = ViewData["curMonthExp"];
     var remBals = ViewData["RemainingBal"];
 
-    // var months = ViewData["Months"] as string[] ?? Array.Empty<string>();
-    // var barChartDatasets = ViewData["BarChartDatasets"];
-    // var pieChartLabels = ViewData["PieChartLabels"] as string[] ?? Array.Empty<string>();
-    // var pieChartData = ViewData["PieChartData"] as double[] ?? Array.Empty<double>();
-
 }
 
-<link rel="stylesheet" href="/css/expsummary.css"/>
+<link rel="stylesheet" href="~/css/expsummary.css"/>
 
-<div class="main-2">
+<div class="main-container">
     <div class="expenses">
         <div class="topbarinfo">
             <div class="title-filter-group">
                 <h1>Expenses Summary</h1>
-                <img src="/images/iconVec/ic_filter.png" id="filterContent" contextmenu="filterButton" />
+                
             </div>
-            <h4 id="currentDateSpan">January 1 - September 5</h4>
+            <div class="balance-monthYear">
+                <select>
+                    @foreach (var balance in ViewBag.BalanceDate)
+                    {
+                        <option value="@balance.Value">@balance.Text</option>
+                    }
+                </select>
+            </div>
         </div>
         <div class="expensecontents">
             <div class="expenseitems">
-                <h1>Php 1000.00</h1>
+                <h1 id="total-exp-cur-month">Php 0.00</h1>
                 <p>Total Expenses</p>
-                <p>Month</p>
+                <p id="month-selected">Month</p>
             </div>
             <div class="expenseitems">
-                <h1>Php 2000.00</h1>
+                <h1 id="high-exp-cur-month">Php 0.00</h1>
                 <p>Largest Expense</p>
-                <p>Food Expense</p>
+                <p id="high-exp-cur-month-name"></p>
             </div>
             <div class="expenseitems">
-                <h1>Php 500.00</h1>
+                <h1 id="rem-bal-cur-month">Php0.00</h1>
                 <p>Remaining Budget</p>
-                <p>Month</p>
+                <p id="month-selected">Month</p>
             </div>
         </div>
     </div>
     <div class="charts">
         <div class="pie-chart" id="changeData">
             <div class="title-filter-group">
-                <h3>LifeTime Balance vs. Expenses</h3>
-                <img src="/images/iconVec/ic_filter.png" id="piefilterContent" contextmenu="filterButton" />
+                <h3>Current Month Expenses</h3>
             </div>
             <div class="pie-container">
                 <canvas id="pie-chart" width="400" height="400"></canvas>
@@ -55,7 +57,6 @@
         <div class="line-graph">
             <div class="title-filter-group">
                 <h3>Expense Trend</h3>
-                <img src="/images/iconVec/ic_filter.png" id="linefilterContent" contextmenu="filterButton" />
             </div>
             <div class="line-container">
                 <canvas id="line-graph" width="800" height="400"></canvas>
@@ -75,10 +76,10 @@
             <button id="closeModal" class="close-btn">&times;</button>
         </div>
         <div class="modal-body">
-            <table id="expensestable" class="table table-bordered">
+            <table id="expensestable" class="table">
                 <thead>
                     <tr>
-                        <th class="padding">Expense Name</th>
+                        <th>Expense Name</th>
                         <th>Amount</th>
                         <th>Category</th>
                         <th>Date</th>
@@ -86,7 +87,7 @@
                     </tr>
                 </thead>
                 <tbody>
-           
+                   
                 </tbody>
             </table>
         </div>
@@ -96,26 +97,42 @@
     </div>
 </div>
 
-
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/js/chart.js"></script>
 <script src="/js/expsummary.js"></script>
 
 <script>
-
     const allexp = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(extCatandMon));
     const allexpcur = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(curExpMon));
     const remBal = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(remBals));
 
-    console.log({ allexp, allexpcur, remBal });
-    
+    document.addEventListener("DOMContentLoaded", function () {
+        const pieLabels = allexpcur.map(item => item[0]);
+        const pieData = allexpcur.map(item => item[1]);
 
-    createChart(months, barChartDatasets, "line-graph", "bar");
-    createChart(pieChartLabels, [{
-        data: pieChartData,
-        backgroundColor: ['#4CAF50', '#FF5722'],
-        borderWidth: 1
-    }], "pie-chart", "pie");
+        const pieDatasets = [{
+            data: pieData,
+            backgroundColor: generateRandomColors(pieLabels.length),
+            hoverOffset: 4
+        }];
+
+        createChart(pieLabels, pieDatasets, 'pie-chart', 'pie');
+
+        updateMonthLabels();
+        createLineChart(allexp);
+
+        const totalExpenses = calculateTotalExpenses(allexpcur);
+        const largestExpense = findLargestExpense(allexpcur);
+
+        document.getElementById('total-exp-cur-month').textContent = formatCurrency(totalExpenses);
+        document.getElementById('high-exp-cur-month').textContent = formatCurrency(largestExpense.amount);
+        document.getElementById('high-exp-cur-month-name').textContent = `${largestExpense.name} Expense`;
+        document.getElementById('rem-bal-cur-month').textContent = formatCurrency(remBal);
+    });
+
+   
+
 </script>
 
