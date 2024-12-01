@@ -14,7 +14,7 @@
     };
 
     sendReset.disable = true;
-    sendReset.textContent = 'Sending...'
+    sendReset.textContent = 'Processing...'
 
     try {
         const response = await fetch('/Account/ChangePassword', {

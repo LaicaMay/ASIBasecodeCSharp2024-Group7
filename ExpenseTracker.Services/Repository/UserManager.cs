@@ -42,7 +42,7 @@ namespace ExpenseTracker.Services.Repository
             }
 
             // Hash the entered password and compare it with the stored hashed password
-            var passwordHasher = new PasswordHasher<User>();  // Assuming User is your user class
+            var passwordHasher = new PasswordHasher<User>();
             var result = passwordHasher.VerifyHashedPassword(userSignIn, userSignIn.Password, password);
 
             if (result == PasswordVerificationResult.Failed)
