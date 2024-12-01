@@ -4,12 +4,17 @@
     const newPass = document.getElementById('reset-newPass').value.trim();
     const confirmPass = document.getElementById('reset-confirmPass').value.trim();
 
+    const sendReset = document.getElementById('reset-submit');
+
     const resetPassData = {
         UserId: userId,
         Token: resetToken,
         NewPassword: newPass,
         NewConfirmPassword: confirmPass
     };
+
+    sendReset.disable = true;
+    sendReset.textContent = 'Sending...'
 
     try {
         const response = await fetch('/Account/ChangePassword', {
@@ -55,6 +60,9 @@
     } catch (error) {
         console.error('Error', error);
         alert('Something went wrong.');
+    } finally {
+        sendReset.disabled = false;
+        sendReset.textContent = 'Reset Password';
     }
 });
 
