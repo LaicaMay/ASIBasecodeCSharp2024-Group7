@@ -317,54 +317,17 @@ namespace ExpenseTrackerWeb.Controllers
                                       .ToArray();
 
             var userBalance = _balanceMgr.ListUserBalance(UserId);
-            var userExpenses = _userExpenseMgr.ListUserExpense(UserId);
-            var userCategories = _userCategoryMgr.ListCategory(UserId);
+            var userRemBal = _balanceMgr.GetActiveBalanceByUserId(UserId);
 
-            var categoryMap = userCategories.ToDictionary(c => c.CategoryId, c => c.CategoryName);
+            var expensesByCategoryAndMonth = _userExpenseMgr.GroupExpensesByCategoryAndMonth(UserId);
+            var currentMonth = DateTime.Now.ToString("yyyy-MM");
+            var currentMonthExpenses = _userExpenseMgr.FilterExpensesByMonth(UserId, currentMonth);
 
-            var categorizedExpenses = new Dictionary<string, decimal[]>();
-            foreach (var categoryName in categoryMap.Values)
-            {
-                categorizedExpenses[categoryName] = new decimal[12];
-            }
-
-            foreach (var expense in userExpenses)
-            {
-                if (expense.CategoryId.HasValue && expense.StartDate.HasValue)
-                {
-                    var categoryId = expense.CategoryId.Value;
-                    var categoryName = categoryMap.ContainsKey(categoryId) ? categoryMap[categoryId] : "Uncategorized";
-
-                    var monthIndex = expense.StartDate.Value.Month;
-                    if (monthIndex >= 0 && monthIndex < 12)
-                    {
-                        var amount = expense.Amount ?? 0m;
-                        categorizedExpenses[categoryName][monthIndex] += amount;
-                    }
-                }
-            }
+            ViewData["ExpMonthAndCateg"] = expensesByCategoryAndMonth;
+            ViewData["curMonthExp"] = currentMonthExpenses;
+            ViewData["RemainingBal"] = userRemBal.RemainingBalance;
 
 
-            var barChartDatasets = categorizedExpenses.Select(entry => new
-            {
-                label = entry.Key, 
-                data = entry.Value.Select(value => (double)value).ToArray(),
-                borderWidth = 1
-            }).ToList();
-
-            var totalBalance = userBalance.Sum(e => e.TotalBalance ?? 0m);
-            var totalExpenses = userExpenses.Sum(e => e.Amount ?? 0m);
-
-            var pieChartLabels = new[] { "Total Balance", "Total Expenses" };
-            var pieChartData = new[] { (double)totalBalance, (double)totalExpenses };
-
-            
-
-            ViewData["Months"] = months;
-            ViewData["BarChartDatasets"] = barChartDatasets;
-            ViewData["PieChartLabels"] = pieChartLabels;
-            ViewData["PieChartData"] = pieChartData;
-            
             return View();
         }
 

@@ -309,8 +309,21 @@ namespace ExpenseTrackerWeb.Controllers
         [Authorize]
         public IActionResult Update()
         {
+            var userInfo = _userManager.GetUserById(UserId);
+
+            var userInfouser = new
+            {
+                userInfo.Username,
+                userInfo.Email
+            };
+
+            ViewData["userInfo"] = System.Text.Json.JsonSerializer.Serialize(userInfouser);
+
+            Console.WriteLine(userInfouser);
+
             return View();
         }
+
 
         public IActionResult UpdateUserInfo()
         {

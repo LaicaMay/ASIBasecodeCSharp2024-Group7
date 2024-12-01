@@ -264,5 +264,44 @@ namespace ExpenseTracker.Data.Repository
         {
             return _expense.Delete(id, out err);
         }
+
+
+        public IEnumerable<dynamic> GroupExpensesByCategoryAndMonth(int userId)
+        {
+            var userExpenses = ListUserExpense(userId);
+            var userCategories = _userCategoryMgr.ListCategory(userId);
+
+            var categoryMap = userCategories.ToDictionary(c => c.CategoryId, c => c.CategoryName);
+
+            var groupedExpenses = userExpenses
+                .GroupBy(exp => new {
+                    exp.CategoryId,
+                    YearMonth = exp.Date?.ToString("yyyy-MM") ?? "ND"
+                })
+                .Select(group => new {
+                    CategoryId = group.Key.CategoryId,
+                    CategoryName = categoryMap[group.Key.CategoryId.GetValueOrDefault(0)],
+                    YearMonth = group.Key.YearMonth, 
+                    TotalAmount = group.Sum(exp => exp.Amount) 
+                })
+                .ToList();
+
+            return groupedExpenses;
+        }
+
+        public List<object[]> FilterExpensesByMonth(int userId, string targetMonth)
+        {
+            var groupedExpenses = GroupExpensesByCategoryAndMonth(userId);
+
+            var filteredExpenses = groupedExpenses
+                .Where(exp => exp.YearMonth == targetMonth)
+                .Select(exp => new object[] { exp.CategoryName, exp.TotalAmount })
+                .ToList();
+
+            return filteredExpenses;
+        }
+
     }
+
+
 }

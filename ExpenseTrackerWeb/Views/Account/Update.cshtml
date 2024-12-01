@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "_MainLayout";
+    var userInfo = ViewData["userInfo"]?.ToString();
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -11,14 +12,15 @@
     <link rel="stylesheet" href="/mainStyle/header.css">
     <link rel="stylesheet" href="~/css/update.css" />
 </head>
-
-<div class="main-container">
+<body>
+    <div class="main-container">
         <div class="profile-section">
             <h2>Profile</h2>
-            <p>Username: user123</p>
-            <p>Email: user1@gmail.com</p>
-            <p>Password: ****</p>
+            <p id="username">Username: Loading...</p>
+            <p id="email">Email: Loading...</p>
             <div class="edit-section">
+                <label for="old-password">Old Password:</label>
+                <input type="password" id="old-password" placeholder="Enter old password">
                 <label for="new-password">New Password:</label>
                 <input type="password" id="new-password" placeholder="Enter new password">
                 <label for="confirm-password">Confirm New Password:</label>
@@ -43,6 +45,18 @@
         </div>
     </div>
 
- 
     <script src="~/js/update.js"></script>
+</body>
+    <script>
+   
+    const userInfo = @Html.Raw(userInfo);
+
+    console.log("userDetails: " + userInfo);
+
+    if (userInfo) {
+        document.getElementById('username').textContent = `Username: ${userInfo.Username}`;
+        document.getElementById('email').textContent = `Email: ${userInfo.Email}`;
+    }
+
+    </script>
 </html>
