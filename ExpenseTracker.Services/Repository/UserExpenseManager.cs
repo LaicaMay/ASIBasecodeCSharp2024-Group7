@@ -102,10 +102,10 @@ namespace ExpenseTracker.Services.Repository
                     if (daysOfWeek.Contains(date.DayOfWeek.ToString()))
                     {
                         totalAmount += expn.Amount;
-                        //Console.WriteLine($"Date: {date} - Day: {date.DayOfWeek}");
+           
                     }
                 }
-                //Console.WriteLine("Total Amount for Selected Days: " + totalAmount);
+
                 existCategory.TotalAmount = (existCategory.TotalAmount ?? 0) + totalAmount;
                 var existExpense = GetExpenseById(expn.ExpenseId);
                 existExpense.Amount = totalAmount;

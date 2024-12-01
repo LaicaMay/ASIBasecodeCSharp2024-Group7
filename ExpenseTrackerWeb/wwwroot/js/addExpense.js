@@ -44,9 +44,13 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
     event.stopPropagation();
 
     const expenseName = document.getElementById('expense-name').value.trim();
-    const amount = document.getElementById('amount').value.trim();
+    const amount = parseFloat(document.getElementById('amount').value.trim());
+    const remainBalRaw = document.getElementById('remainingUserBalance').value.trim();
+    const remainBal = parseFloat(remainBalRaw.replace(/,/g, ''));
     const categoryId = document.getElementById('category-id').value;
     const description = document.getElementById('description').value.trim();
+
+    //console.log('RemainBal: ', remainBal);
 
     let date = document.getElementById('date-only').value.trim();
     let startDate = document.getElementById('start-date').value.trim();
@@ -64,6 +68,24 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
 
     if (!expenseName || !amount || !categoryId || !description) {
         alert('Please fill in all required fields.');
+        return;
+    }
+
+    let totalAmount = 0;
+    if (startDate && endDate && selectedDays.length > 0) {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        for (let current = new Date(start); current <= end; current.setDate(current.getDate() + 1)) {
+            const dayOfWeek = current.toLocaleString('en-US', { weekday: 'long' });
+            if (selectedDays.includes(dayOfWeek)) {
+                totalAmount += amount;
+            }
+        }
+    }    
+
+    if (totalAmount > remainBal) {
+        alert('Insufficient balance.');
         return;
     }
 
@@ -91,34 +113,33 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
         EndDate: endDate,   
     };
 
-        fetch('/Expense/AddExpense', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(expenseData)
-        })
-        .then(response => {
-            if (response.ok) {
-                document.getElementById('success-added-modal').classList.remove('hide');
-                document.getElementById('success-added-modal').classList.add('show');
+    fetch('/Expense/AddExpense', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(expenseData)
+    })
+    .then(response => {
+        if (response.ok) {
+            document.getElementById('success-added-modal').classList.remove('hide');
+            document.getElementById('success-added-modal').classList.add('show');
 
-                document.getElementById('expense-name').value = '';
-                document.getElementById('amount').value = '';
-                document.getElementById('category-id').selectedIndex = 0;
-                document.getElementById('date-only').value = '';
-                document.getElementById('description').value = '';
-                document.querySelectorAll('.day-checkbox').forEach(checkbox => checkbox.checked = false);
-                document.getElementById('start-date').value = '';
-                document.getElementById('end-date').value = '';
-            } else {
-                alert('Insufficient Remaining Balance. Please try again.');
-                return;
-            }
-        })
-        .catch(error => console.error('Error:', error));
+            document.getElementById('expense-name').value = '';
+            document.getElementById('amount').value = '';
+            document.getElementById('category-id').selectedIndex = 0;
+            document.getElementById('date-only').value = '';
+            document.getElementById('description').value = '';
+            document.querySelectorAll('.day-checkbox').forEach(checkbox => checkbox.checked = false);
+            document.getElementById('start-date').value = '';
+            document.getElementById('end-date').value = '';
+        } else {
+            alert('Insufficient Remaining Balance. Please try again.');
+            return;
+        }
+    })
+    .catch(error => console.error('Error:', error));
 });
-
 
 document.getElementById('add-id').addEventListener('click', function (event) {
     event.stopPropagation();
@@ -131,7 +152,6 @@ document.getElementById('add-id').addEventListener('click', function (event) {
         expenseCont.classList.add('show');
         addExpnModal.classList.remove('hide');
         addExpnModal.classList.add('show');
-
     }
 });
 

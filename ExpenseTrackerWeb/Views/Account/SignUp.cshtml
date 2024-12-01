@@ -87,16 +87,19 @@
             <div style="position: relative; display: inline-block;">
                 <input asp-for="Email" type="text" class="email" placeholder="Email" required>
                 <span class="validation" asp-validation-for="Email" class="text-danger"></span>
+                <span class="required">*</span>
             </div>
             <div style="position: relative; display: inline-block;">
                 <input asp-for="Username" type="text" class="username" placeholder="Username" required>
                 <span class="validation" asp-validation-for="Username" class="text-danger"></span>
+                <span class="required">*</span>
             </div>
             <div class="pass-input">
                 <input asp-for="Password" type="password" class="password" id="password" placeholder="Password" required>           
                 <span class="toggle-password" onclick="togglePasswordVisibility()">
                     <img class="img-eye" src="/images/loginImg/openEye.svg" alt="Show/Hide" id="eye-icon">
                 </span>
+                <span class="required">*</span>
             </div>
             <div class="pass-input">
                 <input asp-for="ConfirmPassword" type="password" class="password" id="confirm-password" placeholder="Confirm Password" required>
@@ -104,6 +107,7 @@
                 <span class="toggle-password" onclick="toggleConfirmPasswordVisibility()">
                     <img class="img-eye" src="/images/loginImg/openEye.svg" alt="Show/Hide" id="eyeconfirm-icon">
                 </span>
+                <span class="required">*</span>
             </div>
 
             <input type="hidden" asp-for="Code" />
@@ -111,9 +115,10 @@
             <input type="hidden" asp-for="CreatedDate" />
             <input type="hidden" asp-for="DateModified" />
 
-            <div>
+            <div style="position: relative; display: inline-block">
                 <input type="checkbox" asp-for="Agree" required>
                 <label>I agree with Terms and Conditions</label>
+                <span class="required-agree">*</span>
             </div>
             <div class="login-register">
                 <button type="submit" value="Create" class="reg-btn">

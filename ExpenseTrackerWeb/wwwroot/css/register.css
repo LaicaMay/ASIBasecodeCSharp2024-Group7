@@ -210,3 +210,19 @@ body {
       margin-left: 20px;
     }
 }
+
+.required {
+    position: absolute;
+    bottom:23px;
+    left: -15px;
+    color: red;
+    cursor: pointer;
+}
+
+.required-agree {
+    position: absolute;
+    bottom: -1.2px;
+    left: -12px;
+    color: red;
+    cursor: pointer;
+}

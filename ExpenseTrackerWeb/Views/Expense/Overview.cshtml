@@ -218,6 +218,10 @@
         
         @await Html.PartialAsync("_AddExpensePartialView", new Expense())
 
+        <div id="balance-success">
+
+        </div>
+
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/overview.js"></script>
@@ -233,7 +237,6 @@
         const balanceMonth = document.getElementById('month-id').value;
         const yearMonth = document.getElementById('year-id').value;
 
-
         if (!balanceAmount || !balanceMonth || !yearMonth){
             alert('Please fill in all required fields.');
         }
@@ -241,7 +244,7 @@
         if (balanceAmount <= 0) {
             alert('Please enter a valid amount.');
         }
-      
+        
         const balanceData = {
             TotalBalance: balanceAmount,
             MonthId: balanceMonth,
