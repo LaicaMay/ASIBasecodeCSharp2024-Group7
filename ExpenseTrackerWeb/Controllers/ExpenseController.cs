@@ -94,6 +94,35 @@ namespace ExpenseTrackerWeb.Controllers
             return Ok(new { message = "Balance added successfully." });
         }
 
+        [HttpDelete]
+        public IActionResult DeleteBalance(int id)
+        {
+            var userBal = _balanceMgr.GetBalanceById(id);
+
+            if (userBal == null)
+            {
+                return BadRequest(new { success = false, message = "Balance is null" });
+            }
+
+            if(userBal.isActive == true)
+            {
+                return BadRequest(new { success = false, message = "You cant delete Active Balance" });
+            }
+
+            if (_balanceMgr.Delete(id, ref ErrorMessage) != ErrorCode.Success)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Failed to delete balance.",
+                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                });
+            }
+
+            return Ok(new { success = true, message = "Balance deleted successfully." });
+        }
+
+
         [HttpPost]
         public IActionResult AddExpense([FromBody] Expense expense)
         {

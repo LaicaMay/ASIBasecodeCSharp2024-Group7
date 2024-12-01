@@ -126,4 +126,87 @@
     text-align: center;
 }
 
+#balance-success,
+#balance-delete {
+    position: absolute;
+    z-index: 2001;
+    height: 180px;
+    width: 220px;
+    border-radius: 10px;
+    background-color: #68BB69;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    transform: translate(-50%, -50%);
+    top: 40%;
+    left: 50%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#balance-success.hide,
+#balance-delete.hide{
+    opacity: 0;
+    visibility: hidden;
+}
+
+#balance-success.show,
+#balance-delete.show{
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+#balance-success button,
+#balance-delete button{
+    width: 100px;
+    padding: 5px;
+    align-self: center;
+    border-radius: 10px;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#balance-success button:hover,
+#balance-delete button:hover{
+    background-color: #d7e3d2
+}
+
+#balance-success button:active,
+#balance-delete button:active {
+    background-color: #7f7f7f
+}
+
+#blur-budget,
+#blur-budget-del {
+    position: absolute;
+    z-index: 2000;
+    top: 46%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(3px);
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#blur-budget.hide,
+#blur-budget-del.hide{
+    opacity: 0;
+    visibility: hidden;
+}
+
+#blur-budget.show,
+#blur-budget-del.show{
+    opacity: 1;
+    visibility: visible;
+}
 

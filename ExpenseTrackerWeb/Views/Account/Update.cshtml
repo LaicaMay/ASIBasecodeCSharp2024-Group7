@@ -46,17 +46,18 @@
     </div>
 
     <script src="~/js/update.js"></script>
-</body>
     <script>
-   
-    const userInfo = @Html.Raw(userInfo);
 
-    console.log("userDetails: " + userInfo);
+        const userInfo = @Html.Raw(userInfo);
 
-    if (userInfo) {
-        document.getElementById('username').textContent = `Username: ${userInfo.Username}`;
-        document.getElementById('email').textContent = `Email: ${userInfo.Email}`;
-    }
+        console.log("userDetails: " + userInfo);
+
+        if (userInfo) {
+            document.getElementById('username').textContent = `Username: ${userInfo.Username}`;
+            document.getElementById('email').textContent = `Email: ${userInfo.Email}`;
+        }
 
     </script>
+</body>
+    
 </html>

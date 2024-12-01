@@ -73,6 +73,10 @@ namespace ExpenseTracker.Services.Repository
             return _balanceRepository.Update(balance.BalanceId, balance, out err);
         }
 
+        public ErrorCode Delete(int id, ref String err)
+        {
+            return _balanceRepository.Delete(id, out err);
+        }
 
     }
 }
