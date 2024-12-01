@@ -13,6 +13,7 @@
 <link href="~/mainstyle/add-expense.css" rel="stylesheet" />
 <link href="~/mainstyle/edit-expense.css" rel="stylesheet" />
 <link href="~/mainstyle/addbudget.css" rel="stylesheet" />
+<link href="~/mainstyle/budget-history.css" rel="stylesheet" />
         <div class="main-container">
             @if (User.Identity.IsAuthenticated)
             {
@@ -218,15 +219,70 @@
         
         @await Html.PartialAsync("_AddExpensePartialView", new Expense())
 
-        <div id="balance-success">
-
+        <div id="balance-success" class="hide"> 
+            <img src="/images/iconVec/succes-save.svg"/>
+            <p style="text-align: center; padding: 20px;">Budget successfully added!</p>
+            <button id="done-add-budget">Done</button>
         </div>
 
+        <div id="history-budget" class="hide">       
+            <div class="historybudget">
+                <div class="div-budget">
+                    <input id="budget-id" type="hidden"/>
+                    <h2>History Budget</h2>
+                    <p>Budget</p>
+                    <span id="budget-total">123.23</span>
+                    <p>Remaining Budget</p>
+                    <span id="remain-budget">123.23</span>
+                </div>
+                <div class="date-budget">
+                    <p id="budget-date"></p>
+                </div>
+                <div class="button-div">
+                    <button id="deleteBudget">Delete</button>
+                </div>
+            </div>
+        </div>
+        <div id="blur-budget" class="hide">
+        </div>
+
+        <div id="blur-budget-del" class="hide">
+        </div>
+
+        <div id="balance-delete" class="hide"> 
+            <img src="/images/iconVec/succes-save.svg"/>
+            <p style="text-align: center; padding: 20px;">Budget successfully deleted!</p>
+            <button id="done-del-budget">Done</button>
+        </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/overview.js"></script>
 
 <script>
+    document.getElementById('done-del-budget').addEventListener('click', function () {
+
+        var blur = document.getElementById('blur-budget');
+        document.getElementById('balance-delete').classList.add('hide');
+        document.getElementById('balance-delete').classList.remove('show');
+        document.getElementById('blur-budget-del').classList.add('hide');
+        document.getElementById('blur-budget-del').classList.remove('show');
+
+        blur.classList.add('hide');
+        blur.classList.remove('show');
+
+        location.reload();
+    });
+
+    document.getElementById('blur-budget').addEventListener('click', function () {
+        var modal = document.getElementById('history-budget');
+        var blur = document.getElementById('blur-budget');
+
+        modal.classList.add('hide');
+        modal.classList.remove('show');
+        blur.classList.add('hide');
+        blur.classList.remove('show');
+    });
+
     document.getElementById('save-budget').addEventListener('click', function(event) {
         event.stopPropagation();
 
@@ -260,13 +316,15 @@
         })
         .then(response => { 
             if (response.ok) {
-                alert('Budget Successfully added!');
+                document.getElementById('balance-success').classList.add('show');
+                document.getElementById('balance-success').classList.remove('hide');
                 document.getElementById('set-amountCont').classList.remove('show');
                 document.getElementById('set-amountCont').classList.add('hide');
+                document.getElementById('blur-budget').classList.add('show');
+                document.getElementById('blur-budget').classList.remove('hide');
             } else {
                 alert('Failed to save expense. Please try again.');
             }
-            location.reload();
             saveButton.disabled = false;
         })
         .catch(error => {
@@ -274,6 +332,11 @@
             saveButton.disabled = false;             
             });
     });
+
+    document.getElementById('done-add-budget').addEventListener('click', function(event) {
+        event.stopPropagation();
+        location.reload();
+    })
 
     document.getElementById('budget-btn').addEventListener('click', function(event){
         event.stopPropagation();
@@ -295,4 +358,43 @@
             addBalance.classList.add('hide');
         }
     });
+
+    document.getElementById('deleteBudget').addEventListener('click', async function () {
+        const balId = document.getElementById('budget-id').value;
+
+        if (!balId) {
+            alert('Budget ID is missing.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/Expense/DeleteBalance/${balId}`, { 
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('balance-delete').classList.add('show');
+                    document.getElementById('balance-delete').classList.remove('hide');
+                    document.getElementById('history-budget').classList.add('hide');
+                    document.getElementById('history-budget').classList.remove('show');
+                    document.getElementById('blur-budget-del').classList.add('show');
+                    document.getElementById('blur-budget-del').classList.remove('hide');
+                } else {
+                    alert(data.message || 'Failed to delete balance.');
+                }
+            } else {
+                const errorData = await response.json();
+                alert(errorData.message || 'Failed to delete balance.');
+            }
+        } catch (error) {
+            console.error('Error', error);
+            alert('Something went wrong.');
+        }
+    });
+
 </script>

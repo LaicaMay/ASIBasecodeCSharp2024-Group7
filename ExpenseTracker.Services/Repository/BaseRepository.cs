@@ -67,6 +67,24 @@ namespace ExpenseTracker.Services.Repository
             }
         }
 
+        public ErrorCode DeleteAll(List<T> entities, out string errorMsg)
+        {
+            try
+            {
+                // Remove all entities in the list
+                _table.RemoveRange(entities);
+                _db.SaveChanges();
+
+                errorMsg = "All entities deleted successfully.";
+                return ErrorCode.Success;
+            }
+            catch (Exception ex)
+            {
+                errorMsg = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                return ErrorCode.Error;
+            }
+        }
+
         public T Get(object id)
         {
             return _table.Find(id);

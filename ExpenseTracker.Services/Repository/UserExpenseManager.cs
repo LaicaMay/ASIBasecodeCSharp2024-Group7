@@ -179,7 +179,7 @@ namespace ExpenseTracker.Services.Repository
                 return ErrorCode.Error;
             }
 
-            if (expn.Amount < existingExpense.Amount)
+            if (expn.Amount <= existingExpense.Amount)
             {
                 var existCategory = _userCategoryMgr.GetCategoryById(existingExpense.CategoryId);
                 newLessAmount = existingExpense.Amount - expn.Amount;
@@ -198,7 +198,7 @@ namespace ExpenseTracker.Services.Repository
                 }
             }
 
-            if (expn.Amount > existingExpense.Amount)
+            if (expn.Amount >= existingExpense.Amount)
             {
                 var existCategory = _userCategoryMgr.GetCategoryById(existingExpense.CategoryId);
                 newLessAmount = existingExpense.Amount - expn.Amount;
@@ -266,6 +266,11 @@ namespace ExpenseTracker.Services.Repository
             return _expense.Delete(id, out err);
         }
 
+
+        public ErrorCode DeleteAll(int id, ref String err)
+        {
+            return _expense.Delete(id, out err);
+        }
 
         public IEnumerable<dynamic> GroupExpensesByCategoryAndMonth(int userId)
         {

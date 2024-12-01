@@ -2,10 +2,15 @@
 @using System.Security.Claims
 <div class="balance-container" style="position: relative;">
     <div class="balance-monthYear">
-        <select>         
+        <select id="balance-dropdown">
             @foreach (var balance in ViewBag.BalanceDate)
             {
-                <option value="@balance.Value">@balance.Text</option>
+                <option data-budget-id="@balance.BalanceId"
+                        data-totalbal="@balance.TotalBalance"
+                        data-remainingbal="@balance.RemainingBalance"
+                        data-balance-date="@balance.Text"
+                        value="@balance.Value">@balance.Text
+                </option>
             }
         </select>
     </div>
@@ -30,5 +35,32 @@
     </div>
 </div>
 
+
+<script>
+    document.getElementById('balance-dropdown').addEventListener('change', function () {
+        var selectedOption = this.options[this.selectedIndex];
+        var budget = selectedOption.getAttribute('data-budget-id');
+        var date = selectedOption.getAttribute('data-balance-date');
+        var totalBalance = selectedOption.getAttribute('data-totalbal');
+        var remainingBalance = selectedOption.getAttribute('data-remainingbal');
+
+        // Update modal content
+        document.getElementById('budget-id').value = budget;
+        document.getElementById('budget-total').innerText = totalBalance;
+        document.getElementById('remain-budget').innerText = remainingBalance;
+        document.getElementById('budget-date').innerText = date;
+
+        // Show the modal
+        var modal = document.getElementById('history-budget');
+        var blur = document.getElementById('blur-budget');
+        modal.classList.remove('hide');
+        modal.classList.add('show'); 
+        blur.classList.add('show');
+        blur.classList.remove('hide');
+    });
+
+
+
+</script>
 
 

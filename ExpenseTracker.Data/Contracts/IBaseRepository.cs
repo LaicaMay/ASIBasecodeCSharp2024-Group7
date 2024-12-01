@@ -10,5 +10,7 @@ namespace ExpenseTracker.Data.Contracts
         ErrorCode Create(T t, out String errorMsg);
         ErrorCode Update(object id, T t, out String errorMsg);
         ErrorCode Delete(object id, out String errorMsg);
+
+        ErrorCode DeleteAll(List<T> entities, out string errorMsg);
     }
 }

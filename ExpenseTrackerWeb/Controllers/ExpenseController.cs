@@ -67,7 +67,7 @@ namespace ExpenseTrackerWeb.Controllers
 
         [HttpPost]
         public IActionResult AddBalance([FromBody] Balance balance)
-        {
+            {
             if (!User.Identity.IsAuthenticated)
             {
                 return BadRequest(new { message = "User is not authenticated." });
@@ -91,8 +91,46 @@ namespace ExpenseTrackerWeb.Controllers
                 return BadRequest(new { message = "Failed to add balance.", errors = ModelState });
             }
 
+            var expenses = _expenseRepo.GetAll()
+                                     .Where(e => e.UserId == UserId)
+                                     .ToList();
+
+            if (_expenseRepo.DeleteAll(expenses, out string errorMsg) != ErrorCode.Success)
+            {
+                return BadRequest(new { message = errorMsg });
+            }
+
             return Ok(new { message = "Balance added successfully." });
         }
+
+        [HttpDelete]
+        public IActionResult DeleteBalance(int id)
+        {
+            var userBal = _balanceMgr.GetBalanceById(id);
+
+            if (userBal == null)
+            {
+                return BadRequest(new { success = false, message = "Balance is null" });
+            }
+
+            if(userBal.isActive == true)
+            {
+                return BadRequest(new { success = false, message = "You cant delete Active Balance" });
+            }
+
+            if (_balanceMgr.Delete(id, ref ErrorMessage) != ErrorCode.Success)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Failed to delete balance.",
+                    errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
+                });
+            }
+
+            return Ok(new { success = true, message = "Balance deleted successfully." });
+        }
+
 
         [HttpPost]
         public IActionResult AddExpense([FromBody] Expense expense)
