@@ -56,7 +56,6 @@ namespace ExpenseTracker.Services.Repository
 
             return ErrorCode.Success;
         }
-
         public ErrorCode UpdateUser(User u, ref String errMsg)
         {
             return _userRepo.Update(u.UserId, u, out errMsg);
@@ -75,6 +74,11 @@ namespace ExpenseTracker.Services.Repository
         public User GetUserByGuidPassword(String password)
         {
             return _userRepo._table.Where(m => m.Password == password).FirstOrDefault();
+        }
+
+        public PasswordResetToken GetTokenByUserId (int userId)
+        {
+            return _passwordResetTokenRepo.Get(userId);
         }
 
         public PasswordResetToken GetActiveTokenByUserId(int? activUserId)

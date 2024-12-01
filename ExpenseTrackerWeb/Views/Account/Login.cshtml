@@ -108,8 +108,8 @@
         <div class="overlay" id="overlay"></div>
         <div class="forgot-cont">
             <p>Forgot Password</p>
-            <input id="forgot-email" type="email" placeholder="Enter your email."/>
-            <button id="send-forgot">Submit</button>
+            <input id="forgot-email" type="email" placeholder="Enter your email." required/>
+            <button type="submit" id="send-forgot">Submit</button>
             <div id="forgotPasswordMessage" style="color: red; display: none;"></div>
         </div>
 
@@ -124,6 +124,13 @@
             const forgotPasswordMessage = document.getElementById('forgotPasswordMessage');
             const spinner = document.getElementById('spinner');
             const overlay = document.getElementById('overlay');
+
+            if (!email) {
+                forgotPasswordMessage.style.display = 'block';
+                forgotPasswordMessage.style.color = 'red';
+                forgotPasswordMessage.innerText = 'Email is required.';
+                return;
+            }
 
             forgotPasswordMessage.style.display = 'none';
             forgotPasswordMessage.innerText = '';

@@ -28,7 +28,7 @@
 .endDates {
     position: absolute;
     bottom: 36px;
-    right: -150px;
+    right: -65px;
 }
 
 #edit-form {
@@ -60,3 +60,4 @@
     backdrop-filter: blur(10px);
     display: block;
 }
+

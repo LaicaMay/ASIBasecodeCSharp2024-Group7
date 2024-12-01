@@ -11,6 +11,7 @@ using ExpenseTracker.Data.Utils;
 using System.Net.Mail;
 using System.Net;
 using ExpenseTracker.Services.Controllers;
+using NuGet.Common;
 
 namespace ExpenseTrackerWeb.Controllers
 {
@@ -135,7 +136,7 @@ namespace ExpenseTrackerWeb.Controllers
             {                  
                 Balance balance = new Balance { UserId = u.UserId };
                 if (_balanceMgr.DefaultBalance(balance, ref ErrorMessage) == ErrorCode.Success)
-                {                 
+                {   
                     if (u.Code != null)
                     {
                         List<Claim> claims = new List<Claim>()
