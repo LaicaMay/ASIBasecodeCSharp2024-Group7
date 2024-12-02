@@ -362,6 +362,7 @@ namespace ExpenseTrackerWeb.Controllers
             ViewData["ExpMonthAndCateg"] = expensesByCategoryAndMonth;
             ViewData["curMonthExp"] = currentMonthExpenses;
             ViewData["RemainingBal"] = userRemBal.RemainingBalance;
+            ViewBag.BalanceDate = SelectDropDownItem.SelectListItemMonthYearByUser(UserId);
 
 
             return View();
@@ -389,7 +390,7 @@ namespace ExpenseTrackerWeb.Controllers
                 Category = e.CategoryId.HasValue && categoryMap.ContainsKey(e.CategoryId.Value)
                     ? categoryMap[e.CategoryId.Value]
                     : "Uncategorized",
-                Date = e.StartDate?.ToString("yyyy-MM-dd") ?? "N/A",
+                Date = e.Date?.ToString("yyyy-MM-dd") ?? "N/A",
                 e.Description
             }).ToList();
 
