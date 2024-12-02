@@ -128,6 +128,15 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
 
     if (checkbox.checked) {
         date = null; 
+        if (startDate >= endDate) {
+            alert('Invalid start date and end date;')
+            return;
+        }
+
+        if (endDate <= startDate) {
+            alert('Invalid start date and end date;')
+            return;
+        }
     } else {      
         startDate = null;
         endDate = null; 
