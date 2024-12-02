@@ -1,4 +1,36 @@
-﻿document.getElementById('toggleCheckbox').addEventListener('change', function () {
+﻿function getMonthYear(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+}
+
+function validateDateInput(inputId) {
+    const balanceDateSet = document.getElementById('balance-date-set').value;
+    const dateInput = document.getElementById(inputId);
+    const selectedDate = dateInput.value;
+
+    if (selectedDate) {
+        const selectedMonthYear = getMonthYear(selectedDate);
+
+        if (selectedMonthYear !== balanceDateSet) {
+            dateInput.value = '';
+            alert(`The selected date must fall within the balance period: ${balanceDateSet}.`);
+        }
+    }
+}
+
+document.getElementById('date-only').addEventListener('change', function () {
+    validateDateInput('date-only');
+});
+
+document.getElementById('start-date').addEventListener('change', function () {
+    validateDateInput('start-date');
+});
+
+document.getElementById('end-date').addEventListener('change', function () {
+    validateDateInput('end-date');
+});
+
+document.getElementById('toggleCheckbox').addEventListener('change', function () {
     const dayTitle = document.querySelector('.dayTitle');
     const dateNow = document.querySelector('.date-now');
     const checkboxContainer = document.querySelector('.checkbox-container');
@@ -146,6 +178,16 @@ document.getElementById('add-id').addEventListener('click', function (event) {
 
     let expenseCont = document.getElementById('add-expense-container');
     let addExpnModal = document.getElementById('expense-add');
+    let balanceDropdown = document.getElementById('balance-dropdown');
+    let balanceDateSetInput = document.getElementById('balance-date-set');
+
+    // Get the first option's data-balance-date value
+    if (balanceDropdown.options.length > 0) {
+        let firstBalanceDate = balanceDropdown.options[0].getAttribute('data-balance-date');
+        balanceDateSetInput.value = firstBalanceDate; // Set the value to the input field
+    }
+
+    console.log('set date', balanceDateSetInput)
 
     if (expenseCont.classList.contains('hide')) {
         expenseCont.classList.remove('hide');
@@ -168,15 +210,26 @@ document.getElementById('m-add-id').addEventListener('click', function (event) {
 
     let expenseCont = document.getElementById('add-expense-container');
     let addExpnModal = document.getElementById('expense-add');
+    let balanceDropdown = document.getElementById('balance-dropdown');
+    let balanceDateSetInput = document.getElementById('balance-date-set');
+
+    // Get the first option's data-balance-date value
+    if (balanceDropdown.options.length > 0) {
+        let firstBalanceDate = balanceDropdown.options[0].getAttribute('data-balance-date');
+        balanceDateSetInput.value = firstBalanceDate; // Set the value to the input field
+    }
+
+    console.log('set date', balanceDateSetInput)
 
     if (expenseCont.classList.contains('hide')) {
         expenseCont.classList.remove('hide');
         expenseCont.classList.add('show');
         addExpnModal.classList.remove('hide');
         addExpnModal.classList.add('show');
-
     }
+
 });
+
 
 document.getElementById('save-btn').addEventListener('click', function (event) {
     event.stopPropagation();
@@ -228,3 +281,4 @@ document.getElementById('done-del').addEventListener('click', function (event) {
 
     location.reload();
 });
+

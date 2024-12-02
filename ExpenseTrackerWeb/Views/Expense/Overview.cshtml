@@ -26,7 +26,6 @@
             @await Html.PartialAsync("_UserBudgetPartialView", 
            Model.UserBalance.FirstOrDefault(u => u.UserId == currentUserIdInt))
 
-
             <div class="bottom-title">
                 Recent Expenses
             </div>
@@ -259,6 +258,7 @@
 <script src="~/js/overview.js"></script>
 
 <script>
+
     document.getElementById('done-del-budget').addEventListener('click', function () {
 
         var blur = document.getElementById('blur-budget');
