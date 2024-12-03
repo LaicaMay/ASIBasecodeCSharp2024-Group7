@@ -315,19 +315,19 @@ namespace ExpenseTrackerWeb.Controllers
                 return BadRequest(new { message = "existCategory is null." });
             }
 
-            if(existActiveBal == null)
-            {
-                return BadRequest(new { message = "existActiveBal is null." });
-            }
+            //if(existActiveBal == null)
+            //{
+            //    return BadRequest(new { message = "existActiveBal is null." });
+            //}
 
-            updateBalance = existActiveBal.RemainingBalance + existCategory.TotalAmount;
-            existActiveBal.RemainingBalance = updateBalance;
+            //updateBalance = existActiveBal.RemainingBalance + existCategory.TotalAmount;
+            //existActiveBal.RemainingBalance = updateBalance;
 
-            if(_balanceMgr.UpdateBalance(existActiveBal, ref ErrorMessage) != ErrorCode.Success)
-            {
-                ModelState.AddModelError(String.Empty, ErrorMessage);
-                return BadRequest(new { message = "Failed to update balance.", errors = ModelState });
-            }
+            //if(_balanceMgr.UpdateBalance(existActiveBal, ref ErrorMessage) != ErrorCode.Success)
+            //{
+            //    ModelState.AddModelError(String.Empty, ErrorMessage);
+            //    return BadRequest(new { message = "Failed to update balance.", errors = ModelState });
+            //}
 
             if (_userCategoryMgr.DeleteCategory(id, ref ErrorMessage) != ErrorCode.Success)
             {
