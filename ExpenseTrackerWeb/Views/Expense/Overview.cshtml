@@ -247,11 +247,18 @@
 
         <div id="blur-budget-del" class="hide">
         </div>
-
         <div id="balance-delete" class="hide"> 
             <img src="/images/iconVec/succes-save.svg"/>
             <p style="text-align: center; padding: 20px;">Budget successfully deleted!</p>
             <button id="done-del-budget">Done</button>
+        </div>
+
+        <div id="budget-error" class="hide">
+            <img src="/images/iconVec/warning-save.svg"/>
+            <h3 id="error-name"></h3>
+        </div>
+        <div id="blur-error-budget" class="hide">
+
         </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -292,15 +299,28 @@
         const balanceAmount = document.getElementById('balance-amount').value.trim();
         const balanceMonth = document.getElementById('month-id').value;
         const yearMonth = document.getElementById('year-id').value;
+        let errorModal = document.getElementById('budget-error');
+        let errorName = document.getElementById('error-name');
+        let blurError = document.getElementById('blur-error-budget');
+
+        errorName.textContent = "";
 
         if (!balanceAmount || !balanceMonth || !yearMonth){
-            alert('Please fill in all required fields.');
+            errorModal.classList.add('show');
+            errorModal.classList.remove('hide');
+            blurError.classList.add('show');
+            blurError.classList.remove('hide')
+            errorName.textContent = "All fields are required."
             saveButton.disabled = false;
             return;
         }
 
         if (balanceAmount <= 0 || !/^\d+(\.\d+)?$/.test(balanceAmount)) {
-            alert('Please enter a valid amount.');
+            errorModal.classList.add('show');
+            errorModal.classList.remove('hide');
+            blurError.classList.add('show');
+            blurError.classList.remove('hide')
+            errorName.textContent = "Please enter a valid amount."
             saveButton.disabled = false;
             return;
         }
@@ -336,6 +356,17 @@
             console.error('Error:', error);           
             saveButton.disabled = false;             
             });
+    });
+    
+    document.getElementById('blur-error-budget').addEventListener('click', function (event) {
+        event.stopPropagation();
+        let blurError = document.getElementById('blur-error-budget');
+        let errorModal = document.getElementById('budget-error');
+
+        errorModal.classList.add('hide');
+        errorModal.classList.remove('show');
+        blurError.classList.add('hide');
+        blurError.classList.remove('show')
     });
 
     document.getElementById('done-add-budget').addEventListener('click', function(event) {
