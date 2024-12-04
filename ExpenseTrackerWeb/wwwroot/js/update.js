@@ -40,7 +40,7 @@ function saveChanges() {
         return;
     }
 
-    fetch('/Account/ChangePassword', {
+    fetch('/Account/UserChangePassword', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

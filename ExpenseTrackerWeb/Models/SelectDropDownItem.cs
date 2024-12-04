@@ -67,14 +67,19 @@ namespace ExpenseTrackerWeb.Models
             MonthYearManager _monthYearMgr = new MonthYearManager();
             var list = new List<SelectListItem>();
 
+            // Fetch months and filter out the unwanted combination
             foreach (var item in _monthYearMgr.ListMonths())
             {
-                var r = new SelectListItem
+                // Assuming MonthId is the identifier and you want to exclude the combination with YearId == 13
+                if (!(item.MonthId == 13 && _monthYearMgr.ListYears().Any(y => y.YearId == 13)))
                 {
-                    Text = item.MonthName,
-                    Value = item.MonthId.ToString()
-                };
-                list.Add(r);
+                    var r = new SelectListItem
+                    {
+                        Text = item.MonthName,
+                        Value = item.MonthId.ToString()
+                    };
+                    list.Add(r);
+                }
             }
             return list;
         }
@@ -84,16 +89,22 @@ namespace ExpenseTrackerWeb.Models
             MonthYearManager _monthYearMgr = new MonthYearManager();
             var list = new List<SelectListItem>();
 
+            // Fetch years and filter out the unwanted combination
             foreach (var item in _monthYearMgr.ListYears())
             {
-                var r = new SelectListItem
+                // Assuming YearId is the identifier and you want to exclude the combination with MonthId == 13
+                if (!(item.YearId == 13 && _monthYearMgr.ListMonths().Any(m => m.MonthId == 13)))
                 {
-                    Text = item.YearCount,
-                    Value = item.YearId.ToString()
-                };
-                list.Add(r);
+                    var r = new SelectListItem
+                    {
+                        Text = item.YearCount,
+                        Value = item.YearId.ToString()
+                    };
+                    list.Add(r);
+                }
             }
             return list;
         }
+
     }
 }

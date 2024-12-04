@@ -260,6 +260,98 @@ namespace ExpenseTrackerWeb.Controllers
 
         [AllowAnonymous]
         [HttpPost]
+        public IActionResult UserChangePassword([FromBody] ChangePasswordModel changePass)
+        {
+            changePass.UserId = UserId;
+
+            var existUser = _userManager.GetUserById(changePass.UserId);
+
+            if (existUser == null)
+            {
+                return BadRequest(new { message = "User is not authenticated." });
+            }
+
+            if (existUser.isVerify == null || existUser.isVerify == false)
+            {
+                return BadRequest(new { message = "User is not verified or does not exist." });
+            }
+
+            if (changePass.NewPassword == "" || changePass.NewConfirmPassword == "")
+            {
+                return BadRequest(new { message = "All fields are required." });
+            }
+
+            if (changePass.NewPassword != changePass.NewConfirmPassword)
+            {
+                return BadRequest(new { message = "Passwords does not match." });
+            }
+
+            if (!Regex.IsMatch(changePass.NewPassword, @"^(?=.*[A-Z])(?=.*\W).{8,}$"))
+            {
+                return BadRequest(new { message = "Please enter a valid password." });
+            }
+
+            var passwordHasher = new PasswordHasher<User>();
+            existUser.Password = passwordHasher.HashPassword(existUser, changePass.NewPassword);
+
+            if (_userManager.UpdateUser(existUser, ref ErrorMessage) == ErrorCode.Success)
+            {
+                var activeToken = _userManager.GetActiveTokenByUserId(changePass.UserId);
+                if (activeToken != null)
+                {
+                    activeToken.IsActive = false;
+                    _userManager.UpdateUserToken(activeToken, ref ErrorMessage);
+
+                    var sendersEmail = _configuration["EmailSettings:SendersEmail"];
+                    var sendersPassword = _configuration["EmailSettings:SendersPassword"];
+                    var noreplyEmail = "no-reply@expensetracker.com";
+                    var subject = "Passord Change Notice";
+
+                    var body = $@"
+                            <div style='font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4;'>
+                                <div style='max-width: 600px; margin: 0 auto; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);'>
+                                    <h2 style='color: #333;'>Password Change</h2>
+                                    <p>Hello {existUser.Username}, your password was change successfully.</p>
+                                    <p>You can login now with your new password.</p>   
+                                    <p>If you didn't request this, please ignore this email or contact support.</p>
+                                    <p>Thank you,</p>
+                                    <p><strong>Team Alliance Group7</strong></p>
+                                </div>
+                            </div>";
+
+                    using (MailMessage message = new MailMessage())
+                    {
+                        message.From = new MailAddress(noreplyEmail);
+                        message.To.Add(existUser.Email);
+                        message.Subject = subject;
+                        message.Body = body;
+                        message.IsBodyHtml = true;
+
+                        using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                        {
+                            smtp.Credentials = new NetworkCredential(sendersEmail, sendersPassword);
+                            smtp.EnableSsl = true;
+                            smtp.Send(message);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, ErrorMessage);
+                return BadRequest(new
+                {
+                    message = "Failed to update user.",
+                    errors = ModelState.Where(kvp => kvp.Value.Errors.Any())
+                        .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Errors.Select(e => e.ErrorMessage))
+                });
+            }
+
+            return Ok(new { success = true, message = "Password updated successfully." });
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
         public IActionResult ChangePassword([FromBody] ChangePasswordModel changePass)
         {
             var existUser = _userManager.GetUserById(changePass.UserId);

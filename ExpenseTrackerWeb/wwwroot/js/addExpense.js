@@ -182,6 +182,31 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
     .catch(error => console.error('Error:', error));
 });
 
+//document.getElementById('add-id').addEventListener('click', function (event) {
+//    event.stopPropagation();
+
+//    let expenseCont = document.getElementById('add-expense-container');
+//    let addExpnModal = document.getElementById('expense-add');
+//    let balanceDropdown = document.getElementById('balance-dropdown');
+//    let balanceDateSetInput = document.getElementById('balance-date-set');
+
+//    // Get the first option's data-balance-date value
+//    if (balanceDropdown.options.length > 0) {
+//        let firstBalanceDate = balanceDropdown.options[0].getAttribute('data-balance-date');
+//        balanceDateSetInput.value = firstBalanceDate; // Set the value to the input field
+//    }
+
+//    console.log('set date', balanceDateSetInput)
+
+//    if (expenseCont.classList.contains('hide')) {
+//        expenseCont.classList.remove('hide');
+//        expenseCont.classList.add('show');
+//        addExpnModal.classList.remove('hide');
+//        addExpnModal.classList.add('show');
+//    }
+//});
+
+
 document.getElementById('add-id').addEventListener('click', function (event) {
     event.stopPropagation();
 
@@ -189,14 +214,32 @@ document.getElementById('add-id').addEventListener('click', function (event) {
     let addExpnModal = document.getElementById('expense-add');
     let balanceDropdown = document.getElementById('balance-dropdown');
     let balanceDateSetInput = document.getElementById('balance-date-set');
+    let dateOnlyInput = document.getElementById('date-only');
+    let startDateInput = document.getElementById('start-date');
+    let endDateInput = document.getElementById('end-date');
 
-    // Get the first option's data-balance-date value
+    //Get the first option's data-balance-date value
     if (balanceDropdown.options.length > 0) {
         let firstBalanceDate = balanceDropdown.options[0].getAttribute('data-balance-date');
         balanceDateSetInput.value = firstBalanceDate; // Set the value to the input field
     }
 
-    console.log('set date', balanceDateSetInput)
+    //Get the value from the hidden input and parse it
+    let balanceDateValue = balanceDateSetInput.value; // Format: "January 2024"
+    if (balanceDateValue) {
+        //Extract month and year
+        let [month, year] = balanceDateValue.split(' ');
+
+        //Create start and end dates in UTC
+        let startDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth(), 1)); //Start of the month
+        let endDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth() + 1, 0)); //End of the month
+
+        //Format dates to "yyyy-MM-dd"
+        let formatDate = (date) => date.toISOString().split('T')[0];
+        dateOnlyInput.value = formatDate(startDate); //Keep original value for reference
+        startDateInput.value = formatDate(startDate); //Set formatted start date
+        endDateInput.value = formatDate(endDate); //Set formatted end date
+    }
 
     if (expenseCont.classList.contains('hide')) {
         expenseCont.classList.remove('hide');
@@ -205,6 +248,7 @@ document.getElementById('add-id').addEventListener('click', function (event) {
         addExpnModal.classList.add('show');
     }
 });
+
 
 document.getElementById('add-blur').addEventListener('click', function (event) {
     event.stopPropagation();
@@ -221,14 +265,32 @@ document.getElementById('m-add-id').addEventListener('click', function (event) {
     let addExpnModal = document.getElementById('expense-add');
     let balanceDropdown = document.getElementById('balance-dropdown');
     let balanceDateSetInput = document.getElementById('balance-date-set');
+    let dateOnlyInput = document.getElementById('date-only');
+    let startDateInput = document.getElementById('start-date');
+    let endDateInput = document.getElementById('end-date');
 
-    // Get the first option's data-balance-date value
+    //Get the first option's data-balance-date value
     if (balanceDropdown.options.length > 0) {
         let firstBalanceDate = balanceDropdown.options[0].getAttribute('data-balance-date');
         balanceDateSetInput.value = firstBalanceDate; // Set the value to the input field
     }
 
-    console.log('set date', balanceDateSetInput)
+    //Get the value from the hidden input and parse it
+    let balanceDateValue = balanceDateSetInput.value; // Format: "January 2024"
+    if (balanceDateValue) {
+        //Extract month and year
+        let [month, year] = balanceDateValue.split(' ');
+
+        //Create start and end dates in UTC
+        let startDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth(), 1)); //Start of the month
+        let endDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth() + 1, 0)); //End of the month
+
+        //Format dates to "yyyy-MM-dd"
+        let formatDate = (date) => date.toISOString().split('T')[0];
+        dateOnlyInput.value = formatDate(startDate); //Keep original value for reference
+        startDateInput.value = formatDate(startDate); //Set formatted start date
+        endDateInput.value = formatDate(endDate); //Set formatted end date
+    }
 
     if (expenseCont.classList.contains('hide')) {
         expenseCont.classList.remove('hide');
@@ -236,8 +298,32 @@ document.getElementById('m-add-id').addEventListener('click', function (event) {
         addExpnModal.classList.remove('hide');
         addExpnModal.classList.add('show');
     }
-
 });
+
+//document.getElementById('m-add-id').addEventListener('click', function (event) {
+//    event.stopPropagation();
+
+//    let expenseCont = document.getElementById('add-expense-container');
+//    let addExpnModal = document.getElementById('expense-add');
+//    let balanceDropdown = document.getElementById('balance-dropdown');
+//    let balanceDateSetInput = document.getElementById('balance-date-set');
+
+//    //Get the first option's data-balance-date value
+//    if (balanceDropdown.options.length > 0) {
+//        let firstBalanceDate = balanceDropdown.options[0].getAttribute('data-balance-date');
+//        balanceDateSetInput.value = firstBalanceDate; //Set the value to the input field
+//    }
+
+//    console.log('set date', balanceDateSetInput)
+
+//    if (expenseCont.classList.contains('hide')) {
+//        expenseCont.classList.remove('hide');
+//        expenseCont.classList.add('show');
+//        addExpnModal.classList.remove('hide');
+//        addExpnModal.classList.add('show');
+//    }
+
+//});
 
 
 document.getElementById('save-btn').addEventListener('click', function (event) {

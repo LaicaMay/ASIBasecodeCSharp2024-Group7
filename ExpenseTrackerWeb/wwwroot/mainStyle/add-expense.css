@@ -6,18 +6,21 @@
     z-index: 200;
     opacity: 0;
     pointer-events: none;
+    visibility: hidden;
     transition: opacity 0.3s ease, transform 0.3s ease; 
 }
 
 #add-expense-container.hide {
     opacity: 0;
     pointer-events: none;
+    visibility: hidden;
      transform: translate(-50%, -50%) scale(0.8);
 }
 
 #add-expense-container.show {
     opacity: 1;
     pointer-events: auto;
+    visibility: visible;
     transform: translate(-50%, -50%) scale(1);
 }
 
