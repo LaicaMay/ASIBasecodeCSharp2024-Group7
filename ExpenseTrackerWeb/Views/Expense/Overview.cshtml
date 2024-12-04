@@ -295,10 +295,14 @@
 
         if (!balanceAmount || !balanceMonth || !yearMonth){
             alert('Please fill in all required fields.');
+            saveButton.disabled = false;
+            return;
         }
 
-        if (balanceAmount <= 0) {
+        if (balanceAmount <= 0 || !/^\d+(\.\d+)?$/.test(balanceAmount)) {
             alert('Please enter a valid amount.');
+            saveButton.disabled = false;
+            return;
         }
         
         const balanceData = {
@@ -322,6 +326,7 @@
                 document.getElementById('set-amountCont').classList.add('hide');
                 document.getElementById('blur-budget').classList.add('show');
                 document.getElementById('blur-budget').classList.remove('hide');
+                    saveButton.disabled = false;
             } else {
                 alert('Failed to save expense. Please try again.');
             }
