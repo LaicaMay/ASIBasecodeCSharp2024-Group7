@@ -201,3 +201,132 @@
 .hide {
     display: none;
 }
+
+#success-del-cat {
+    display: flex;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 280px;
+    height: 200px;
+    background-color: white;
+    border: solid;
+    border-width: 1px;
+    border-radius: 15px;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 2000;
+    gap: 15px
+}
+
+#success-del-cat.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#success-del-cat.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#success-del-cat img {
+    height: 40px;
+    width: 40px;
+    margin-top: 50px;
+}
+
+#cat-blur-del {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100vh;
+    width: 100vw;
+    backdrop-filter: blur(3px);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1999
+}
+
+#cat-blur-del.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#cat-blur-del.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#caterrorVal {
+    display: flex;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 280px;
+    height: 200px;
+    background-color: white;
+    border: solid;
+    border-width: 1px;
+    border-radius: 15px;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 2000;
+}
+
+#caterrorVal img {
+    height: 50px;
+    width: 50px;
+    margin-top: 40px;
+    border-radius: 100px;
+    border: solid;
+    border-width: 1px;
+    border-color: red;
+    background-color: red;
+}
+
+#caterrorVal h3 {
+    margin-top: 20px;
+    color: red;
+}
+
+#caterrorVal.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#caterrorVal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#blur-error-cat {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100vh;
+    width: 100vw;
+    z-index: 1999;
+    opacity: 0;
+    backdrop-filter: blur(3px);
+    visibility: hidden;
+}
+
+#blur-error-cat.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#blur-error-cat.show {
+    opacity: 1;
+    visibility: visible;
+}

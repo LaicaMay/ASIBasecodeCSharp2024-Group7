@@ -18,17 +18,29 @@
         const categoryName = document.getElementById('cat-name').value.trim();
         const categoryDescription = document.getElementById('cat-description').value.trim();    
         let successAdded = document.getElementById('cat-success-added-modal');
+        let okBtn = document.getElementById('cat-ok-btn');
+        let errorVal = document.getElementById('caterrorVal');
+        let errolValName = document.getElementById('errorcat-name');
+        let errorBlur = document.getElementById('blur-error-cat');
+
+        errolValName.textContent = "";
+        okBtn.disabled = true;
+
+        if (!categoryName || !categoryDescription) {
+            errorVal.classList.add('show');
+            errorVal.classList.remove('hide');
+            errorBlur.classList.add('show');
+            errorBlur.classList.remove('hide');
+            errolValName.textContent = "All fields are required.";
+            okBtn.disabled = false;
+            return;
+        }
 
         const categoryData = {
             ColorPick: categoryColor,
             CategoryName: categoryName,
             Description: categoryDescription
-        };
-
-        if (!categoryName || !categoryDescription) {
-            alert('All fields are required.');
-            return;
-        }
+        };     
 
         try {
             const response = await fetch('/Expense/AddCategory', {
@@ -45,6 +57,7 @@
 
                 document.getElementById('cat-name').value = '';
                 document.getElementById('cat-description').value = '';
+                okBtn.disabled = false
 
                 if (successAdded.classList.contains('hide')) {
                     successAdded.classList.remove('hide');
@@ -53,15 +66,30 @@
                     document.getElementById('cat-confirmation-modal').classList.add('hide');
                     document.getElementById('add-category-cont').classList.remove('show');
                     document.getElementById('add-category-cont').classList.add('hide');
+                    okBtn.disabled = false
                 }
             } else {
                 alert('Error: ' + data.message);
+                okBtn.disabled = false
             }
 
         } catch (error) {
             console.error('Error:', error);
             alert('Something went wrong. Please try again later.');
+            okBtn.disabled = false
         }
+    });
+
+    document.getElementById('blur-error-cat').addEventListener('click', function (event) {
+        event.stopPropagation();
+
+        let errorVal = document.getElementById('caterrorVal');
+        let errorBlur = document.getElementById('blur-error-cat');
+
+        errorVal.classList.add('hide');
+        errorVal.classList.remove('show');
+        errorBlur.classList.add('hide');
+        errorBlur.classList.remove('show');
     });
 
 
@@ -186,6 +214,7 @@
 
     document.getElementById('delCat-confirm').addEventListener('click', async function () {
         const categoryId = document.getElementById('category-id').value;
+        document.getElementById('success-del-cat');
 
         try {
             const response = await fetch(`/Expense/DeleteCategory/${categoryId}`, {
@@ -198,9 +227,12 @@
             const data = await response.json();
 
             if (response.ok) {
-                console.log(data.message);
-                alert('Category deleted successfully');
-                location.reload();
+                document.getElementById('success-del-cat').classList.add('show');
+                document.getElementById('success-del-cat').classList.remove('hide');
+                document.getElementById('cat-blur-del').classList.add('show');
+                document.getElementById('cat-blur-del').classList.remove('hide');
+                document.getElementById('del-category-cont').classList.add('hide');
+                document.getElementById('del-category-cont').classList.remove('show');
             } else {
                 console.error('Failed to delete', data);
                 alert(data.message || 'Failed to delete category');
@@ -210,6 +242,11 @@
             console.error('Error', error);
             alert('An error occurred while deleting the category.');
         }
+    });
+
+    document.getElementById('cat-blur-del').addEventListener('click', function (event) {
+        event.stopPropagation();
+        location.reload();
     });
 
     document.getElementById('category-add-blur').addEventListener('click', function (event) {
@@ -271,3 +308,4 @@
     });
 
 });
+
