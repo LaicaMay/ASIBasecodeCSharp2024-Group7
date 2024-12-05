@@ -11,5 +11,7 @@ namespace ExpenseTracker.Data.Models.CustomModels
         public List<Expense> UserExpense { get; set; }
         public List<Balance> UserBalance { get; set; }
 
+        public List<Category> UserCategories { get; set; }
+
     }
 }

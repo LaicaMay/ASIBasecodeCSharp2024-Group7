@@ -29,6 +29,8 @@ namespace ExpenseTrackerWeb.Controllers
 
             var userBalance = _balanceMgr.ListUserBalance(UserId);
 
+            var userCategory = _userCategoryMgr.ListCategory(UserId);
+
             if (!string.IsNullOrEmpty(Search))
             {
                 var searchResults = _expenseSearch.SearchExpenses(Search)
@@ -53,6 +55,7 @@ namespace ExpenseTrackerWeb.Controllers
             {
                 UserExpense = expenses,
                 UserBalance = userBalance,
+                UserCategories = userCategory
             };
 
             ViewBag.Category = SelectDropDownItem.SelectListItemCategoryByUser(UserId);
@@ -268,6 +271,7 @@ namespace ExpenseTrackerWeb.Controllers
                 return BadRequest(new { message = "User is not authenticated." });
             }
 
+            userCategory.TotalAmount = 0;
             userCategory.UserId = UserId;
             userCategory.CreatedDate = DateTime.Now;
 
