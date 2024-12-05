@@ -1,10 +1,14 @@
 ﻿.main-container {
-    width: 80%;
-    margin: auto;
-    border-radius: 15px;
+    height: 87vh;
+    width: 87vw;
+    background-color: #e9e8e84b;
     padding: 20px;
-    border: 2px solid black;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-top: 40px;
+    border-radius: 15px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(26, 26, 26, 0.747);
+    backdrop-filter: blur(10px);
 }
 
 .profile-section, .preference-section {
