@@ -3,20 +3,22 @@
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.8);
-    z-index: 200;
+    z-index: 2001;
     opacity: 0;
     pointer-events: none;
-   
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 #set-amountCont.hide {
     opacity: 0;
     pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.8);
 }
 
 #set-amountCont.show {
     opacity: 1;
     pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
 }
 
 #set-amountCont .setAmount {
@@ -74,12 +76,12 @@
 .budget-blur-bg {
     position: absolute;
     z-index: 1;
-    top: 66%;
+    top: 77%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 130vw;
-    height: 140vh;
-    backdrop-filter: blur(10px);
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(3px);
     display: block;
 }
 

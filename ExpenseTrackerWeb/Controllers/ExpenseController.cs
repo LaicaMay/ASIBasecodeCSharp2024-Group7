@@ -70,10 +70,17 @@ namespace ExpenseTrackerWeb.Controllers
 
         [HttpGet]
         public JsonResult CheckUserCategories()
-        {     
+        {
             var categories = _userCategoryMgr.ListCategory(UserId);
+            var userBalance = _balanceMgr.GetActiveBalanceByUserId(UserId);
 
-            return Json(new { hasCategories = categories.Any() });
+            bool hasActiveBalance = userBalance != null;
+
+            return Json(new
+            {
+                hasCategories = categories.Any(),
+                hasActiveBalance = hasActiveBalance
+            });
         }
 
 

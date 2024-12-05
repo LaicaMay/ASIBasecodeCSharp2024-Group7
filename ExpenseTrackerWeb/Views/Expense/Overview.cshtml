@@ -267,7 +267,13 @@
             <p>Add a category first before adding new Expense.</p>
             <a href="/Expense/Category">Redirect to Category?</a>
         </div>
-
+    
+        <div id="redirect-Bal" class="hide">
+            <img src="/images/iconVec/ETnoBal-removebg-preview.png"/>
+            <h2>You currently have no active balance!</h2>
+            <p>Add a balance first before adding new Expense.</p>
+            <a id="add-balanceNew">Add balance?</a>
+        </div>
         <div id="empty-cat-blur" class="hide">
 
         </div>
@@ -313,6 +319,7 @@
         let errorModal = document.getElementById('budget-error');
         let errorName = document.getElementById('error-name');
         let blurError = document.getElementById('blur-error-budget');
+        let emptyBal = document.getElementById('redirect-Bal');
 
         errorName.textContent = "";
 
@@ -357,6 +364,8 @@
                 document.getElementById('set-amountCont').classList.add('hide');
                 document.getElementById('blur-budget').classList.add('show');
                 document.getElementById('blur-budget').classList.remove('hide');
+                emptyBal.classList.add('hide');
+                emptyBal.classList.remove('show');
                     saveButton.disabled = false;
             } else {
                 alert('Failed to save expense. Please try again.');
