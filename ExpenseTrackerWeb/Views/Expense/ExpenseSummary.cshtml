@@ -13,11 +13,10 @@
 
 <div class="main-container">
     <div class="expenses">
+        <div class="title-filter-group">
+            <h1>Expenses Summary</h1>
+        </div>
         <div class="topbarinfo">
-            <div class="title-filter-group">
-                <h1>Expenses Summary</h1>
-                
-            </div>
             <div class="balance-monthYear">
                 <select>
                     @foreach (var balance in ViewBag.BalanceDate)
@@ -25,6 +24,9 @@
                         <option value="@balance.Value">@balance.Text</option>
                     }
                 </select>
+            </div>
+            <div class="button-container">
+                <button id="generateReportButton">Generate Report</button>
             </div>
         </div>
         <div class="expensecontents">
@@ -62,9 +64,6 @@
                 <canvas id="line-graph" width="800" height="400"></canvas>
             </div>
         </div>
-    </div>
-    <div class="button-container">
-        <button id="generateReportButton">Generate Report</button>
     </div>
 </div>
 
