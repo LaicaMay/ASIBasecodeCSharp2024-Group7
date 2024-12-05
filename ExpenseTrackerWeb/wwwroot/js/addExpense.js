@@ -227,7 +227,11 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
             document.getElementById('end-date').value = '';
         } else {
             button.disabled = false;
-            alert('Insufficient Remaining Balance. Please try again.');
+            errorModal.classList.add('show');
+            errorModal.classList.remove('hide');
+            blur.classList.add('show');
+            blur.classList.remove('hide');
+            errorVal.textContent = "Insufficient balance.";
             return;
         }
     })

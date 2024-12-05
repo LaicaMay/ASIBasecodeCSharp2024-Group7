@@ -58,45 +58,88 @@
     document.getElementById('del').onclick = function () {
         const expenseId = document.getElementById('modal-expense-id').value;
 
-        if (confirm('Are you sure you want to delete this expense?')) {
-            fetch(`/Expense/DeleteExpense/${expenseId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
+        fetch(`/Expense/DeleteExpense/${expenseId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    return Promise.reject('Failed to delete expense.');
                 }
             })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        return Promise.reject('Failed to delete expense.');
-                    }
-                })
-                .then(data => {
-                    console.log(data.message);
+            .then(data => {
+                console.log(data.message);
 
-                    const row = document.querySelector(`tr[data-expense-id='${expenseId}']`);
-                    if (row) {
-                        row.remove();
-                    }
+                const row = document.querySelector(`tr[data-expense-id='${expenseId}']`);
+                if (row) {
+                    row.remove();
+                }
 
-                    document.getElementById('expense-container').classList.remove('show');
-                    document.getElementById('expense-container').classList.add('hide');
+                document.getElementById('expense-container').classList.remove('show');
+                document.getElementById('expense-container').classList.add('hide');
 
-                    const successModal = document.getElementById('success-del-modal');
-                    successModal.classList.remove('hide');
-                    successModal.classList.add('show');
-                    setTimeout(() => {
-                        successModal.classList.remove('show');
-                        successModal.classList.add('hide');
-                    }, 3000);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert(error);
-                });
-        }
+                const successModal = document.getElementById('success-del-modal');
+                successModal.classList.remove('hide');
+                successModal.classList.add('show');
+                setTimeout(() => {
+                    successModal.classList.remove('show');
+                    successModal.classList.add('hide');
+                }, 3000);
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert(error);
+            });
     };
+
+
+    //document.getElementById('del').onclick = function () {
+    //    const expenseId = document.getElementById('modal-expense-id').value;
+
+    //    if (confirm('Are you sure you want to delete this expense?')) {
+    //        fetch(`/Expense/DeleteExpense/${expenseId}`, {
+    //            method: 'DELETE',
+    //            headers: {
+    //                'Content-Type': 'application/json',
+    //            }
+    //        })
+    //            .then(response => {
+    //                if (response.ok) {
+    //                    return response.json();
+    //                } else {
+    //                    return Promise.reject('Failed to delete expense.');
+    //                }
+    //            })
+    //            .then(data => {
+    //                console.log(data.message);
+
+    //                const row = document.querySelector(`tr[data-expense-id='${expenseId}']`);
+    //                if (row) {
+    //                    row.remove();
+    //                }
+
+    //                document.getElementById('expense-container').classList.remove('show');
+    //                document.getElementById('expense-container').classList.add('hide');
+
+    //                const successModal = document.getElementById('success-del-modal');
+    //                successModal.classList.remove('hide');
+    //                successModal.classList.add('show');
+    //                setTimeout(() => {
+    //                    successModal.classList.remove('show');
+    //                    successModal.classList.add('hide');
+    //                }, 3000);
+    //            })
+    //            .catch(error => {
+    //                console.error('Error:', error);
+    //                alert(error);
+    //            });
+    //    }
+    //};
 
         document.querySelector('.blur-bg').addEventListener('click', function () {
             document.getElementById('expense-container').classList.remove('show');
