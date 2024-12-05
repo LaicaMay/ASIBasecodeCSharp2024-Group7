@@ -92,7 +92,7 @@ namespace ExpenseTrackerWeb.Controllers
         [HttpPost]
         public IActionResult SignUp(User u)
         {
-            var allowedEmailDomains = new[] { "gmail.com", "yahoo.com", "ymail.com" };
+            var allowedEmailDomains = new[] { "gmail.com", "yahoo.com", "hotmail.com" };
 
             if (_userManager.GetUserByEmail(u.Email) != null)
             {

@@ -87,19 +87,41 @@
             <div style="position: relative; display: inline-block;">
                 <input asp-for="Email" type="text" class="email" placeholder="Email" required>
                 <span class="validation" asp-validation-for="Email" class="text-danger"></span>
-                <span class="required">*</span>
+                <div class="tooltip">
+                    <span class="required">*</span>
+                    <span class="tooltiptext">
+                        Email Address should be active. <br>
+                        <strong>e.g.</strong> gmail, yahoo, hotmail
+                    </span>
+                </div>
             </div>
             <div style="position: relative; display: inline-block;">
                 <input asp-for="Username" type="text" class="username" placeholder="Username" required>
                 <span class="validation" asp-validation-for="Username" class="text-danger"></span>
-                <span class="required">*</span>
+                <div class="tooltip">
+                    <span class="required">*</span>
+                    <span class="tooltiptext">
+                        - Start with a letter.<br>
+                        - Only letters and numbers.<br>
+                        - At least 3 characters.<br>
+                        <strong>e.g.</strong> John123, alice22 (✔️), 123John, Jo@hn (❌)
+                    </span>
+                </div>
             </div>
             <div class="pass-input">
                 <input asp-for="Password" type="password" class="password" id="password" placeholder="Password" required>           
                 <span class="toggle-password" onclick="togglePasswordVisibility()">
                     <img class="img-eye" src="/images/loginImg/openEye.svg" alt="Show/Hide" id="eye-icon">
                 </span>
-                <span class="required">*</span>
+                <div class="tooltip">
+                  <span class="required">*</span>
+                  <span class="tooltiptext">
+                    - At least 8 characters.<br>
+                    - One uppercase letter.<br>
+                        - One special character (e.g., &#64, #, !).<br>
+                    <strong>e.g.</strong> P@ssword1 (✔️), password (❌)
+                  </span>
+                </div>
             </div>
             <div class="pass-input">
                 <input asp-for="ConfirmPassword" type="password" class="password" id="confirm-password" placeholder="Confirm Password" required>
@@ -107,7 +129,15 @@
                 <span class="toggle-password" onclick="toggleConfirmPasswordVisibility()">
                     <img class="img-eye" src="/images/loginImg/openEye.svg" alt="Show/Hide" id="eyeconfirm-icon">
                 </span>
-                <span class="required">*</span>
+                <div class="tooltip">
+                    <span class="required">*</span>
+                    <span class="tooltiptext">
+                        - At least 8 characters.<br>
+                        - One uppercase letter.<br>
+                        - One special character (e.g., &#64, #, !).<br>
+                        <strong>e.g.</strong> P@ssword1 (✔️), password (❌)
+                    </span>
+                </div>
             </div>
 
             <input type="hidden" asp-for="Code" />
@@ -118,7 +148,17 @@
             <div style="position: relative; display: inline-block">
                 <input type="checkbox" asp-for="Agree" required>
                 <label>I agree with Terms and Conditions</label>
-                <span class="required-agree">*</span>
+                <div class="tooltip">
+                    <br />
+                    <span class="required">*</span>
+                    <span class="tooltiptext">
+                        - By using this tracker, you agree to monitor your expenses accurately.<br>
+                        - Your data will only be used to calculate and track your expenses.<br>
+                        - We are not responsible for any inaccuracies in your entries.<br>
+                        - All information entered is kept confidential and will not be shared with third parties.
+                    </span>
+                </div>
+
             </div>
             <div class="login-register">
                 <button type="submit" value="Create" class="reg-btn">

@@ -213,9 +213,9 @@ body {
 
 .required {
     position: absolute;
-    bottom:23px;
+    bottom:14px;
     left: -15px;
-    color: red;
+    color: seagreen;
     cursor: pointer;
 }
 
@@ -223,6 +223,48 @@ body {
     position: absolute;
     bottom: -1.2px;
     left: -12px;
-    color: red;
+    color: lawngreen;
     cursor: pointer;
 }
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: rgba(0, 0, 0, 0.7); /* Slightly translucent background */
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 105%; /* Tooltip on the right side */
+    transform: translateY(-50%); /* Center vertically relative to the trigger element */
+    /* Fade-in effect */
+    opacity: 0;
+    transition: opacity 1s;
+    font-size: 10px; /* Smaller text size */
+}
+
+    .tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 100%; /* Arrow points to the left */
+        margin-top: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent transparent black; /* Arrow pointing to the left */
+    }
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
