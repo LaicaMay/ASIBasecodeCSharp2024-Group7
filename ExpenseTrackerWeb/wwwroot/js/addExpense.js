@@ -7,13 +7,21 @@ function validateDateInput(inputId) {
     const balanceDateSet = document.getElementById('balance-date-set').value;
     const dateInput = document.getElementById(inputId);
     const selectedDate = dateInput.value;
+    let errorModal = document.getElementById('budget-error');
+    let errorVal = document.getElementById('error-name');
+    let blur = document.getElementById('blur-error-budget');
+    errorVal.textContent = "";
 
     if (selectedDate) {
         const selectedMonthYear = getMonthYear(selectedDate);
 
         if (selectedMonthYear !== balanceDateSet) {
             dateInput.value = '';
-            alert(`The selected date must fall within the balance period: ${balanceDateSet}.`);
+            errorModal.classList.add('show');
+            errorModal.classList.remove('hide');
+            blur.classList.add('show');
+            blur.classList.remove('hide');
+            errorVal.textContent = `Date must be within ${balanceDateSet}.`;
         }
     }
 }
@@ -81,13 +89,19 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
     const remainBal = parseFloat(remainBalRaw.replace(/,/g, ''));
     const categoryId = document.getElementById('category-id').value;
     const description = document.getElementById('description').value.trim();
-
+    let errorModal = document.getElementById('budget-error');
+    let errorVal = document.getElementById('error-name');
+    let blur = document.getElementById('blur-error-budget');
     //console.log('RemainBal: ', remainBal);
 
     let date = document.getElementById('date-only').value.trim();
     let startDate = document.getElementById('start-date').value.trim();
     let endDate = document.getElementById('end-date').value.trim(); 
     const checkbox = document.getElementById('toggleCheckbox');
+    let button = document.getElementById('ok-btn');
+
+    errorVal.textContent = "";
+    button.disabled = true;
 
     let selectedDays = [];
     document.querySelectorAll('.day-checkbox:checked').forEach(checkbox => {
@@ -99,7 +113,12 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
     const today = new Date().toISOString().split('T')[0];
 
     if (!expenseName || !amount || !categoryId || !description) {
-        alert('Please fill in all required fields.');
+        errorModal.classList.add('show');
+        errorModal.classList.remove('hide');
+        blur.classList.add('show');
+        blur.classList.remove('hide');
+        errorVal.textContent = "All fields are required.";
+        button.disabled = false;
         return;
     }
 
@@ -114,27 +133,58 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
                 totalAmount += amount;
             }
         }
+        button.disabled = false;
     }    
 
     if (totalAmount > remainBal) {
-        alert('Insufficient balance.');
+        errorModal.classList.add('show');
+        errorModal.classList.remove('hide');
+        blur.classList.add('show');
+        blur.classList.remove('hide');
+        errorVal.textContent = "Insufficient balance.";
+        button.disabled = false;
         return;
     }
 
     if (amount <= 0) {
-        alert('Please enter a valid amount.');
+        errorModal.classList.add('show');
+        errorModal.classList.remove('hide');
+        blur.classList.add('show');
+        blur.classList.remove('hide');
+        errorVal.textContent = "Invalid amount.";
+        button.disabled = false;
         return;
     }
 
     if (checkbox.checked) {
         date = null; 
         if (startDate >= endDate) {
-            alert('Invalid start date and end date;')
+            errorModal.classList.add('show');
+            errorModal.classList.remove('hide');
+            blur.classList.add('show');
+            blur.classList.remove('hide');
+            errorVal.textContent = "Invalid start date and end date.";
+            button.disabled = false;
             return;
         }
 
         if (endDate <= startDate) {
-            alert('Invalid start date and end date;')
+            errorModal.classList.add('show');
+            errorModal.classList.remove('hide');
+            blur.classList.add('show');
+            blur.classList.remove('hide');
+            errorVal.textContent = "Invalid start date and end date.";
+            button.disabled = false;
+            return;
+        }
+
+        if (!setDay) {
+            errorModal.classList.add('show');
+            errorModal.classList.remove('hide');
+            blur.classList.add('show');
+            blur.classList.remove('hide');
+            errorVal.textContent = "Set day is required.";
+            button.disabled = false;
             return;
         }
     } else {      
@@ -163,6 +213,7 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
     })
     .then(response => {
         if (response.ok) {
+            button.disabled = false;
             document.getElementById('success-added-modal').classList.remove('hide');
             document.getElementById('success-added-modal').classList.add('show');
 
@@ -175,11 +226,13 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
             document.getElementById('start-date').value = '';
             document.getElementById('end-date').value = '';
         } else {
+            button.disabled = false;
             alert('Insufficient Remaining Balance. Please try again.');
             return;
         }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => console.error('Error:', error)
+);
 });
 
 //document.getElementById('add-id').addEventListener('click', function (event) {

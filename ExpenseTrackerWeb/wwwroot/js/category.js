@@ -273,6 +273,15 @@
         const editCatId = document.getElementById('edit-category-id').value;
         const editCatName = document.getElementById('edit-category-name').value;
         const editCatDescription = document.getElementById('edit-category-description').value;
+        let updateModal = document.getElementById('success-del-cat');
+        let notifUpdate = document.getElementById('notif-update');
+        let editBtn = document.getElementById('edit-category-btn');
+        let blur = document.getElementById('cat-blur-del');
+        let editModal = document.getElementById('edit-category-cont');
+        let editAction = document.getElementById('category-container');
+
+        notifUpdate.textContent = "";
+        editBtn.disabled = true;
 
         const editCategoryData = {
             CategoryId: editCatId,
@@ -292,18 +301,28 @@
             const data = await response.json();
 
             if (response.ok) {
-                console.log(data.message);
-                alert('Category updated successfully.');
-                location.reload();
+                updateModal.classList.add('show');
+                updateModal.classList.remove('hide');
+                blur.classList.add('show');
+                blur.classList.remove('hide');
+                editModal.classList.add('hide');
+                editModal.classList.remove('show');
+                editAction.classList.add('hide');
+                editAction.classList.remove('show');
+                notifUpdate.textContent = "Category updated successfully.";
+                editBtn.disabled = false;
+                
 
             } else {
                 console.error('Failed to update category:', data);
                 alert(data.message || 'Failed to update category.');
+                editBtn.disabled = false;
             }
 
         } catch (error) {
             console.error('Error:', error);
             alert('An error occurred while updating the category.');
+            editBtn.disabled = false;
         }
     });
 
