@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ExpenseTracker
 {
     public class RolesInDBAuthorizationHandler : AuthorizationHandler<RolesAuthorizationRequirement>
-    {
+    {   
         public RolesInDBAuthorizationHandler() { }
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,

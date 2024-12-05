@@ -14,6 +14,8 @@
 <link href="~/mainstyle/edit-expense.css" rel="stylesheet" />
 <link href="~/mainstyle/addbudget.css" rel="stylesheet" />
 <link href="~/mainstyle/budget-history.css" rel="stylesheet" />
+<link href="~/mainstyle/viewtable.css" rel="stylesheet" />
+
         <div class="main-container">
             @if (User.Identity.IsAuthenticated)
             {
@@ -274,6 +276,39 @@
             <p>Add a balance first before adding new Expense.</p>
             <a id="add-balanceNew">Add balance?</a>
         </div>
+
+        <div id="view-expenseRecent" style="opacity:0;visibility: hidden;">
+            <table class="viewTable">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.UserExpense != null && Model.UserExpense.Any())
+                        {
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        } else
+                        {
+                            <tr>
+                                <td colspan="5">No recent expenses.</td>                                        
+                            </tr>
+                        }
+                    
+                </tbody>
+            </table>
+        </div>
+
         <div id="empty-cat-blur" class="hide">
 
         </div>
