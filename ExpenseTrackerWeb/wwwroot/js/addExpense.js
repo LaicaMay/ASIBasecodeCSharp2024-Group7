@@ -264,48 +264,166 @@ document.getElementById('ok-btn').addEventListener('click', function (event) {
 //});
 
 
+//document.getElementById('add-id').addEventListener('click', function (event) {
+//    event.stopPropagation();
+
+//    let expenseCont = document.getElementById('add-expense-container');
+//    let addExpnModal = document.getElementById('expense-add');
+//    let balanceDropdown = document.getElementById('balance-dropdown');
+//    let balanceDateSetInput = document.getElementById('balance-date-set');
+//    let dateOnlyInput = document.getElementById('date-only');
+//    let startDateInput = document.getElementById('start-date');
+//    let endDateInput = document.getElementById('end-date');
+
+//    //Get the first option's data-balance-date value
+//    if (balanceDropdown.options.length > 0) {
+//        let firstBalanceDate = balanceDropdown.options[0].getAttribute('data-balance-date');
+//        balanceDateSetInput.value = firstBalanceDate; // Set the value to the input field
+//    }
+
+//    //Get the value from the hidden input and parse it
+//    let balanceDateValue = balanceDateSetInput.value; // Format: "January 2024"
+//    if (balanceDateValue) {
+//        //Extract month and year
+//        let [month, year] = balanceDateValue.split(' ');
+
+//        //Create start and end dates in UTC
+//        let startDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth(), 1)); //Start of the month
+//        let endDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth() + 1, 0)); //End of the month
+
+//        //Format dates to "yyyy-MM-dd"
+//        let formatDate = (date) => date.toISOString().split('T')[0];
+//        dateOnlyInput.value = formatDate(startDate); //Keep original value for reference
+//        startDateInput.value = formatDate(startDate); //Set formatted start date
+//        endDateInput.value = formatDate(endDate); //Set formatted end date
+//    }
+
+//    if (expenseCont.classList.contains('hide')) {
+//        expenseCont.classList.remove('hide');
+//        expenseCont.classList.add('show');
+//        addExpnModal.classList.remove('hide');
+//        addExpnModal.classList.add('show');
+//    }
+//});
+
 document.getElementById('add-id').addEventListener('click', function (event) {
-    event.stopPropagation();
+    event.preventDefault(); // Prevent default anchor behavior
 
-    let expenseCont = document.getElementById('add-expense-container');
-    let addExpnModal = document.getElementById('expense-add');
-    let balanceDropdown = document.getElementById('balance-dropdown');
-    let balanceDateSetInput = document.getElementById('balance-date-set');
-    let dateOnlyInput = document.getElementById('date-only');
-    let startDateInput = document.getElementById('start-date');
-    let endDateInput = document.getElementById('end-date');
+    let emptyCat = document.getElementById('redirect-Category');
+    let blur = document.getElementById('empty-cat-blur');
 
-    //Get the first option's data-balance-date value
-    if (balanceDropdown.options.length > 0) {
-        let firstBalanceDate = balanceDropdown.options[0].getAttribute('data-balance-date');
-        balanceDateSetInput.value = firstBalanceDate; // Set the value to the input field
-    }
+    fetch('/Expense/CheckUserCategories')
+        .then(response => response.json())
+        .then(data => {
+            if (!data.hasCategories) {
+                emptyCat.classList.add('show');
+                emptyCat.classList.remove('hide');
+                blur.classList.add('show');
+                blur.classList.remove('hide');
+            } else {
+                // Show the modal if categories are available
+                let expenseCont = document.getElementById('add-expense-container');
+                let addExpnModal = document.getElementById('expense-add');
+                let balanceDropdown = document.getElementById('balance-dropdown');
+                let balanceDateSetInput = document.getElementById('balance-date-set');
+                let dateOnlyInput = document.getElementById('date-only');
+                let startDateInput = document.getElementById('start-date');
+                let endDateInput = document.getElementById('end-date');
 
-    //Get the value from the hidden input and parse it
-    let balanceDateValue = balanceDateSetInput.value; // Format: "January 2024"
-    if (balanceDateValue) {
-        //Extract month and year
-        let [month, year] = balanceDateValue.split(' ');
+                // Get the first option's data-balance-date value
+                if (balanceDropdown.options.length > 0) {
+                    let firstBalanceDate = balanceDropdown.options[0].getAttribute('data-balance-date');
+                    balanceDateSetInput.value = firstBalanceDate; // Set the value to the input field
+                }
 
-        //Create start and end dates in UTC
-        let startDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth(), 1)); //Start of the month
-        let endDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth() + 1, 0)); //End of the month
+                // Get the value from the hidden input and parse it
+                let balanceDateValue = balanceDateSetInput.value; // Format: "January 2024"
+                if (balanceDateValue) {
+                    // Extract month and year
+                    let [month, year] = balanceDateValue.split(' ');
 
-        //Format dates to "yyyy-MM-dd"
-        let formatDate = (date) => date.toISOString().split('T')[0];
-        dateOnlyInput.value = formatDate(startDate); //Keep original value for reference
-        startDateInput.value = formatDate(startDate); //Set formatted start date
-        endDateInput.value = formatDate(endDate); //Set formatted end date
-    }
+                    // Create start and end dates in UTC
+                    let startDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth(), 1)); // Start of the month
+                    let endDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth() + 1, 0)); // End of the month
 
-    if (expenseCont.classList.contains('hide')) {
-        expenseCont.classList.remove('hide');
-        expenseCont.classList.add('show');
-        addExpnModal.classList.remove('hide');
-        addExpnModal.classList.add('show');
-    }
+                    // Format dates to "yyyy-MM-dd"
+                    let formatDate = (date) => date.toISOString().split('T')[0];
+                    dateOnlyInput.value = formatDate(startDate); // Keep original value for reference
+                    startDateInput.value = formatDate(startDate); // Set formatted start date
+                    endDateInput.value = formatDate(endDate); // Set formatted end date
+                }
+
+                if (expenseCont.classList.contains('hide')) {
+                    expenseCont.classList.remove('hide');
+                    expenseCont.classList.add('show');
+                    addExpnModal.classList.remove('hide');
+                    addExpnModal.classList.add('show');
+                }
+            }
+        })
+        .catch(error => {
+            console.error("Error checking categories:", error);
+        });
 });
 
+document.getElementById('m-add-id').addEventListener('click', function (event) {
+    event.preventDefault(); // Prevent default anchor behavior
+
+    let emptyCat = document.getElementById('redirect-Category');
+    let blur = document.getElementById('empty-cat-blur');
+    fetch('/Expense/CheckUserCategories')
+        .then(response => response.json())
+        .then(data => {
+            if (!data.hasCategories) {
+                emptyCat.classList.add('show');
+                emptyCat.classList.remove('hide');
+                blur.classList.add('show');
+                blur.classList.remove('hide');
+            } else {
+                // Show the modal if categories are available
+                let expenseCont = document.getElementById('add-expense-container');
+                let addExpnModal = document.getElementById('expense-add');
+                let balanceDropdown = document.getElementById('balance-dropdown');
+                let balanceDateSetInput = document.getElementById('balance-date-set');
+                let dateOnlyInput = document.getElementById('date-only');
+                let startDateInput = document.getElementById('start-date');
+                let endDateInput = document.getElementById('end-date');
+
+                // Get the first option's data-balance-date value
+                if (balanceDropdown.options.length > 0) {
+                    let firstBalanceDate = balanceDropdown.options[0].getAttribute('data-balance-date');
+                    balanceDateSetInput.value = firstBalanceDate; // Set the value to the input field
+                }
+
+                // Get the value from the hidden input and parse it
+                let balanceDateValue = balanceDateSetInput.value; // Format: "January 2024"
+                if (balanceDateValue) {
+                    // Extract month and year
+                    let [month, year] = balanceDateValue.split(' ');
+
+                    // Create start and end dates in UTC
+                    let startDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth(), 1)); // Start of the month
+                    let endDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth() + 1, 0)); // End of the month
+
+                    // Format dates to "yyyy-MM-dd"
+                    let formatDate = (date) => date.toISOString().split('T')[0];
+                    dateOnlyInput.value = formatDate(startDate); // Keep original value for reference
+                    startDateInput.value = formatDate(startDate); // Set formatted start date
+                    endDateInput.value = formatDate(endDate); // Set formatted end date
+                }
+
+                if (expenseCont.classList.contains('hide')) {
+                    expenseCont.classList.remove('hide');
+                    expenseCont.classList.add('show');
+                    addExpnModal.classList.remove('hide');
+                    addExpnModal.classList.add('show');
+                }
+            }
+        })
+        .catch(error => {
+            console.error("Error checking categories:", error);
+        });
+});
 
 document.getElementById('add-blur').addEventListener('click', function (event) {
     event.stopPropagation();
@@ -315,48 +433,6 @@ document.getElementById('add-blur').addEventListener('click', function (event) {
     document.getElementById('expense-add').classList.add('hide');
 });
 
-document.getElementById('m-add-id').addEventListener('click', function (event) {
-    event.stopPropagation();
-
-    let expenseCont = document.getElementById('add-expense-container');
-    let addExpnModal = document.getElementById('expense-add');
-    let balanceDropdown = document.getElementById('balance-dropdown');
-    let balanceDateSetInput = document.getElementById('balance-date-set');
-    let dateOnlyInput = document.getElementById('date-only');
-    let startDateInput = document.getElementById('start-date');
-    let endDateInput = document.getElementById('end-date');
-
-    //Get the first option's data-balance-date value
-    if (balanceDropdown.options.length > 0) {
-        let firstBalanceDate = balanceDropdown.options[0].getAttribute('data-balance-date');
-        balanceDateSetInput.value = firstBalanceDate; // Set the value to the input field
-    }
-
-    //Get the value from the hidden input and parse it
-    let balanceDateValue = balanceDateSetInput.value; // Format: "January 2024"
-    if (balanceDateValue) {
-        //Extract month and year
-        let [month, year] = balanceDateValue.split(' ');
-
-        //Create start and end dates in UTC
-        let startDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth(), 1)); //Start of the month
-        let endDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth() + 1, 0)); //End of the month
-
-        //Format dates to "yyyy-MM-dd"
-        let formatDate = (date) => date.toISOString().split('T')[0];
-        dateOnlyInput.value = formatDate(startDate); //Keep original value for reference
-        startDateInput.value = formatDate(startDate); //Set formatted start date
-        endDateInput.value = formatDate(endDate); //Set formatted end date
-    }
-
-    if (expenseCont.classList.contains('hide')) {
-        expenseCont.classList.remove('hide');
-        expenseCont.classList.add('show');
-        addExpnModal.classList.remove('hide');
-        addExpnModal.classList.add('show');
-    }
-});
-
 //document.getElementById('m-add-id').addEventListener('click', function (event) {
 //    event.stopPropagation();
 
@@ -364,14 +440,32 @@ document.getElementById('m-add-id').addEventListener('click', function (event) {
 //    let addExpnModal = document.getElementById('expense-add');
 //    let balanceDropdown = document.getElementById('balance-dropdown');
 //    let balanceDateSetInput = document.getElementById('balance-date-set');
+//    let dateOnlyInput = document.getElementById('date-only');
+//    let startDateInput = document.getElementById('start-date');
+//    let endDateInput = document.getElementById('end-date');
 
 //    //Get the first option's data-balance-date value
 //    if (balanceDropdown.options.length > 0) {
 //        let firstBalanceDate = balanceDropdown.options[0].getAttribute('data-balance-date');
-//        balanceDateSetInput.value = firstBalanceDate; //Set the value to the input field
+//        balanceDateSetInput.value = firstBalanceDate; // Set the value to the input field
 //    }
 
-//    console.log('set date', balanceDateSetInput)
+//    //Get the value from the hidden input and parse it
+//    let balanceDateValue = balanceDateSetInput.value; // Format: "January 2024"
+//    if (balanceDateValue) {
+//        //Extract month and year
+//        let [month, year] = balanceDateValue.split(' ');
+
+//        //Create start and end dates in UTC
+//        let startDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth(), 1)); //Start of the month
+//        let endDate = new Date(Date.UTC(year, new Date(`${month} 1`).getMonth() + 1, 0)); //End of the month
+
+//        //Format dates to "yyyy-MM-dd"
+//        let formatDate = (date) => date.toISOString().split('T')[0];
+//        dateOnlyInput.value = formatDate(startDate); //Keep original value for reference
+//        startDateInput.value = formatDate(startDate); //Set formatted start date
+//        endDateInput.value = formatDate(endDate); //Set formatted end date
+//    }
 
 //    if (expenseCont.classList.contains('hide')) {
 //        expenseCont.classList.remove('hide');
@@ -379,9 +473,7 @@ document.getElementById('m-add-id').addEventListener('click', function (event) {
 //        addExpnModal.classList.remove('hide');
 //        addExpnModal.classList.add('show');
 //    }
-
 //});
-
 
 document.getElementById('save-btn').addEventListener('click', function (event) {
     event.stopPropagation();
@@ -398,6 +490,18 @@ document.getElementById('save-btn').addEventListener('click', function (event) {
     }
 });
 
+document.getElementById('empty-cat-blur').addEventListener('click', function (event) {
+    event.stopPropagation();
+
+    let emptyCat = document.getElementById('redirect-Category');
+    let blur = document.getElementById('empty-cat-blur');
+
+    emptyCat.classList.add('hide');
+    emptyCat.classList.remove('show');
+    blur.classList.add('hide');
+    blur.classList.remove('show');
+
+});
 document.getElementById('cancel-btn').addEventListener('click', function (event) {
     event.stopPropagation();
 

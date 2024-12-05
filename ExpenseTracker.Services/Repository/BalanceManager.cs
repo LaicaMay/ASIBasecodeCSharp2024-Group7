@@ -58,7 +58,7 @@ namespace ExpenseTracker.Services.Repository
             balance.TotalBalance = null;
             balance.MonthId = 13;
             balance.YearId = 13;
-            balance.isActive = true;
+            balance.isActive = false;
 
             return _balanceRepository.Create(balance, out err);
         }

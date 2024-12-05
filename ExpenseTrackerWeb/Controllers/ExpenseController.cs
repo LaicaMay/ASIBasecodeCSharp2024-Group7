@@ -68,6 +68,15 @@ namespace ExpenseTrackerWeb.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        public JsonResult CheckUserCategories()
+        {     
+            var categories = _userCategoryMgr.ListCategory(UserId);
+
+            return Json(new { hasCategories = categories.Any() });
+        }
+
+
         [HttpPost]
         public IActionResult AddBalance([FromBody] Balance balance)
             {
@@ -343,6 +352,7 @@ namespace ExpenseTrackerWeb.Controllers
         }
         #endregion
 
+        #region ExpenseSummary
         public IActionResult Reports()
         {
             return View();
@@ -404,5 +414,6 @@ namespace ExpenseTrackerWeb.Controllers
                 expenses = userExpensesReport
             });
         }
+        #endregion
     }
 }
