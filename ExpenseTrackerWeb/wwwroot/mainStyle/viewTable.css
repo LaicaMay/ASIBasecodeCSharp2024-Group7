@@ -1,1 +1,128 @@
-﻿
+﻿#view-expenseRecent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 500px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: solid;
+    border-color: #257826;
+    z-index: 109;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#view-expenseRecent.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#view-expenseRecent.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#blur-view-recent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 108;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(3px);
+    opacity: 0;
+    visibility: hidden;
+}
+
+#blur-view-recent.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#blur-view-recent.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.viewTable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.viewTable thead {
+    background-color: #68BB69;
+    color: white;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.viewTable th, .viewTable td {
+    padding: 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: 20%;
+}
+
+.viewTable tbody {
+    display: block;
+    flex: 1;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.viewTable tbody tr {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.viewTable tr:nth-child(odd) {
+    background-color: #f9f9f9;
+    color: black;
+}
+
+.viewTable tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.viewTable tr:hover {
+    background-color: #e9ffe9;
+}
+
+.img-bg {
+    width: 15px;
+    height: 15px;
+}
+
+.item-details {
+    background-color: #68BB69;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 15px;
+    color: black;
+    border: solid;
+    border-width: 1px;
+    font-size: 0.9rem;
+}
+
+.item-details:hover {
+    text-decoration: none;
+    background-color: #62ab69;
+    box-shadow: 0px 2px 1px black;
+}
+

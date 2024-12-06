@@ -78,11 +78,11 @@
                                         data-end-date="@(item.EndDate?.ToString("yyyy-MM-dd") ?? string.Empty)"
                                     >
                                         <div style="display: flex;
-                                    align-items: center;
-                                    justify-content: start; padding-left: 0px;
-                                            ">
-                                    <div class="img-bg" style="background-color: @item.Category.ColorPick;">
-                                    </div>
+                                        align-items: center;
+                                        justify-content: start; padding-left: 0px;
+                                                ">
+                                        <div class="img-bg" style="background-color: @item.Category.ColorPick;">
+                                        </div>
                                             <p style="margin-left: 10px;">@item.Category?.CategoryName</p>
                                         </div>
                                     </td>
@@ -277,39 +277,76 @@
             <a id="add-balanceNew">Add balance?</a>
         </div>
 
-        <div id="view-expenseRecent" style="opacity:0;visibility: hidden;">
+        <div id="view-expenseRecent" class="hide">
             <table class="viewTable">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                    <th>
+                        <form action="@Url.Action("Overview", "Expense")" method="get" style="display: inline;">
+                            <input type="hidden" name="sortOrderCategory" value="@((ViewBag.CurrentSortOrderCategory == "asc") ? "reset" : "asc")" />
+                            <input type="hidden" name="sortOrderDate" value="reset" />
+                            <button type="submit" style="background: none; border: none; padding: 0;">
+                                <img src="~/images/iconVec/@(ViewBag.CurrentSortOrderCategory == "asc" ? "up-arrow.svg" : "down-arrw.svg")" alt="Sort by Category">
+                                <span style="font-size: 1rem; font-family: Arial, Helvetica, sans-serif;">Category</span>
+                            </button>
+                        </form>
+                    </th>
+
+                    <th>Expense Name</th>
+                    <th>Amount</th>
+                    <th>
+                        <form action="@Url.Action("Overview", "Expense")" method="get" style="display: inline;">
+                            <input type="hidden" name="sortOrderDate" value="@((ViewBag.CurrentSortOrderDate == "asc") ? "reset" : "asc")" />
+                            <input type="hidden" name="sortOrderCategory" value="reset" />
+                            <button type="submit" style="background: none; border: none; padding: 0;">
+                                <img src="~/images/iconVec/@(ViewBag.CurrentSortOrderDate == "asc" ? "up-arrow.svg" : "down-arrw.svg")" alt="Sort by Date">
+                                <span style="font-size: 1rem; font-family: Arial, Helvetica, sans-serif;">Date</span>
+                            </button>
+                        </form>
+                    </th>
+                    <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model.UserExpense != null && Model.UserExpense.Any())
                         {
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        } else
-                        {
-                            <tr>
-                                <td colspan="5">No recent expenses.</td>                                        
-                            </tr>
-                        }
-                    
+                            foreach (var item in Model.UserExpense)
+                            {
+                                <tr>
+                                    <td data-user-id="@item.UserId"    
+                                        data-expense-id="@item.ExpenseId"
+                                        data-category-name="@item.Category?.CategoryName"
+                                        data-expense-name="@item.ExpenseName"
+                                        data-amount="@item.Amount"                    
+                                        data-date="@(item.Date?.ToString("yyyy-MM-dd") ?? string.Empty)"
+                                        data-description="@item.Description"
+                                        data-start-date="@(item.StartDate?.ToString("yyyy-MM-dd") ?? string.Empty)"
+                                        data-end-date="@(item.EndDate?.ToString("yyyy-MM-dd") ?? string.Empty)"
+                                    >
+                                        <div style="display: flex;
+                                        align-items: center;
+                                        justify-content: start; padding-left: 0px;
+                                                ">
+                                        <div class="img-bg" style="background-color: @item.Category.ColorPick;">
+                                        </div>
+                                            <p style="margin-left: 10px;">@item.Category?.CategoryName</p>
+                                        </div>
+                                    </td>
+                                    <td>@item.ExpenseName</td>
+                                    <td>₱@item.Amount</td>
+                                    <td>@(item.Date == null ? item.StartDate : item.Date)</td>
+                                    <td><a id="item-details" class="item-details">Details</a></td>
+                                </tr>
+                            }
+                        }                 
                 </tbody>
             </table>
         </div>
 
         <div id="empty-cat-blur" class="hide">
+
+        </div>
+<div id="blur-view-recent" class="hide">
 
         </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
