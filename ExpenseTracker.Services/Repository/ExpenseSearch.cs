@@ -30,11 +30,18 @@ namespace ExpenseTracker.Services.Repository
             return expenses;
         }
 
+        public List<Category> SearchCategory(string Search)
+        {
+            DateTime searchDate;
+            bool isDate = DateTime.TryParse(Search, out searchDate);
 
+            var category = _db.Categories
+                .Where(e => e.CategoryName.Contains(Search) ||
+                             e.Description.Contains(Search) ||
+                             e.TotalAmount.ToString().Contains(Search))
+                .ToList();
 
-
-
-
-
+            return category;
+        }
     }
 }

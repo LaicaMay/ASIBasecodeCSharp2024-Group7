@@ -271,13 +271,31 @@ namespace ExpenseTrackerWeb.Controllers
         #endregion
 
         #region CategoryManagement
-        public IActionResult Category()
+        public IActionResult Category(string Search = "", string sortOrderCategory = "reset")
         {
             if (!User.Identity.IsAuthenticated)
             {
                 return BadRequest(new { message = "User is not authenticated." });
             }
-            return View(_userCategoryMgr.ListCategory(UserId));
+
+            var userCategory = _userCategoryMgr.ListCategory(UserId);
+
+            if (!string.IsNullOrEmpty(Search))
+            {
+                var searchResults = _expenseSearch.SearchCategory(Search)
+                                    .Where(e => e.UserId == UserId)
+                                    .ToList();
+
+                userCategory = searchResults.Any() ? searchResults : userCategory;
+            }
+
+            if (sortOrderCategory != "reset")
+            {
+                userCategory = userCategory.OrderBy(e => e.CategoryName).ToList();
+            }
+
+            ViewBag.CurrentSortOrderCategory = sortOrderCategory;
+            return View(userCategory);
         }
         [HttpPost]
         public IActionResult AddCategory([FromBody] Category userCategory)
