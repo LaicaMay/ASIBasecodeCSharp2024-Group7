@@ -115,7 +115,7 @@
             </div>
             <div style="display: flex; justify-content: space-between;">
                 <div id="view-recent" class="recent-hide">
-                    <a href="#">View Recent</a>
+                    <a id="viewRecent">View Recent</a>
                 </div>
                 <div id="add-expense" class="recent-hide">
                     <a id="m-add-id" href="#">Add Expenses</a>
@@ -338,7 +338,12 @@
                                     <td><a id="item-details" class="item-details">Details</a></td>
                                 </tr>
                             }
-                        }                 
+                        }else
+                        {
+                            <tr>
+                                <td style="color:black" colspan="5">No recent expenses.</td>                                        
+                            </tr>
+                        }               
                 </tbody>
             </table>
         </div>
@@ -346,7 +351,7 @@
         <div id="empty-cat-blur" class="hide">
 
         </div>
-<div id="blur-view-recent" class="hide">
+        <div id="blur-view-recent" class="hide">
 
         </div>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -354,7 +359,6 @@
 <script src="~/js/overview.js"></script>
 <script src="~/js/addexpense.js"></script>
 <script>
-
     document.getElementById('done-del-budget').addEventListener('click', function () {
 
         var blur = document.getElementById('blur-budget');

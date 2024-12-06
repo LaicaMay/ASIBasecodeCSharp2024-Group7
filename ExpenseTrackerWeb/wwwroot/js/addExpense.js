@@ -26,6 +26,21 @@ function validateDateInput(inputId) {
     }
 }
 
+document.getElementById('viewRecent').addEventListener('click', function (e) {
+    e.stopPropagation();
+    document.getElementById('view-expenseRecent').classList.add('show');
+    document.getElementById('view-expenseRecent').classList.remove('hide');
+    document.getElementById('blur-view-recent').classList.add('show');
+    document.getElementById('blur-view-recent').classList.remove('hide');
+});
+
+document.getElementById('blur-view-recent').addEventListener('click', function (e) {
+    document.getElementById('view-expenseRecent').classList.add('hide');
+    document.getElementById('view-expenseRecent').classList.remove('show');
+    document.getElementById('blur-view-recent').classList.add('show');
+    document.getElementById('blur-view-recent').classList.remove('show');
+});
+
 document.getElementById('date-only').addEventListener('change', function () {
     validateDateInput('date-only');
 });
