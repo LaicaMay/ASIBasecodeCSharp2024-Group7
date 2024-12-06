@@ -20,7 +20,7 @@ generateReportButton.addEventListener("click", function () {
                     const row = `
                         <tr>
                             <td>${expense.expenseName}</td>
-                            <td>Php ${expense.amount}</td>
+                            <td>${formatCurrency(expense.amount)}</td>
                             <td>${expense.category}</td>
                             <td>${expense.date}</td>
                             <td>${expense.description}</td>
@@ -152,3 +152,18 @@ function groupDataByCategory(data, labels) {
     });
     return groupedData;
 }
+
+function transformExpenses(allexp) {
+    return allexp.reduce((acc, { CategoryName, TotalAmount }) => {
+        const existingCategory = acc.find(item => item[0] === CategoryName);
+
+        if (existingCategory) {
+            existingCategory[1] += TotalAmount;
+        } else {
+            acc.push([CategoryName, TotalAmount]);
+        }
+
+        return acc;
+    }, []);
+}
+

@@ -32,7 +32,7 @@ function getChartOptions(chartType) {
             x: {
                 title: {
                     display: true,
-                    text: 'Monthly Expenses'
+                    text: 'Daily Expenses'
                 }
             },
             y: {

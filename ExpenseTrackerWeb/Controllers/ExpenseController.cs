@@ -386,23 +386,15 @@ namespace ExpenseTrackerWeb.Controllers
         [HttpGet]
         public IActionResult ExpenseSummary()
         {
-            var months = _monthYearMgr.ListMonths()
-                                      .OrderBy(m => m.MonthId)
-                                      .Select(m => m.MonthName)
-                                      .ToArray();
-
             var userBalance = _balanceMgr.ListUserBalance(UserId);
             var userRemBal = _balanceMgr.GetActiveBalanceByUserId(UserId);
 
             var expensesByCategoryAndMonth = _userExpenseMgr.GroupExpensesByCategoryAndMonth(UserId);
             var currentMonth = DateTime.Now.ToString("yyyy-MM");
-            var currentMonthExpenses = _userExpenseMgr.FilterExpensesByMonth(UserId, currentMonth);
 
             ViewData["ExpMonthAndCateg"] = expensesByCategoryAndMonth;
-            ViewData["curMonthExp"] = currentMonthExpenses;
-            ViewData["RemainingBal"] = userRemBal.RemainingBalance;
+            ViewData["RemainingBal"] = userRemBal?.RemainingBalance ?? 0;
             ViewBag.BalanceDate = SelectDropDownItem.SelectListItemMonthYearByUser(UserId);
-
 
             return View();
         }
@@ -411,11 +403,6 @@ namespace ExpenseTrackerWeb.Controllers
         [HttpPost]
         public IActionResult GenerateReport()
         {
-            var months = _monthYearMgr.ListMonths()
-                                       .OrderBy(m => m.MonthId)
-                                       .Select(m => m.MonthName)
-                                       .ToArray();
-
             var userBalance = _balanceMgr.ListUserBalance(UserId);
             var userExpenses = _userExpenseMgr.ListUserExpense(UserId);
             var userCategories = _userCategoryMgr.ListCategory(UserId);
@@ -437,7 +424,7 @@ namespace ExpenseTrackerWeb.Controllers
             {
                 message = "Report Generated",
                 expenses = userExpensesReport
-            });
+            }); 
         }
         #endregion
     }

@@ -4,9 +4,7 @@
     ViewData["Title"] = "Expense Summary";
 
     var extCatandMon = ViewData["ExpMonthAndCateg"];
-    var curExpMon = ViewData["curMonthExp"];
     var remBals = ViewData["RemainingBal"];
-
 }
 
 <link rel="stylesheet" href="~/css/expsummary.css"/>
@@ -18,7 +16,7 @@
         </div>
         <div class="topbarinfo">
             <div class="balance-monthYear">
-                <select>
+                <select disabled>
                     @foreach (var balance in ViewBag.BalanceDate)
                     {
                         <option value="@balance.Value">@balance.Text</option>
@@ -53,7 +51,7 @@
                 <h3>Current Month Expenses</h3>
             </div>
             <div class="pie-container">
-                <canvas id="pie-chart" width="400" height="400"></canvas>
+                <canvas id="pie-chart" ></canvas>
             </div>
         </div>
         <div class="line-graph">
@@ -61,7 +59,7 @@
                 <h3>Expense Trend</h3>
             </div>
             <div class="line-container">
-                <canvas id="line-graph" width="800" height="400"></canvas>
+                <canvas id="line-graph" ></canvas>
             </div>
         </div>
     </div>
@@ -104,34 +102,42 @@
 
 <script>
     const allexp = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(extCatandMon));
-    const allexpcur = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(curExpMon));
     const remBal = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(remBals));
 
+    const transformedExp = transformExpenses(allexp);
+
+    console.log({ allexp , remBal, transformedExp});
+
     document.addEventListener("DOMContentLoaded", function () {
-        const pieLabels = allexpcur.map(item => item[0]);
-        const pieData = allexpcur.map(item => item[1]);
+        if (!transformedExp || transformedExp.length === 0 || !allexp || allexp.length === 0) {
+            document.querySelector('.charts').style.display = 'none';
+            document.getElementById('total-exp-cur-month').textContent = formatCurrency(0.00);
+            document.getElementById('high-exp-cur-month').textContent = formatCurrency(0.00);
+            document.getElementById('high-exp-cur-month-name').textContent = `No Expenses Set`;
+            document.getElementById('rem-bal-cur-month').textContent = formatCurrency(0.00);
+        } else {
+            const pieLabels = transformedExp.map(item => item[0]);
+            const pieData = transformedExp.map(item => item[1]);
 
-        const pieDatasets = [{
-            data: pieData,
-            backgroundColor: generateRandomColors(pieLabels.length),
-            hoverOffset: 4
-        }];
+            const pieDatasets = [{
+                data: pieData,
+                backgroundColor: generateRandomColors(pieLabels.length),
+                hoverOffset: 4
+            }];
 
-        createChart(pieLabels, pieDatasets, 'pie-chart', 'pie');
+            createChart(pieLabels, pieDatasets, 'pie-chart', 'pie');
+            updateMonthLabels();
+            createLineChart(allexp);
 
-        updateMonthLabels();
-        createLineChart(allexp);
+            const totalExpenses = calculateTotalExpenses(transformedExp);
+            const largestExpense = findLargestExpense(transformedExp);
 
-        const totalExpenses = calculateTotalExpenses(allexpcur);
-        const largestExpense = findLargestExpense(allexpcur);
-
-        document.getElementById('total-exp-cur-month').textContent = formatCurrency(totalExpenses);
-        document.getElementById('high-exp-cur-month').textContent = formatCurrency(largestExpense.amount);
-        document.getElementById('high-exp-cur-month-name').textContent = `${largestExpense.name} Expense`;
-        document.getElementById('rem-bal-cur-month').textContent = formatCurrency(remBal);
+            document.getElementById('total-exp-cur-month').textContent = formatCurrency(totalExpenses);
+            document.getElementById('high-exp-cur-month').textContent = formatCurrency(largestExpense.amount);
+            document.getElementById('high-exp-cur-month-name').textContent = `${largestExpense.name} Expense`;
+            document.getElementById('rem-bal-cur-month').textContent = formatCurrency(remBal);
+        }
     });
-
-   
 
 </script>
 
